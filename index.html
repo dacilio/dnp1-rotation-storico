@@ -1798,16 +1798,8 @@
         html+='<input class="storico-search" type="text" placeholder="&#128269; Cerca..." oninput="window._fstorico(this.value)"><div id="sto-list">';
         if(!pers.length){html+='<div class="no-data-msg">Storico vuoto.<br>Carica Manning + Genera controllo.<br>Lo storico si salva automaticamente su GitHub.</div>';}
         else{
-          var persFT=pers.filter(function(p){return(p.ftpt||'').toUpperCase()==='FT';});
-          var persPT=pers.filter(function(p){return(p.ftpt||'').toUpperCase()!=='FT';});
-          var _groups=[];
-          if(persFT.length) _groups.push({list:persFT,label:'FT',color:'#1d4ed8'});
-          if(persPT.length) _groups.push({list:persPT,label:'PT',color:'#7c3aed'});
-          _groups.forEach(function(grp){
-            var grpColor=grp.color; var grpLabel=grp.label;
-            grp.list.sort(function(a,b){return a.name.localeCompare(b.name);});
-            html+='<div style="font-size:11.5px;font-weight:800;color:'+grpColor+';text-transform:uppercase;letter-spacing:.06em;padding:10px 2px 4px;margin-top:'+(grpLabel==="PT"?"12":"0")+'px">\u25A0 '+grpLabel+' \u2014 '+grp.list.length+' persone</div>';
-          grp.list.forEach(function(p){
+          // Ordina: prima FT poi PT
+          function _rpRender(p){
             var wks=Object.keys(p.settimane||{}).sort(function(a,b){return(parseInt(b.replace(/\D/g,''))||0)-(parseInt(a.replace(/\D/g,''))||0);});
             var nI=0,nF=0,nPS=0;
             wks.forEach(function(w){Object.values(p.settimane[w]||{}).forEach(function(r){
@@ -1815,26 +1807,37 @@
               try{if(isProblemSolve(r)){nPS++;return;}}catch(e){}
               nF++;
             });});
-            html+='<div class="persona-block" id="pb_'+p.name.replace(/\W/g,'_')+'">'
+            var isFT=(p.ftpt||'').toString().trim().toUpperCase()==='FT';
+            var out='<div class="persona-block" id="pb_'+p.name.replace(/\W/g,'_')+'">'
               +'<div class="persona-head" onclick="this.parentElement.classList.toggle(\'open\')">'
-              +'<div class="persona-name">'+p.name+' <span class="tag '+(p.ftpt==='FT'?'ft':'pt')+'">'+(p.ftpt||'?')+'</span></div>'
+              +'<div class="persona-name">'+p.name+' <span class="tag '+(isFT?'ft':'pt')+'">'+(p.ftpt||'?')+'</span></div>'
               +'<div class="persona-stats"><span>'+wks.length+' sett.</span><span style="color:#1d4ed8">Induct: '+nI+'</span><span style="color:#065f46">Finger: '+nF+'</span>'+(nPS?'<span style="color:#6d28d9">PS: '+nPS+'</span>':'')+'</div>'
               +'</div><div class="persona-body">';
             wks.forEach(function(w){
-              html+='<div class="wk-row"><div class="wk-label">'+w+'</div><div class="wk-days">';
+              out+='<div class="wk-row"><div class="wk-label">'+w+'</div><div class="wk-days">';
               days.forEach(function(d){
                 var r=p.settimane[w][d]; if(!r)return;
                 var cls='absent';
                 try{if(isInduct(r))cls='induct';}catch(e){}
                 try{if(isProblemSolve(r))cls='ps';}catch(e){}
                 try{if(isFinger(r)&&cls==='absent')cls='finger';}catch(e){}
-                html+='<span class="day-chip '+cls+'">'+d+': '+r+'</span>';
+                out+='<span class="day-chip '+cls+'">'+d+': '+r+'</span>';
               });
-              html+='</div></div>';
+              out+='</div></div>';
             });
-            html+='</div></div>';
-          }); // fine grp.list
-          }); // fine _groups
+            out+='</div></div>';
+            return out;
+          }
+          var persFT=pers.filter(function(p){return(p.ftpt||'').toString().trim().toUpperCase()==='FT';}).sort(function(a,b){return a.name.localeCompare(b.name);});
+          var persPT=pers.filter(function(p){return(p.ftpt||'').toString().trim().toUpperCase()!=='FT';}).sort(function(a,b){return a.name.localeCompare(b.name);});
+          if(persFT.length){
+            html+='<div style="font-size:12px;font-weight:800;color:#1d4ed8;text-transform:uppercase;letter-spacing:.06em;padding:8px 2px 4px;border-bottom:2px solid #dbeafe;margin-bottom:6px">\u25A0 Full Time \u2014 '+persFT.length+' persone</div>';
+            persFT.forEach(function(p){ html+=_rpRender(p); });
+          }
+          if(persPT.length){
+            html+='<div style="font-size:12px;font-weight:800;color:#7c3aed;text-transform:uppercase;letter-spacing:.06em;padding:8px 2px 4px;border-bottom:2px solid #ede9fe;margin:12px 0 6px">\u25A0 Part Time \u2014 '+persPT.length+' persone</div>';
+            persPT.forEach(function(p){ html+=_rpRender(p); });
+          }
         }
         html+='</div>';
       }else if(_st==='settimane'){
