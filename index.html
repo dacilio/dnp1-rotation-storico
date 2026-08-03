@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="it">
 <head>
 <meta charset="UTF-8">
@@ -305,9 +305,9 @@
 
   #gh-bar{position:fixed;top:0;left:0;right:0;z-index:9999;padding:5px 18px;font-size:12px;font-weight:700;display:flex;align-items:center;gap:8px;background:#1e293b;color:#94a3b8;transition:background .4s}
   #gh-bar.ok{background:#064e3b;color:#6ee7b7}
-  .storico-search{width:100%;font-family:var(--font);font-size:15px;padding:10px 14px;border:1.5px solid var(--border);border-radius:11px;margin-bottom:14px;color:var(--text)}
-  .storico-search:focus{outline:none;border-color:var(--indigo);box-shadow:0 0 0 3px rgba(99,102,241,.15)}
-  .persona-block{background:var(--surface);border-radius:14px;border:1px solid var(--border-light);margin-bottom:10px;overflow:hidden;box-shadow:var(--shadow)}
+  .storico-search{width:100%;font-size:15px;padding:10px 14px;border:1.5px solid var(--border);border-radius:11px;margin-bottom:14px;color:var(--text);box-sizing:border-box}
+  .storico-search:focus{outline:none;border-color:var(--indigo)}
+  .persona-block{background:var(--surface);border-radius:14px;border:1px solid var(--border-light);margin-bottom:10px;overflow:hidden}
   .persona-head{display:flex;align-items:center;gap:12px;padding:12px 16px;cursor:pointer;user-select:none;background:var(--surface-2)}
   .persona-head:hover{background:#eef2f7}
   .persona-name{font-weight:750;font-size:14.5px;flex:1}
@@ -323,19 +323,18 @@
   .day-chip.ps{background:#ede9fe;color:#6d28d9;border-color:#ddd6fe}
   .day-chip.absent{background:#fff1f3;color:#9f1239;border-color:#fecdd6;opacity:.75}
   .storico-tabs{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
-  .storico-tab{font-family:var(--font);font-size:13px;font-weight:700;padding:8px 16px;border:1.5px solid var(--border);border-radius:10px;background:#fff;color:var(--muted);cursor:pointer;transition:.2s}
+  .storico-tab{font-size:13px;font-weight:700;padding:8px 16px;border:1.5px solid var(--border);border-radius:10px;background:#fff;color:var(--muted);cursor:pointer;transition:.2s}
   .storico-tab.active{background:linear-gradient(135deg,var(--indigo),var(--blue));color:#fff;border-color:transparent}
   .no-data-msg{color:var(--muted);font-size:14px;padding:24px;text-align:center;line-height:1.8}
   .alert-banner{border-radius:14px;padding:14px 18px;margin-bottom:14px;font-size:14px;font-weight:650;display:flex;align-items:flex-start;gap:10px;border:1px solid}
   .alert-banner.warn{background:#fffaeb;color:#92400e;border-color:#fde08a}
-  .log-row{display:flex;gap:10px;padding:8px 12px;border-bottom:1px solid var(--border-light);font-size:12.5px;align-items:flex-start}
+  .log-row{display:flex;gap:10px;padding:8px 12px;border-bottom:1px solid var(--border-light);font-size:12.5px}
   .log-row:last-child{border-bottom:none}
-  .log-time{color:var(--muted);font-family:var(--mono);flex-shrink:0;font-size:11px;margin-top:2px}
+  .log-time{color:var(--muted);font-size:11px;flex-shrink:0;margin-top:2px}
   .log-msg{flex:1;line-height:1.5}
   .log-who{font-size:10.5px;color:var(--muted);font-weight:600;margin-top:2px}
-  .gh-setup-modal{display:none;position:fixed;inset:0;background:rgba(15,23,41,.85);z-index:10001;align-items:center;justify-content:center}
-  .gh-setup-modal.show{display:flex}
-</style>
+  .gh-overlay{display:none;position:fixed;inset:0;background:rgba(15,23,41,.85);z-index:10001;align-items:center;justify-content:center}
+  .gh-overlay.show{display:flex}</style>
 </head>
 <body>
 <div class="wrap">
@@ -417,6 +416,11 @@
     <div class="toggle toggle-recap">
       <button id="mode-recap" onclick="setMode('recap')">📊 Recap settimana</button>
       <button id="mode-month" onclick="setMode('month')">📈 Andamento mensile</button>
+    </div>
+
+    <div class="toggle toggle-recap">
+      <button id="mode-storico" onclick="setMode('storico')">&#128100; Storico Persone</button>
+      <button id="mode-log" onclick="setMode('log')">&#128221; Log</button>
     </div>
   </div>
 
@@ -1595,314 +1599,303 @@
     });
   }
 
-  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-  //  GITHUB SYNC â€” automatico, nessuna azione richiesta
-  //  Token salvato nel browser al primo accesso
-  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-  const GH_REPO  = 'dacilio/dnp1-rotation-storico';
-  const GH_API   = 'https://api.github.com/repos/' + GH_REPO + '/contents/';
-  const GH_TKEY  = 'dnp1_ght';
-  const GH_FILES = { storico:'data/storico.json', persone:'data/persone.json', log:'data/log.json' };
-  var _sha = {};
+  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+  //  GITHUB SYNC + STORICO + LOG â€” tutto automatico
+  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+  (function(){
+    var REPO   = 'dacilio/dnp1-rotation-storico';
+    var API    = 'https://api.github.com/repos/'+REPO+'/contents/';
+    var TKEY   = 'dnp1_ght';
+    var FILES  = {storico:'data/storico.json',persone:'data/persone.json',log:'data/log.json'};
+    var _sha   = {};
+    var SP     = {};  // Storico Persone
+    var AL     = [];  // Activity Log
+    try{SP=JSON.parse(localStorage.getItem('dnp1_sp'))||{};}catch(e){}
+    try{AL=JSON.parse(localStorage.getItem('dnp1_al'))||[];}catch(e){}
 
-  function ghToken(){ return localStorage.getItem(GH_TKEY)||''; }
+    function tok(){ return localStorage.getItem(TKEY)||''; }
 
-  async function ghGet(path){
-    var t=ghToken(); if(!t) return null;
-    var r=await fetch(GH_API+path,{headers:{'Authorization':'token '+t,'Accept':'application/vnd.github.v3+json'},signal:AbortSignal.timeout(10000)});
-    if(r.status===404) return null;
-    if(r.status===401){ showSetupModal(); throw new Error('token non valido'); }
-    if(!r.ok) throw new Error('GET '+r.status);
-    var j=await r.json(); _sha[path]=j.sha;
-    return JSON.parse(atob(j.content.replace(/\n/g,'')));
-  }
-  async function ghPut(path, data){
-    var t=ghToken(); if(!t) return;
-    var body={message:'sync '+new Date().toISOString().slice(0,16),content:btoa(unescape(encodeURIComponent(JSON.stringify(data,null,2))))};
-    if(_sha[path]) body.sha=_sha[path];
-    var r=await fetch(GH_API+path,{method:'PUT',headers:{'Authorization':'token '+t,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},body:JSON.stringify(body),signal:AbortSignal.timeout(12000)});
-    if(!r.ok){var e=await r.text();throw new Error('PUT '+r.status);}
-    var j=await r.json(); _sha[path]=j.content.sha;
-  }
-
-  // â”€â”€ Setup modal (solo al primo accesso) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-  function mkSetupModal(){
-    var m=document.createElement('div');
-    m.className='gh-setup-modal'; m.id='gh-setup-modal';
-    m.innerHTML='<div style="background:#fff;border-radius:18px;padding:28px;width:min(480px,92vw);color:#0f1729;box-shadow:0 8px 40px rgba(0,0,0,.3)">'
-      +'<div style="font-size:22px;margin-bottom:6px">&#128279; Connetti lo storico</div>'
-      +'<div style="font-size:14px;color:#64748b;margin-bottom:20px;line-height:1.6">Inserisci il <b>Personal Access Token</b> GitHub per abilitare lo storico condiviso.<br>Viene salvato nel browser â€” <b>non ti viene piÃ¹ chiesto.</b></div>'
-      +'<input id="gh-tok-inp" type="password" placeholder="ghp_..." style="width:100%;font-size:15px;padding:10px 13px;border:1.5px solid #e2e8f0;border-radius:10px;margin-bottom:16px;font-family:monospace">'
-      +'<button onclick="saveToken()" style="width:100%;padding:12px;background:linear-gradient(135deg,#6366f1,#3b82f6);color:#fff;border:none;border-radius:10px;font-size:15px;font-weight:750;cursor:pointer">Connetti &#8594;</button>'
-      +'</div>';
-    document.body.appendChild(m);
-  }
-  function showSetupModal(){
-    var m=document.getElementById('gh-setup-modal');
-    if(m) m.classList.add('show');
-  }
-  function saveToken(){
-    var t=(document.getElementById('gh-tok-inp').value||'').trim();
-    if(!t){alert('Inserisci il token.');return;}
-    localStorage.setItem(GH_TKEY,t);
-    document.getElementById('gh-setup-modal').classList.remove('show');
-    ghPull();
-  }
-
-  // â”€â”€ Barra stato â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-  function mkBar(){
-    var b=document.createElement('div'); b.id='gh-bar';
-    b.innerHTML='<span id="gh-dot" style="width:8px;height:8px;border-radius:50%;background:#94a3b8;display:inline-block;flex-shrink:0"></span>'
-      +'<span id="gh-txt">Connessione GitHub...</span>'
-      +'<span id="gh-upd" style="margin-left:auto;font-weight:400;opacity:.7"></span>';
-    document.body.insertBefore(b,document.body.firstChild);
-    document.body.style.paddingTop='28px';
-  }
-  function ghStatus(ok,msg,upd){
-    var b=document.getElementById('gh-bar'); if(!b)return;
-    b.className=ok?'ok':'';
-    document.getElementById('gh-dot').style.background=ok?'#10b981':'#f59e0b';
-    document.getElementById('gh-txt').textContent=msg;
-    var u=document.getElementById('gh-upd'); if(upd&&u)u.textContent='Sync: '+upd;
-  }
-
-  // â”€â”€ PULL â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-  async function ghPull(){
-    if(!ghToken()){showSetupModal();ghStatus(false,'GitHub: inserisci il token per connettere','');return;}
-    ghStatus(false,'GitHub: connessione...','');
-    try{
-      var s=await ghGet(GH_FILES.storico);
-      if(s){
-        if(Array.isArray(s.history)){lsSet(LS_HIST,JSON.stringify(s.history));MONTH_ROWS=s.history;}
-        if(s.psmonth){lsSet(LS_PSMONTH,JSON.stringify(s.psmonth));PS_MONTH=s.psmonth;}
-        if(s.notes){lsSet(LS_NOTES,JSON.stringify(s.notes));NOTES=s.notes;}
-        if(s.profiles&&Object.keys(s.profiles).length){lsSet(LS_KEY,JSON.stringify(s.profiles));PROFILES=s.profiles;if(!PROFILES[ACTIVE])ACTIVE=Object.keys(PROFILES)[0];}
-      }
-      var p=await ghGet(GH_FILES.persone);
-      if(p){STORICO_PERSONE=p;lsSet('dnp1_gh_persone',JSON.stringify(p));}
-      var l=await ghGet(GH_FILES.log);
-      if(l){ACTIVITY_LOG=l;lsSet('dnp1_gh_log',JSON.stringify(l));}
-      var now=new Date().toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'});
-      ghStatus(true,'GitHub: connesso â€” '+MONTH_ROWS.length+' sett. | '+Object.keys(STORICO_PERSONE).length+' persone',now);
-      checkAlerts();
-    }catch(e){
-      if(e.message!=='token non valido') ghStatus(false,'GitHub: errore ('+e.message+')','');
+    async function apiGet(path){
+      var t=tok(); if(!t)return null;
+      var r=await fetch(API+path,{headers:{'Authorization':'token '+t,'Accept':'application/vnd.github.v3+json'},signal:AbortSignal.timeout(10000)});
+      if(r.status===404)return null;
+      if(r.status===401){showSetup();throw new Error('token non valido');}
+      if(!r.ok)throw new Error('GET '+r.status);
+      var j=await r.json(); _sha[path]=j.sha;
+      return JSON.parse(atob(j.content.replace(/\n/g,'')));
     }
-  }
+    async function apiPut(path,data){
+      var t=tok(); if(!t)return;
+      var body={message:'sync '+new Date().toISOString().slice(0,16),content:btoa(unescape(encodeURIComponent(JSON.stringify(data,null,2))))};
+      if(_sha[path])body.sha=_sha[path];
+      var r=await fetch(API+path,{method:'PUT',headers:{'Authorization':'token '+t,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},body:JSON.stringify(body),signal:AbortSignal.timeout(12000)});
+      if(!r.ok)throw new Error('PUT '+r.status);
+      var j=await r.json(); _sha[path]=j.content.sha;
+    }
 
-  // â”€â”€ PUSH â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-  async function ghPushStorico(){
-    try{
-      await ghPut(GH_FILES.storico,{history:MONTH_ROWS,psmonth:PS_MONTH,notes:NOTES,profiles:PROFILES,updated:new Date().toISOString()});
-      ghStatus(true,'GitHub: salvato â€” '+MONTH_ROWS.length+' sett.',new Date().toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'}));
-    }catch(e){ghStatus(false,'Errore salvataggio: '+e.message,'');}
-  }
-  async function ghPushPersone(){try{await ghPut(GH_FILES.persone,STORICO_PERSONE);}catch(e){}}
-  async function ghPushLog(){try{await ghPut(GH_FILES.log,ACTIVITY_LOG);}catch(e){}}
+    // barra
+    function mkBar(){
+      var b=document.createElement('div');b.id='gh-bar';
+      b.innerHTML='<span id="gh-dot" style="width:8px;height:8px;border-radius:50%;background:#94a3b8;display:inline-block;flex-shrink:0"></span><span id="gh-txt">GitHub...</span><span id="gh-upd" style="margin-left:auto;font-weight:400;opacity:.7"></span>';
+      document.body.insertBefore(b,document.body.firstChild);document.body.style.paddingTop='28px';
+    }
+    function bar(ok,msg,upd){
+      var b=document.getElementById('gh-bar');if(!b)return;b.className=ok?'ok':'';
+      document.getElementById('gh-dot').style.background=ok?'#10b981':'#f59e0b';
+      document.getElementById('gh-txt').textContent=msg;
+      var u=document.getElementById('gh-upd');if(upd&&u)u.textContent='Sync: '+upd;
+    }
 
-  var _oSH=saveHist; saveHist=function(){_oSH();ghPushStorico();};
-  var _oSP=savePS;   savePS=function(){_oSP();ghPushStorico();};
-  var _oSN=saveNotes; saveNotes=function(n){_oSN(n);ghPushStorico();};
-  var _oSPr=saveProfiles; saveProfiles=function(p){_oSPr(p);ghPushStorico();};
+    // setup modal
+    function mkSetup(){
+      var m=document.createElement('div');m.className='gh-overlay';m.id='gh-overlay';
+      m.innerHTML='<div style="background:#fff;border-radius:18px;padding:28px;width:min(460px,92vw);color:#0f1729;box-shadow:0 8px 40px rgba(0,0,0,.3)">'
+        +'<div style="font-size:20px;font-weight:800;margin-bottom:8px">&#128279; Connetti storico GitHub</div>'
+        +'<div style="font-size:14px;color:#64748b;margin-bottom:18px;line-height:1.6">Inserisci il <b>Personal Access Token</b>.<br>Viene salvato nel browser â€” non ti viene pi&ugrave; chiesto.</div>'
+        +'<input id="gh-ti" type="password" placeholder="ghp_..." style="width:100%;font-size:15px;padding:10px 13px;border:1.5px solid #e2e8f0;border-radius:10px;margin-bottom:14px;font-family:monospace;box-sizing:border-box">'
+        +'<button id="gh-tb" style="width:100%;padding:12px;background:linear-gradient(135deg,#6366f1,#3b82f6);color:#fff;border:none;border-radius:10px;font-size:15px;font-weight:750;cursor:pointer">Connetti &#8594;</button>'
+        +'</div>';
+      document.body.appendChild(m);
+      document.getElementById('gh-tb').addEventListener('click',function(){
+        var t=(document.getElementById('gh-ti').value||'').trim();
+        if(!t){alert('Inserisci il token.');return;}
+        localStorage.setItem(TKEY,t);
+        document.getElementById('gh-overlay').classList.remove('show');
+        pull();
+      });
+    }
+    function showSetup(){var m=document.getElementById('gh-overlay');if(m)m.classList.add('show');}
 
-  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-  //  STORICO PERSONE
-  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-  var STORICO_PERSONE=(function(){try{return JSON.parse(lsGet('dnp1_gh_persone'))||{};}catch(e){return{};}})();
+    // pull
+    async function pull(){
+      if(!tok()){showSetup();bar(false,'GitHub: inserisci il token','');return;}
+      bar(false,'GitHub: connessione...','');
+      try{
+        var s=await apiGet(FILES.storico);
+        if(s){
+          if(Array.isArray(s.history)){localStorage.setItem('dnp1_history',JSON.stringify(s.history));try{MONTH_ROWS=s.history;}catch(e){}}
+          if(s.psmonth){localStorage.setItem('dnp1_psmonth',JSON.stringify(s.psmonth));try{PS_MONTH=s.psmonth;}catch(e){}}
+          if(s.notes){localStorage.setItem('dnp1_notes',JSON.stringify(s.notes));try{NOTES=s.notes;}catch(e){}}
+          if(s.profiles&&Object.keys(s.profiles).length){localStorage.setItem('dnp1_profiles',JSON.stringify(s.profiles));try{PROFILES=s.profiles;if(!PROFILES[ACTIVE])ACTIVE=Object.keys(PROFILES)[0];}catch(e){}}
+        }
+        var p=await apiGet(FILES.persone);
+        if(p){SP=p;localStorage.setItem('dnp1_sp',JSON.stringify(p));}
+        var l=await apiGet(FILES.log);
+        if(l){AL=l;localStorage.setItem('dnp1_al',JSON.stringify(l));}
+        var now=new Date().toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'});
+        var nS=0;try{nS=MONTH_ROWS.length;}catch(e){}
+        bar(true,'GitHub: connesso \u2014 '+nS+' sett. | '+Object.keys(SP).length+' persone',now);
+        showAlerts();
+      }catch(e){if(e.message!=='token non valido')bar(false,'GitHub: errore ('+e.message+')','');}
+    }
 
-  function getWkNum(d){
-    var dt=new Date(Date.UTC(d.getFullYear(),d.getMonth(),d.getDate()));
-    var dn=dt.getUTCDay()||7;dt.setUTCDate(dt.getUTCDate()+4-dn);
-    var y=new Date(Date.UTC(dt.getUTCFullYear(),0,1));
-    return Math.ceil((((dt-y)/86400000)+1)/7);
-  }
-  function salvaSettimana(){
-    if(!PEOPLE||!PEOPLE.length)return 0;
-    var wk=DETECTED_WEEK||('W'+getWkNum(new Date()));
-    PEOPLE.forEach(function(p){
-      var k=normName(p.name);
-      if(!STORICO_PERSONE[k])STORICO_PERSONE[k]={name:p.name,ftpt:p.ftpt,settimane:{}};
-      STORICO_PERSONE[k].ftpt=p.ftpt;STORICO_PERSONE[k].name=p.name;
-      STORICO_PERSONE[k].settimane[wk]={};
-      DAYS.forEach(function(d){if(p.week[d])STORICO_PERSONE[k].settimane[wk][d]=p.week[d];});
-    });
-    lsSet('dnp1_gh_persone',JSON.stringify(STORICO_PERSONE));
-    ghPushPersone();
-    return PEOPLE.length;
-  }
-  var _oGen=generate;
-  generate=function(){
-    _oGen();
-    setTimeout(function(){
-      if(PEOPLE&&PEOPLE.length){
-        var n=salvaSettimana();
-        var wk=DETECTED_WEEK||'W?';
-        addLog('Manning '+wk+' caricato â€” '+n+' persone');
-        ghStatus(true,'GitHub: '+wk+' salvato ('+n+' persone)',new Date().toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'}));
+    // push
+    async function pushStorico(){
+      try{
+        var d={history:[],psmonth:{},notes:{},profiles:{},updated:new Date().toISOString()};
+        try{d.history=MONTH_ROWS;}catch(e){}
+        try{d.psmonth=PS_MONTH;}catch(e){}
+        try{d.notes=NOTES;}catch(e){}
+        try{d.profiles=PROFILES;}catch(e){}
+        await apiPut(FILES.storico,d);
+        bar(true,'GitHub: salvato',new Date().toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'}));
+      }catch(e){bar(false,'Errore: '+e.message,'');}
+    }
+    async function pushPersone(){try{await apiPut(FILES.persone,SP);}catch(e){}}
+    async function pushLog(){try{await apiPut(FILES.log,AL);}catch(e){}}
+
+    // intercetta salvataggi (dopo load)
+    window.addEventListener('load',function(){
+      ['saveHist','savePS','saveNotes','saveProfiles'].forEach(function(fn){
+        if(typeof window[fn]==='function'){var o=window[fn];window[fn]=function(){o.apply(this,arguments);pushStorico()};}
+      });
+      if(typeof window.generate==='function'){
+        var oG=window.generate;
+        window.generate=function(){
+          oG.apply(this,arguments);
+          setTimeout(function(){
+            try{
+              if(!PEOPLE||!PEOPLE.length)return;
+              var days=DAYS||['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+              var wk=DETECTED_WEEK||('W'+wkNum(new Date()));
+              PEOPLE.forEach(function(p){
+                var k=p.name.toLowerCase().trim();
+                if(!SP[k])SP[k]={name:p.name,ftpt:p.ftpt,settimane:{}};
+                SP[k].ftpt=p.ftpt;SP[k].name=p.name;SP[k].settimane[wk]={};
+                days.forEach(function(d){if(p.week&&p.week[d])SP[k].settimane[wk][d]=p.week[d];});
+              });
+              localStorage.setItem('dnp1_sp',JSON.stringify(SP));
+              pushPersone();
+              log('Manning '+wk+' \u2014 '+PEOPLE.length+' persone salvate');
+              bar(true,'GitHub: '+wk+' salvato ('+PEOPLE.length+' persone)',new Date().toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'}));
+            }catch(e){console.warn('save week:',e);}
+          },800);
+        };
       }
-    },600);
-  };
-
-  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-  //  ACTIVITY LOG
-  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-  var ACTIVITY_LOG=(function(){try{return JSON.parse(lsGet('dnp1_gh_log'))||[];}catch(e){return[];}})();
-  function addLog(msg){
-    ACTIVITY_LOG.unshift({ts:new Date().toISOString(),msg:msg,ds:ACTIVE||'DNP1'});
-    if(ACTIVITY_LOG.length>200)ACTIVITY_LOG=ACTIVITY_LOG.slice(0,200);
-    lsSet('dnp1_gh_log',JSON.stringify(ACTIVITY_LOG));
-    ghPushLog();
-  }
-
-  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-  //  ALERT APERTURA
-  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-  function checkAlerts(){
-    if(!MONTH_ROWS||!MONTH_ROWS.length)return;
-    var last=MONTH_ROWS.slice().sort(function(a,b){return(parseInt((b.settimana||'').replace(/\D/g,''))||0)-(parseInt((a.settimana||'').replace(/\D/g,''))||0);})[0];
-    if(!last)return;
-    var msgs=[];
-    if(last.indKo>0)msgs.push('&#9888; <b>'+last.settimana+'</b>: '+last.indKo+' persone non conformi Induct ('+last.pctInd+'% compliance)');
-    if(last.fingKo>0)msgs.push('&#9888; <b>'+last.settimana+'</b>: '+last.fingKo+' persone non conformi Finger ('+last.pctFing+'% compliance)');
-    if(!msgs.length)return;
-    var old=document.getElementById('opening-alerts');if(old)old.remove();
-    var wrap=document.createElement('div');wrap.id='opening-alerts';wrap.style.cssText='position:relative;z-index:1;margin-bottom:12px';
-    msgs.forEach(function(m){
-      var d=document.createElement('div');d.className='alert-banner warn';
-      d.innerHTML='<span style="font-size:18px">&#128276;</span><div><div style="font-weight:800;margin-bottom:2px">Situazione settimana precedente</div><div>'+m+'</div></div>';
-      wrap.appendChild(d);
+      // patch setMode
+      if(typeof window.setMode==='function'){
+        var oSM=window.setMode;
+        window.setMode=function(m){
+          document.querySelectorAll('.modebar button').forEach(function(b){b.classList.remove('active');});
+          if(m==='storico'){
+            var sb=document.getElementById('mode-storico');if(sb)sb.classList.add('active');
+            try{document.getElementById('dayeval').style.display='none';}catch(e){}
+            try{document.getElementById('preparinghint').style.display='none';}catch(e){}
+            renderSto();return;
+          }
+          if(m==='log'){
+            var lb=document.getElementById('mode-log');if(lb)lb.classList.add('active');
+            try{document.getElementById('dayeval').style.display='none';}catch(e){}
+            try{document.getElementById('preparinghint').style.display='none';}catch(e){}
+            renderLog();return;
+          }
+          oSM(m);
+        };
+      }
     });
-    var w=document.querySelector('.wrap');
-    if(w)w.insertBefore(wrap,w.querySelector('.panel')||w.firstChild);
-  }
 
-  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-  //  RENDER STORICO
-  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-  var _sTab='persone';
-  function renderStorico(){
-    document.getElementById('kpis').classList.remove('show');
-    document.getElementById('banner').classList.remove('show');
-    var persone=Object.values(STORICO_PERSONE);
-    var allWks=[];
-    persone.forEach(function(p){Object.keys(p.settimane||{}).forEach(function(w){if(allWks.indexOf(w)<0)allWks.push(w);});});
-    allWks.sort(function(a,b){return(parseInt(a.replace(/\D/g,''))||0)-(parseInt(b.replace(/\D/g,''))||0);});
-    var html='<div class="storico-tabs">'
-      +'<button class="storico-tab'+(_sTab==='persone'?' active':'')+'" onclick="_sTab=\'persone\';renderStorico()">&#128100; Per Persona</button>'
-      +'<button class="storico-tab'+(_sTab==='settimane'?' active':'')+'" onclick="_sTab=\'settimane\';renderStorico()">&#128197; Per Settimana</button>'
-      +'<button class="storico-tab'+(_sTab==='postazioni'?' active':'')+'" onclick="_sTab=\'postazioni\';renderStorico()">&#128203; Per Postazione</button>'
-      +'</div>';
-    if(_sTab==='persone'){
-      html+='<input class="storico-search" type="text" placeholder="&#128269; Cerca persona..." oninput="filterStorico(this.value)"><div id="storico-list">';
-      if(!persone.length){
-        html+='<div class="no-data-msg">&#128100; Storico vuoto.<br>Carica un Manning e clicca <b>Genera controllo</b>.<br>Lo storico si costruisce automaticamente.</div>';
-      } else {
-        persone.sort(function(a,b){return a.name.localeCompare(b.name);});
-        persone.forEach(function(p){
-          var wks=Object.keys(p.settimane||{}).sort(function(a,b){return(parseInt(b.replace(/\D/g,''))||0)-(parseInt(a.replace(/\D/g,''))||0);});
-          var nI=0,nF=0,nPS=0;
-          wks.forEach(function(w){Object.values(p.settimane[w]||{}).forEach(function(r){if(isInduct(r))nI++;else if(isProblemSolve(r))nPS++;else if(isFinger(r))nF++;});});
-          html+='<div class="persona-block" id="pb_'+normName(p.name).replace(/[^a-z0-9]/g,'_')+'">'
-            +'<div class="persona-head" onclick="this.parentElement.classList.toggle(\'open\')">'
+    function wkNum(d){
+      var dt=new Date(Date.UTC(d.getFullYear(),d.getMonth(),d.getDate()));
+      var dn=dt.getUTCDay()||7;dt.setUTCDate(dt.getUTCDate()+4-dn);
+      var y1=new Date(Date.UTC(dt.getUTCFullYear(),0,1));
+      return Math.ceil((((dt-y1)/86400000)+1)/7);
+    }
+    function log(msg){
+      var ds='DNP1';try{ds=ACTIVE||'DNP1';}catch(e){}
+      AL.unshift({ts:new Date().toISOString(),msg:msg,ds:ds});
+      if(AL.length>200)AL=AL.slice(0,200);
+      localStorage.setItem('dnp1_al',JSON.stringify(AL));
+      pushLog();
+    }
+    function showAlerts(){
+      try{
+        if(!MONTH_ROWS||!MONTH_ROWS.length)return;
+        var last=MONTH_ROWS.slice().sort(function(a,b){return(parseInt((b.settimana||'').replace(/\D/g,''))||0)-(parseInt((a.settimana||'').replace(/\D/g,''))||0);})[0];
+        var msgs=[];
+        if(last.indKo>0)msgs.push('<b>'+last.settimana+'</b>: '+last.indKo+' persone non conformi Induct');
+        if(last.fingKo>0)msgs.push('<b>'+last.settimana+'</b>: '+last.fingKo+' persone non conformi Finger');
+        if(!msgs.length)return;
+        var old=document.getElementById('opening-alerts');if(old)old.remove();
+        var wrap=document.createElement('div');wrap.id='opening-alerts';
+        msgs.forEach(function(m2){var d=document.createElement('div');d.className='alert-banner warn';d.innerHTML='<span style="font-size:18px">&#9888;</span><div>'+m2+'</div>';wrap.appendChild(d);});
+        var w=document.querySelector('.wrap');if(w)w.insertBefore(wrap,w.querySelector('.panel')||w.firstChild);
+      }catch(e){}
+    }
+
+    // render storico
+    var _st='persone';
+    function renderSto(){
+      try{document.getElementById('kpis').classList.remove('show');}catch(e){}
+      try{document.getElementById('banner').classList.remove('show');}catch(e){}
+      var days=[];try{days=DAYS;}catch(e){days=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];}
+      var pers=Object.values(SP);
+      var html='<div class="storico-tabs">'
+        +'<button class="storico-tab'+(_st==='persone'?' active':'')+'" onclick="window._rst(\'persone\')">&#128100; Per Persona</button>'
+        +'<button class="storico-tab'+(_st==='settimane'?' active':'')+'" onclick="window._rst(\'settimane\')">&#128197; Per Settimana</button>'
+        +'<button class="storico-tab'+(_st==='postazioni'?' active':'')+'" onclick="window._rst(\'postazioni\')">&#128203; Per Postazione</button>'
+        +'</div>';
+      if(_st==='persone'){
+        html+='<input class="storico-search" type="text" placeholder="&#128269; Cerca..." oninput="window._fstorico(this.value)"><div id="sto-list">';
+        if(!pers.length){html+='<div class="no-data-msg">Storico vuoto.<br>Carica Manning + Genera controllo.<br>Lo storico si salva automaticamente su GitHub.</div>';}
+        else{
+          pers.sort(function(a,b){return a.name.localeCompare(b.name);});
+          pers.forEach(function(p){
+            var wks=Object.keys(p.settimane||{}).sort(function(a,b){return(parseInt(b.replace(/\D/g,''))||0)-(parseInt(a.replace(/\D/g,''))||0);});
+            var nI=0,nF=0,nPS=0;
+            wks.forEach(function(w){Object.values(p.settimane[w]||{}).forEach(function(r){
+              try{if(isInduct(r)){nI++;return;}}catch(e){}
+              try{if(isProblemSolve(r)){nPS++;return;}}catch(e){}
+              nF++;
+            });});
+            html+='<div class="persona-block" id="pb_'+p.name.replace(/\W/g,'_')+'">'
+              +'<div class="persona-head" onclick="this.parentElement.classList.toggle(\'open\')">'
               +'<div class="persona-name">'+p.name+' <span class="tag '+(p.ftpt==='FT'?'ft':'pt')+'">'+(p.ftpt||'?')+'</span></div>'
-              +'<div class="persona-stats"><span>&#128197; '+wks.length+' sett.</span><span style="color:#1d4ed8">Induct '+nI+'gg</span><span style="color:#065f46">Finger '+nF+'gg</span>'+(nPS?'<span style="color:#6d28d9">PS '+nPS+'gg</span>':'')+'</div>'
-            +'</div><div class="persona-body">';
-          wks.forEach(function(w){
-            html+='<div class="wk-row"><div class="wk-label">'+w+'</div><div class="wk-days">';
-            DAYS.forEach(function(d){
-              var r=p.settimane[w][d];
-              if(r){var cls=isInduct(r)?'induct':isProblemSolve(r)?'ps':isFinger(r)?'finger':'absent';html+='<span class="day-chip '+cls+'">'+d+': '+r+'</span>';}
+              +'<div class="persona-stats"><span>'+wks.length+' sett.</span><span style="color:#1d4ed8">Induct: '+nI+'</span><span style="color:#065f46">Finger: '+nF+'</span>'+(nPS?'<span style="color:#6d28d9">PS: '+nPS+'</span>':'')+'</div>'
+              +'</div><div class="persona-body">';
+            wks.forEach(function(w){
+              html+='<div class="wk-row"><div class="wk-label">'+w+'</div><div class="wk-days">';
+              days.forEach(function(d){
+                var r=p.settimane[w][d]; if(!r)return;
+                var cls='absent';
+                try{if(isInduct(r))cls='induct';}catch(e){}
+                try{if(isProblemSolve(r))cls='ps';}catch(e){}
+                try{if(isFinger(r)&&cls==='absent')cls='finger';}catch(e){}
+                html+='<span class="day-chip '+cls+'">'+d+': '+r+'</span>';
+              });
+              html+='</div></div>';
             });
             html+='</div></div>';
           });
-          html+='</div></div>';
-        });
-      }
-      html+='</div>';
-    } else if(_sTab==='settimane'){
-      if(!allWks.length){html+='<div class="no-data-msg">Nessuna settimana.</div>';}
-      else {
-        allWks.slice().reverse().forEach(function(wk){
-          var pw=persone.filter(function(p){return p.settimane&&p.settimane[wk];});
+        }
+        html+='</div>';
+      }else if(_st==='settimane'){
+        var allW=[];pers.forEach(function(p){Object.keys(p.settimane||{}).forEach(function(w){if(allW.indexOf(w)<0)allW.push(w);});});
+        allW.sort(function(a,b){return(parseInt(b.replace(/\D/g,''))||0)-(parseInt(a.replace(/\D/g,''))||0);});
+        if(!allW.length){html+='<div class="no-data-msg">Nessuna settimana.</div>';}
+        else allW.forEach(function(wk){
+          var pw=pers.filter(function(p){return p.settimane&&p.settimane[wk];});
           html+='<div class="section s-green open"><div class="section-head" onclick="this.parentElement.classList.toggle(\'open\')"><div class="sh-icon">&#128197;</div><div class="sh-text"><span class="sh-title">'+wk+'</span><span class="sh-sub">'+pw.length+' persone</span></div><span class="sec-chev">&#8964;</span></div><div class="section-body"><div class="grid">';
           pw.sort(function(a,b){return a.name.localeCompare(b.name);}).forEach(function(p){
-            var chips=DAYS.filter(function(d){return(p.settimane[wk]||{})[d];}).map(function(d){var r=p.settimane[wk][d],cls=isInduct(r)?'induct':isProblemSolve(r)?'ps':isFinger(r)?'finger':'absent';return'<span class="day-chip '+cls+'" style="font-size:10px">'+d+': '+r+'</span>';}).join('');
+            var chips=days.filter(function(d){return(p.settimane[wk]||{})[d];}).map(function(d){
+              var r=p.settimane[wk][d],cls='absent';
+              try{if(isInduct(r))cls='induct';}catch(e){}
+              try{if(isProblemSolve(r))cls='ps';}catch(e){}
+              try{if(isFinger(r)&&cls==='absent')cls='finger';}catch(e){}
+              return'<span class="day-chip '+cls+'" style="font-size:10px">'+d+': '+r+'</span>';
+            }).join('');
             html+='<div class="card n" style="padding:10px 12px"><div class="name" style="font-size:13px">'+p.name+' <span class="tag '+(p.ftpt==='FT'?'ft':'pt')+'">'+(p.ftpt||'?')+'</span></div><div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:5px">'+chips+'</div></div>';
           });
           html+='</div></div></div>';
         });
-      }
-    } else {
-      var rm={};
-      persone.forEach(function(p){Object.values(p.settimane||{}).forEach(function(g){Object.values(g).forEach(function(r){if(!rm[r])rm[r]={};if(!rm[r][p.name])rm[r][p.name]=0;rm[r][p.name]++;});});});
-      var roles=Object.keys(rm).sort();
-      if(!roles.length){html+='<div class="no-data-msg">Nessun dato.</div>';}
-      else{
-        roles.forEach(function(role){
+      }else{
+        var rm={};
+        pers.forEach(function(p){Object.values(p.settimane||{}).forEach(function(g){Object.values(g).forEach(function(r){if(!rm[r])rm[r]={};if(!rm[r][p.name])rm[r][p.name]=0;rm[r][p.name]++;});});});
+        var roles=Object.keys(rm).sort();
+        if(!roles.length){html+='<div class="no-data-msg">Nessun dato.</div>';}
+        else roles.forEach(function(role){
           var sorted=Object.entries(rm[role]).sort(function(a,b){return b[1]-a[1];});
-          var cls=isInduct(role)?'s-green':isProblemSolve(role)?'s-orange':'s-gray';
-          html+='<div class="section '+cls+' open"><div class="section-head" onclick="this.parentElement.classList.toggle(\'open\')"><div class="sh-icon">&#128203;</div><div class="sh-text"><span class="sh-title">'+role+'</span><span class="sh-sub">'+sorted.length+' persone</span></div><span class="sec-chev">&#8964;</span></div><div class="section-body"><div class="grid">';
+          var cls='s-gray';try{if(isInduct(role))cls='s-green';}catch(e){}try{if(isProblemSolve(role))cls='s-orange';}catch(e){}
+          html+='<div class="section '+cls+' open"><div class="section-head" onclick="this.parentElement.classList.toggle(\'open\')"><div class="sh-icon">&#128203;</div><div class="sh-text"><span class="sh-title">'+role+'</span><span class="sh-sub">'+sorted.length+' pers.</span></div><span class="sec-chev">&#8964;</span></div><div class="section-body"><div class="grid">';
           sorted.forEach(function(e){html+='<div class="card n" style="padding:8px 12px"><div class="name" style="font-size:13px">'+e[0]+'</div><div class="meta">'+e[1]+' volt'+(e[1]===1?'a':'e')+'</div></div>';});
           html+='</div></div></div>';
         });
       }
+      document.getElementById('results').innerHTML=html;
     }
-    document.getElementById('results').innerHTML=html;
-  }
-  function filterStorico(q){
-    q=q.toLowerCase().trim();
-    document.querySelectorAll('.persona-block').forEach(function(el){var n=(el.querySelector('.persona-name')||{}).textContent||'';el.style.display=(!q||n.toLowerCase().includes(q))?'':'none';});
-  }
-
-  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-  //  RENDER LOG
-  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-  function renderLog(){
-    document.getElementById('kpis').classList.remove('show');
-    document.getElementById('banner').classList.remove('show');
-    var html='<div class="panel"><div style="font-weight:800;font-size:15px;margin-bottom:14px">&#128221; Log AttivitÃ </div>';
-    if(!ACTIVITY_LOG.length){html+='<div class="no-data-msg">Nessuna attivitÃ .</div>';}
-    else{
-      html+='<div style="border:1px solid var(--border-light);border-radius:12px;overflow:hidden">';
-      ACTIVITY_LOG.slice(0,100).forEach(function(e){
-        var d=new Date(e.ts);
-        var ts=d.toLocaleDateString('it-IT',{day:'2-digit',month:'2-digit'})+' '+d.toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'});
-        html+='<div class="log-row"><div class="log-time">'+ts+'</div><div><div class="log-msg">'+e.msg+'</div><div class="log-who">DS: '+(e.ds||'?')+'</div></div></div>';
+    window._rst=function(t){_st=t;renderSto();};
+    window._fstorico=function(q){
+      q=q.toLowerCase();
+      document.querySelectorAll('.persona-block').forEach(function(el){
+        var n=(el.querySelector('.persona-name')||{}).textContent||'';
+        el.style.display=(!q||n.toLowerCase().includes(q))?'':'none';
       });
+    };
+
+    // render log
+    function renderLog(){
+      try{document.getElementById('kpis').classList.remove('show');}catch(e){}
+      try{document.getElementById('banner').classList.remove('show');}catch(e){}
+      var html='<div class="panel"><div style="font-weight:800;font-size:15px;margin-bottom:14px">&#128221; Log Attivit&agrave;</div>';
+      if(!AL.length){html+='<div class="no-data-msg">Nessuna attivit&agrave;.</div>';}
+      else{
+        html+='<div style="border:1px solid var(--border-light);border-radius:12px;overflow:hidden">';
+        AL.slice(0,100).forEach(function(e){
+          var d=new Date(e.ts);
+          var ts=d.toLocaleDateString('it-IT',{day:'2-digit',month:'2-digit'})+' '+d.toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'});
+          html+='<div class="log-row"><div class="log-time">'+ts+'</div><div><div class="log-msg">'+e.msg+'</div><div class="log-who">DS: '+(e.ds||'?')+'</div></div></div>';
+        });
+        html+='</div>';
+      }
       html+='</div>';
+      document.getElementById('results').innerHTML=html;
     }
-    html+='</div>';
-    document.getElementById('results').innerHTML=html;
-  }
 
-  // â”€â”€ patch setMode â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-  var _oSM=setMode;
-  setMode=function(m){
-    ['storico','log'].forEach(function(id){var b=document.getElementById('mode-'+id);if(b)b.classList.remove('active');});
-    if(m==='storico'){
-      MODE='storico';
-      ['missing','stuck','recap','month'].forEach(function(id){var b=document.getElementById('mode-'+id);if(b)b.classList.remove('active');});
-      var sb=document.getElementById('mode-storico');if(sb)sb.classList.add('active');
-      document.getElementById('dayeval').style.display='none';
-      document.getElementById('preparinghint').style.display='none';
-      renderStorico();return;
-    }
-    if(m==='log'){
-      MODE='log';
-      ['missing','stuck','recap','month'].forEach(function(id){var b=document.getElementById('mode-'+id);if(b)b.classList.remove('active');});
-      var lb=document.getElementById('mode-log');if(lb)lb.classList.add('active');
-      document.getElementById('dayeval').style.display='none';
-      document.getElementById('preparinghint').style.display='none';
-      renderLog();return;
-    }
-    _oSM(m);
-  };
-
-  // â”€â”€ AVVIO â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-  mkBar();
-  mkSetupModal();
-  ghPull();
-  setInterval(ghPull,120000);
+    // avvio
+    mkBar();
+    mkSetup();
+    pull();
+    setInterval(pull,120000);
+  })();
   // init badge profilo attivo
   updateProfBadge();
 </script>
