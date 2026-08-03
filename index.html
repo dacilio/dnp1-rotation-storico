@@ -1331,7 +1331,6 @@
         html += `<div style="font-size:13px;color:var(--muted);line-height:1.8">${repeat.slice().sort().join(' · ')}</div>`;
       }
       const psList = psNames.slice().sort().join('\n');
-      html += `<div class="actions"><button class="copy" style="background:linear-gradient(135deg,#059669,#10b981)" onclick="navigator.clipboard.writeText(\`${psList}\`);this.innerHTML='✓ Copiati ${psNames.length} nomi';">📋 Copia nomi Problem Solve per lo storico</button></div>`;
     } else {
       html += `<div class="empty">Nessuno ha fatto Problem Solve questa settimana</div>`;
     }
@@ -1395,21 +1394,7 @@
     let mx=null; rec.weeks.forEach(w=>{ const n=wkNum(w); if(n!==null && (mx===null||n>mx)) mx=n; });
     rec.last = mx!==null ? ('W'+mx) : (week||rec.last);
   }
-  function importPS(){
-    const raw = (document.getElementById('ps-paste').value||'').trim();
-    if(!raw){ showErr('Incolla prima i nomi di chi ha fatto Problem Solve.'); return; }
-    // opzionale: primo campo di ogni riga puo' essere la settimana (Wxx) seguita dal nome
-    const wkGuess = (document.getElementById('ps-week') ? document.getElementById('ps-week').value.trim() : '');
-    const lines = raw.split(/\r?\n/).map(l=>l.trim()).filter(Boolean);
-    let added=0;
-    lines.forEach(nm=>{
-      if(/problem|nome|name/i.test(nm) && nm.indexOf(',')<0) return;
-      recordPS(nm, wkGuess||''); added++;
-    });
-    savePS();
-    if(added===0){ showErr('Nessun nome valido trovato.'); return; }
-    clearErr(); renderMonth();
-  }
+
   function clearPS(){
     if(!confirm('Svuotare il tracking mensile Problem Solve?')) return;
     PS_MONTH = {}; savePS(); renderMonth();
@@ -1484,7 +1469,6 @@
     // bind area PS
     // Semaforo PS mensile (verde/giallo/rosso)
     setTimeout(function(){var c=document.getElementById('results');if(c&&typeof renderRecapPS==='function')renderRecapPS(c);},80);
-    const psPaste = document.getElementById('ps-paste');
 
     // bind del caricamento file
     const mf = document.getElementById('month-files');
@@ -1640,7 +1624,7 @@
     var SP     = {};  // Storico Persone
     var AL     = [];  // Activity Log
     try{SP=JSON.parse(localStorage.getItem('dnp1_sp'))||{};}catch(e){}
-    try{AL=JSON.parse(localStorage.getItem('dnp1_al'))||[];}catch(e){}
+    try{AL=(JSON.parse(localStorage.getItem('dnp1_al'))||[]).filter(function(e){var bad=String.fromCharCode(194);return e&&e.msg&&e.msg.indexOf(bad)<0&&e.msg.trim()!==bad&&e.msg.trim()!=='';});}catch(e){}
 
     function tok(){ return localStorage.getItem(TKEY)||''; }
 
@@ -1899,6 +1883,10 @@
 
     // render log
     function renderLog(){
+      // auto-pulizia voci spurie Ã‚ prima di mostrare
+      var _bad=String.fromCharCode(194);
+      AL=AL.filter(function(e){return e&&e.msg&&e.msg.indexOf(_bad)<0&&e.msg.trim()!==_bad&&e.msg.trim()!=='';});
+      localStorage.setItem('dnp1_al',JSON.stringify(AL));
       try{document.getElementById('kpis').classList.remove('show');}catch(e){}
       try{document.getElementById('banner').classList.remove('show');}catch(e){}
       var html='<div class="panel"><div style="font-weight:800;font-size:15px;margin-bottom:14px">&#128221; Log Attivit&agrave;</div>';
