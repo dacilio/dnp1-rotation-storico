@@ -1,5 +1,16 @@
 {
-  "history": [],
+  "history": [
+    {
+      "settimana": "W32",
+      "ds": "DNP1",
+      "tot": 45,
+      "pctInd": 69,
+      "indKo": 14,
+      "pctFing": 47,
+      "fingKo": 24,
+      "data": "2026-08-03"
+    }
+  ],
   "psmonth": {
     "giordano,marco": {
       "name": "Giordano,Marco",
@@ -256,5 +267,5 @@
       "shiftSheet": "Timetable"
     }
   },
-  "updated": "2026-08-03T07:08:50.272Z"
+  "updated": "2026-08-03T07:10:29.350Z"
 }
