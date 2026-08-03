@@ -351,7 +351,14 @@
   .s-blue > .section-head { border-left: 4px solid #3b82f6; background: linear-gradient(90deg,#eff6ff,transparent); }
   .count-pill.blue { background:#dbeafe; color:#1d4ed8; font-weight:700; }
   .card.b { border-left: 4px solid #3b82f6; background: #eff6ff; }
+  .card.ps-sug { border-left:4px solid #7c3aed; background:linear-gradient(135deg,#f5f3ff,#ede9fe); border-color:#c4b5fd; }
+  .card.ps-sug .name { color:#5b21b6; }
+  .card.ps-sug .meta { color:#6d28d9; font-size:12px; }
   .card.b .name { color: #1e40af; }
+  
+  .s-indigo > .section-head { border-left: 4px solid #7c3aed; background: linear-gradient(90deg,#f5f3ff,transparent); }
+  .s-indigo .sh-title { color: #5b21b6; }
+  .count-pill.indigo { background:#ede9fe; color:#5b21b6; font-weight:700; }
   </style>
 </head>
 <body>
@@ -1179,10 +1186,10 @@
         return 'ultima PS: '+last+' ('+distanza+' sett. fa)';
       }
       const dayLbl = preparingDay ? (DAYS_IT[preparingDay]||preparingDay) : 'domani';
-      html += `<div class="section s-green open"><div class="section-head"><div class="sh-icon">🧩</div>
+      html += `<div class="section s-indigo open"><div class="section-head"><div class="sh-icon">🧩</div>
         <div class="sh-text"><span class="sh-title">Suggeriti per Problem Solver \u2014 ${dayLbl}</span><span class="sh-sub">4 candidati (priorita\' a chi non ruota da piu\' tempo). Regola: almeno 1 FT.</span></div></div>
         <div class="section-body"><div class="grid">`;
-      html += picks.map(p=>`<div class="card b">
+      html += picks.map(p=>`<div class="card ps-sug">
           <div class="name">${p.name}<span class="tag ${p._isFT?'ft':'pt'}">${p._isFT?'FT':'PT'}</span></div>
           <div class="meta">Ultima PS: ${reason(p)}</div>
         </div>`).join('');
@@ -1475,6 +1482,8 @@
     $('results').innerHTML = html;
 
     // bind area PS
+    // Semaforo PS mensile (verde/giallo/rosso)
+    setTimeout(function(){var c=document.getElementById('results');if(c&&typeof renderRecapPS==='function')renderRecapPS(c);},80);
     const psPaste = document.getElementById('ps-paste');
 
     // bind del caricamento file
@@ -1701,7 +1710,7 @@
         var p=await apiGet(FILES.persone);
         if(p){SP=p;localStorage.setItem('dnp1_sp',JSON.stringify(p));}
         var l=await apiGet(FILES.log);
-        if(l){AL=l;localStorage.setItem('dnp1_al',JSON.stringify(l));}
+        if(l){AL=l.filter(function(e){return e&&e.msg&&e.msg.indexOf('\u00c2')<0&&e.msg.trim()!=='';});localStorage.setItem('dnp1_al',JSON.stringify(AL));}
         var now=new Date().toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'});
         var nS=0;try{nS=MONTH_ROWS.length;}catch(e){}
         bar(true,'GitHub: connesso \u2014 '+nS+' sett. | '+Object.keys(SP).length+' persone',now);
@@ -1805,8 +1814,16 @@
         html+='<input class="storico-search" type="text" placeholder="&#128269; Cerca..." oninput="window._fstorico(this.value)"><div id="sto-list">';
         if(!pers.length){html+='<div class="no-data-msg">Storico vuoto.<br>Carica Manning + Genera controllo.<br>Lo storico si salva automaticamente su GitHub.</div>';}
         else{
-          pers.sort(function(a,b){return a.name.localeCompare(b.name);});
-          pers.forEach(function(p){
+          var persFT=pers.filter(function(p){return(p.ftpt||'').toUpperCase()==='FT';});
+          var persPT=pers.filter(function(p){return(p.ftpt||'').toUpperCase()!=='FT';});
+          var _groups=[];
+          if(persFT.length) _groups.push({list:persFT,label:'FT',color:'#1d4ed8'});
+          if(persPT.length) _groups.push({list:persPT,label:'PT',color:'#7c3aed'});
+          _groups.forEach(function(grp){
+            var grpColor=grp.color; var grpLabel=grp.label;
+            grp.list.sort(function(a,b){return a.name.localeCompare(b.name);});
+            html+='<div style="font-size:11.5px;font-weight:800;color:'+grpColor+';text-transform:uppercase;letter-spacing:.06em;padding:10px 2px 4px;margin-top:'+(grpLabel==="PT"?"12":"0")+'px">\u25A0 '+grpLabel+' \u2014 '+grp.list.length+' persone</div>';
+          grp.list.forEach(function(p){
             var wks=Object.keys(p.settimane||{}).sort(function(a,b){return(parseInt(b.replace(/\D/g,''))||0)-(parseInt(a.replace(/\D/g,''))||0);});
             var nI=0,nF=0,nPS=0;
             wks.forEach(function(w){Object.values(p.settimane[w]||{}).forEach(function(r){
@@ -1832,7 +1849,8 @@
               html+='</div></div>';
             });
             html+='</div></div>';
-          });
+          }); // fine grp.list
+          }); // fine _groups
         }
         html+='</div>';
       }else if(_st==='settimane'){
@@ -1886,7 +1904,8 @@
       var html='<div class="panel"><div style="font-weight:800;font-size:15px;margin-bottom:14px">&#128221; Log Attivit&agrave;</div>';
       if(!AL.length){html+='<div class="no-data-msg">Nessuna attivit&agrave;.</div>';}
       else{
-        html+='<div style="border:1px solid var(--border-light);border-radius:12px;overflow:hidden">';
+        html+='<div style="margin-bottom:10px"><button class="copy" style="background:linear-gradient(135deg,#94a3b8,#64748b);font-size:12px" onclick="AL=AL.filter(function(e){var bad=String.fromCharCode(194);return e&&e.msg&&e.msg.indexOf(bad)<0&&e.msg.trim()!==bad&&e.msg.trim()!==\'\'});localStorage.setItem(\'dnp1_al\',JSON.stringify(AL));setMode(\'log\')">&#128465; Pulisci voci spurie</button></div>';
+      html+='<div style="border:1px solid var(--border-light);border-radius:12px;overflow:hidden">';
         AL.slice(0,100).forEach(function(e){
           var d=new Date(e.ts);
           var ts=d.toLocaleDateString('it-IT',{day:'2-digit',month:'2-digit'})+' '+d.toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'});
