@@ -1,1 +1,84 @@
-{"history":[{"settimana":"W24","ds":"DNP1","tot":93,"pctInd":90,"indKo":9,"pctFing":92,"fingKo":7,"data":"2026-06-09"},{"settimana":"W25","ds":"DNP1","tot":92,"pctInd":97,"indKo":3,"pctFing":92,"fingKo":7,"data":"2026-06-16"},{"settimana":"W26","ds":"DNP1","tot":91,"pctInd":74,"indKo":24,"pctFing":99,"fingKo":1,"data":"2026-06-23"},{"settimana":"W27","ds":"DNP1","tot":92,"pctInd":92,"indKo":7,"pctFing":88,"fingKo":11,"data":"2026-06-30"},{"settimana":"W28","ds":"DNP1","tot":95,"pctInd":94,"indKo":6,"pctFing":90,"fingKo":10,"data":"2026-07-07"},{"settimana":"W29","ds":"DNP1","tot":87,"pctInd":95,"indKo":4,"pctFing":83,"fingKo":15,"data":"2026-07-14"},{"settimana":"W30","ds":"DNP1","tot":90,"pctInd":94,"indKo":5,"pctFing":86,"fingKo":13,"data":"2026-07-21"},{"settimana":"W31","ds":"DNP1","tot":88,"pctInd":99,"indKo":1,"pctFing":93,"fingKo":6,"data":"2026-07-28"}],"psmonth":{"giordano,marco":{"name":"Giordano,Marco","weeks":["W32"],"last":"W32"},"manna,giusy":{"name":"Manna,Giusy","weeks":["W32"],"last":"W32"},"matrone,christian":{"name":"Matrone,Christian","weeks":["W32"],"last":"W32"},"musella,arianna":{"name":"Musella,Arianna","weeks":["W32"],"last":"W32"},"procopio,angela":{"name":"Procopio,Angela","weeks":["W32"],"last":"W32"},"valletta,vincenzo":{"name":"Valletta,Vincenzo","weeks":["W32"],"last":"W32"}},"psmensile":{"giordano,marco":{"name":"Giordano,Marco","mesi":{"2026-08":1},"ultimoMese":"W32"},"manna,giusy":{"name":"Manna,Giusy","mesi":{"2026-08":1},"ultimoMese":"W32"},"matrone,christian":{"name":"Matrone,Christian","mesi":{"2026-08":1},"ultimoMese":"W32"},"musella,arianna":{"name":"Musella,Arianna","mesi":{"2026-08":1},"ultimoMese":"W32"},"procopio,angela":{"name":"Procopio,Angela","mesi":{"2026-08":1},"ultimoMese":"W32"},"valletta,vincenzo":{"name":"Valletta,Vincenzo","mesi":{"2026-08":1},"ultimoMese":"W32"}},"notes":{},"profiles":{},"updated":"2026-08-03T08:28:00"}
+{
+  "history": [],
+  "psmonth": {
+    "giordano,marco": {
+      "name": "Giordano,Marco",
+      "weeks": [
+        "W32"
+      ],
+      "last": "W32"
+    },
+    "manna,giusy": {
+      "name": "Manna,Giusy",
+      "weeks": [
+        "W32"
+      ],
+      "last": "W32"
+    },
+    "matrone,christian": {
+      "name": "Matrone,Christian",
+      "weeks": [
+        "W32"
+      ],
+      "last": "W32"
+    },
+    "musella,arianna": {
+      "name": "Musella,Arianna",
+      "weeks": [
+        "W32"
+      ],
+      "last": "W32"
+    },
+    "procopio,angela": {
+      "name": "Procopio,Angela",
+      "weeks": [
+        "W32"
+      ],
+      "last": "W32"
+    },
+    "valletta,vincenzo": {
+      "name": "Valletta,Vincenzo",
+      "weeks": [
+        "W32"
+      ],
+      "last": "W32"
+    }
+  },
+  "notes": {},
+  "profiles": {
+    "DNP1": {
+      "name": "DNP1",
+      "inductRoles": [
+        "WATERSPIDER",
+        "UNLOADER",
+        "RECEIVER",
+        "PUSHER",
+        "DOCK MARSHALL",
+        "PROBLEM SOLVER"
+      ],
+      "goalFT": 2,
+      "goalPT": 1,
+      "excludeBands": [
+        "06:00-13:00",
+        "06:00-14:00"
+      ],
+      "excludedPeople": [
+        "Monaco,Amodio",
+        "Valenza,Simone",
+        "Sisto,Martina",
+        "Terlizzi,Veronica",
+        "Margiotta,Luca",
+        "Fedele,Chiara",
+        "Compagnone,Raffaella",
+        "Berton,Claudia",
+        "Verde,Perla",
+        "Piscopo,Salvatore Sasa",
+        "Conte,Vito",
+        "Cirillo,Vincenzo"
+      ],
+      "manningSheet": "Conteggio Task weekly",
+      "shiftSheet": "Timetable"
+    }
+  },
+  "updated": "2026-08-03T06:32:55.564Z"
+}
