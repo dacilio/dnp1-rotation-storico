@@ -1,1 +1,1057 @@
-{}
+{
+  "abruscato,giuseppe": {
+    "name": "Abruscato,Giuseppe",
+    "ftpt": "PT",
+    "settimane": {
+      "W31": {
+        "Sun": "UNLOADER 5",
+        "Thu": "PUSHER 7",
+        "Fri": "PICKER",
+        "Sat": "RECEIVER 4"
+      }
+    }
+  },
+  "altamura,angela": {
+    "name": "Altamura,Angela",
+    "ftpt": "PT",
+    "settimane": {
+      "W31": {
+        "Sun": "UNLOADER 3",
+        "Mon": "UNLOADER 1",
+        "Tue": "STOWER",
+        "Sat": "PICKER"
+      }
+    }
+  },
+  "amatucci,luigi": {
+    "name": "Amatucci,Luigi",
+    "ftpt": "FT",
+    "settimane": {
+      "W31": {
+        "Sun": "DOCK MARSHALL",
+        "Mon": "UNLOADER 3",
+        "Tue": "PROBLEM SOLVER 1",
+        "Fri": "DOCK MARSHALL",
+        "Sat": "STOWER"
+      }
+    }
+  },
+  "armano,raffaele": {
+    "name": "Armano,Raffaele",
+    "ftpt": "PT",
+    "settimane": {
+      "W31": {
+        "Sun": "WATERSPIDER 2",
+        "Thu": "PUSHER 3",
+        "Fri": "STOWER",
+        "Sat": "RECEIVER 5"
+      }
+    }
+  },
+  "auletta,angelo": {
+    "name": "Auletta,Angelo",
+    "ftpt": "PT",
+    "settimane": {
+      "W31": {
+        "Tue": "PICKER",
+        "Wed": "PUSHER 1",
+        "Thu": "RECEIVER 5",
+        "Fri": "RECEIVER 5"
+      }
+    }
+  },
+  "auletta,giuseppe": {
+    "name": "Auletta,Giuseppe",
+    "ftpt": "FT",
+    "settimane": {
+      "W31": {
+        "Mon": "WATERSPIDER 3",
+        "Tue": "PICKER",
+        "Wed": "WATERSPIDER 6",
+        "Thu": "PROBLEM SOLVER Cycle",
+        "Fri": "UNLOADER 2"
+      }
+    }
+  },
+  "auriemma,domenico": {
+    "name": "Auriemma,Domenico",
+    "ftpt": "PT",
+    "settimane": {
+      "W31": {
+        "Tue": "PICKER",
+        "Wed": "PICKER",
+        "Thu": "RECEIVER 1",
+        "Fri": "PICKER"
+      }
+    }
+  },
+  "barbato,luca": {
+    "name": "Barbato,Luca",
+    "ftpt": "PT",
+    "settimane": {
+      "W31": {
+        "Tue": "RECEIVER 2",
+        "Wed": "WATERSPIDER 2",
+        "Thu": "PUSHER 6",
+        "Fri": "PICKER"
+      }
+    }
+  },
+  "bifolco,cristian": {
+    "name": "Bifolco,Cristian",
+    "ftpt": "PT",
+    "settimane": {
+      "W31": {
+        "Mon": "PROBLEM SOLVER 2",
+        "Tue": "PICKER",
+        "Wed": "STOWER",
+        "Thu": "STOWER"
+      }
+    }
+  },
+  "bonanni,italo": {
+    "name": "Bonanni,Italo",
+    "ftpt": "FT",
+    "settimane": {
+      "W31": {
+        "Tue": "AMBASSADOR",
+        "Wed": "WATERSPIDER 5",
+        "Thu": "UNLOADER 2",
+        "Fri": "PUSHER 5"
+      }
+    }
+  },
+  "buonafede,carla": {
+    "name": "Buonafede,Carla",
+    "ftpt": "PT",
+    "settimane": {
+      "W31": {
+        "Sun": "STOWER",
+        "Mon": "PICKER",
+        "Wed": "WATERSPIDER 1"
+      }
+    }
+  },
+  "capasso,davide": {
+    "name": "Capasso,Davide",
+    "ftpt": "PT",
+    "settimane": {
+      "W31": {
+        "Mon": "PICKER",
+        "Tue": "UNLOADER 1",
+        "Wed": "STOWER",
+        "Thu": "PROBLEM SOLVER AB"
+      }
+    }
+  },
+  "caputo,pasquale": {
+    "name": "Caputo,Pasquale",
+    "ftpt": "PT",
+    "settimane": {
+      "W31": {
+        "Tue": "RECEIVER 4",
+        "Wed": "RECEIVER 2",
+        "Thu": "WATERSPIDER 2",
+        "Fri": "UNLOADER 5"
+      }
+    }
+  },
+  "carannante,francesco": {
+    "name": "Carannante,Francesco",
+    "ftpt": "FT",
+    "settimane": {
+      "W31": {
+        "Wed": "RECEIVER 1",
+        "Thu": "PROBLEM SOLVER 1",
+        "Fri": "PICKER",
+        "Sat": "PROBLEM SOLVER CD"
+      }
+    }
+  },
+  "castiello,domenico": {
+    "name": "Castiello,Domenico",
+    "ftpt": "PT",
+    "settimane": {
+      "W31": {
+        "Tue": "UNLOADER 3",
+        "Wed": "STOWER",
+        "Thu": "STOWER",
+        "Fri": "PICKER"
+      }
+    }
+  },
+  "castricato,giuseppe": {
+    "name": "Castricato,Giuseppe",
+    "ftpt": "PT",
+    "settimane": {
+      "W31": {
+        "Tue": "RECEIVER 1",
+        "Wed": "PICKER",
+        "Thu": "UNLOADER 1"
+      }
+    }
+  },
+  "cecere,michele": {
+    "name": "Cecere,Michele",
+    "ftpt": "PT",
+    "settimane": {
+      "W31": {
+        "Mon": "PICKER",
+        "Tue": "WATERSPIDER 6",
+        "Wed": "RECEIVER 6",
+        "Thu": "STOWER"
+      }
+    }
+  },
+  "chianese,katia": {
+    "name": "Chianese,Katia",
+    "ftpt": "FT",
+    "settimane": {
+      "W31": {
+        "Mon": "PUSHER 4",
+        "Tue": "STOWER",
+        "Wed": "PROBLEM SOLVER AB",
+        "Thu": "PICKER",
+        "Fri": "STOWER"
+      }
+    }
+  },
+  "cirillo,michele": {
+    "name": "Cirillo,Michele",
+    "ftpt": "FT",
+    "settimane": {
+      "W31": {
+        "Thu": "STOWER",
+        "Fri": "WATERSPIDER 1",
+        "Sat": "UNLOADER 3"
+      }
+    }
+  },
+  "conte,antonio": {
+    "name": "Conte,Antonio",
+    "ftpt": "PT",
+    "settimane": {
+      "W31": {
+        "Mon": "PROBLEM SOLVER AB",
+        "Wed": "PICKER"
+      }
+    }
+  },
+  "coppola,alexander": {
+    "name": "Coppola,Alexander",
+    "ftpt": "PT",
+    "settimane": {
+      "W31": {
+        "Tue": "PROBLEM SOLVER Cycle",
+        "Wed": "PICKER",
+        "Thu": "PICKER",
+        "Fri": "RECEIVER 7"
+      }
+    }
+  },
+  "cuomo,salvatore": {
+    "name": "Cuomo,Salvatore",
+    "ftpt": "PT",
+    "settimane": {
+      "W31": {
+        "Tue": "WATERSPIDER 2",
+        "Wed": "RECEIVER 5",
+        "Thu": "PICKER",
+        "Fri": "UNLOADER 1"
+      }
+    }
+  },
+  "d'amato,francesco": {
+    "name": "D'Amato,Francesco",
+    "ftpt": "PT",
+    "settimane": {
+      "W31": {
+        "Sun": "RECEIVER 2",
+        "Fri": "WATERSPIDER 7",
+        "Sat": "WATERSPIDER 2"
+      }
+    }
+  },
+  "d'amore,luigi": {
+    "name": "D'Amore,Luigi",
+    "ftpt": "PT",
+    "settimane": {
+      "W31": {
+        "Sun": "PUSHER 5",
+        "Thu": "WATERSPIDER 3",
+        "Fri": "PUSHER 6",
+        "Sat": "STOWER"
+      }
+    }
+  },
+  "d'angelo,giuseppe": {
+    "name": "D'Angelo,Giuseppe",
+    "ftpt": "FT",
+    "settimane": {
+      "W31": {
+        "Tue": "PUSHER 3",
+        "Wed": "PICKER"
+      }
+    }
+  },
+  "d'ausilio,giuseppe": {
+    "name": "D'ausilio,Giuseppe",
+    "ftpt": "PT",
+    "settimane": {
+      "W31": {
+        "Tue": "PUSHER 1",
+        "Wed": "WATERSPIDER 4",
+        "Thu": "PICKER",
+        "Fri": "PUSHER 7"
+      }
+    }
+  },
+  "de felice,raimondo": {
+    "name": "De Felice,Raimondo",
+    "ftpt": "PT",
+    "settimane": {
+      "W31": {
+        "Mon": "STOWER",
+        "Fri": "PICKER",
+        "Sat": "PUSHER 3"
+      }
+    }
+  },
+  "de luca,andrea": {
+    "name": "De Luca,Andrea",
+    "ftpt": "PT",
+    "settimane": {
+      "W31": {
+        "Sun": "WATERSPIDER 7",
+        "Mon": "PICKER",
+        "Fri": "PICKER"
+      }
+    }
+  },
+  "de martino,vincenzo": {
+    "name": "De Martino,Vincenzo",
+    "ftpt": "PT",
+    "settimane": {
+      "W31": {
+        "Sun": "STOWER",
+        "Mon": "WATERSPIDER 2",
+        "Tue": "PICKER"
+      }
+    }
+  },
+  "della ragione,dylan": {
+    "name": "Della Ragione,Dylan",
+    "ftpt": "PT",
+    "settimane": {
+      "W31": {
+        "Sun": "PUSHER 2",
+        "Mon": "PICKER",
+        "Fri": "RECEIVER 2",
+        "Sat": "STOWER"
+      }
+    }
+  },
+  "di blasi,giovanna": {
+    "name": "Di Blasi,Giovanna",
+    "ftpt": "PT",
+    "settimane": {
+      "W31": {
+        "Sun": "STOWER",
+        "Mon": "UNLOADER 2"
+      }
+    }
+  },
+  "di lanna, gennaro": {
+    "name": "Di Lanna, Gennaro",
+    "ftpt": "PT",
+    "settimane": {
+      "W31": {
+        "Tue": "RECEIVER 5",
+        "Wed": "UNLOADER 1",
+        "Thu": "PICKER"
+      }
+    }
+  },
+  "esposito,domenico": {
+    "name": "Esposito,Domenico",
+    "ftpt": "PT",
+    "settimane": {
+      "W31": {
+        "Sun": "PUSHER 4",
+        "Mon": "PUSHER 1",
+        "Fri": "PICKER",
+        "Sat": "PROBLEM SOLVER 2"
+      }
+    }
+  },
+  "esposito,giuseppe": {
+    "name": "Esposito,Giuseppe",
+    "ftpt": "FT",
+    "settimane": {
+      "W31": {
+        "Tue": "PUSHER 4",
+        "Wed": "UNLOADER 3",
+        "Thu": "STOWER",
+        "Fri": "PUSHER 4"
+      }
+    }
+  },
+  "esposito,mirko": {
+    "name": "Esposito,Mirko",
+    "ftpt": "PT",
+    "settimane": {
+      "W31": {
+        "Sun": "RECEIVER 5",
+        "Thu": "PUSHER 2",
+        "Fri": "PICKER",
+        "Sat": "PUSHER 4"
+      }
+    }
+  },
+  "fedele,salvatore": {
+    "name": "Fedele,Salvatore",
+    "ftpt": "PT",
+    "settimane": {
+      "W31": {
+        "Tue": "2 ALTO C/D",
+        "Wed": "PUSHER 2",
+        "Thu": "WATERSPIDER 4",
+        "Fri": "PROBLEM SOLVER 2"
+      }
+    }
+  },
+  "ferrara,jeson": {
+    "name": "Ferrara,Jeson",
+    "ftpt": "PT",
+    "settimane": {
+      "W31": {
+        "Tue": "STOWER",
+        "Wed": "UNLOADER 6",
+        "Fri": "PUSHER 3"
+      }
+    }
+  },
+  "fusco,gennaro": {
+    "name": "Fusco,Gennaro",
+    "ftpt": "FT",
+    "settimane": {
+      "W31": {
+        "Mon": "WATERSPIDER 5",
+        "Tue": "STOWER",
+        "Wed": "PROBLEM SOLVER 3",
+        "Thu": "STOWER",
+        "Fri": "STOWER"
+      }
+    }
+  },
+  "galdieri,aniello": {
+    "name": "Galdieri,Aniello",
+    "ftpt": "PT",
+    "settimane": {
+      "W31": {
+        "Tue": "RECEIVER 3",
+        "Wed": "UNLOADER 5",
+        "Thu": "PUSHER 1",
+        "Fri": "RECEIVER 4"
+      }
+    }
+  },
+  "gaudiero,massimo": {
+    "name": "Gaudiero,Massimo",
+    "ftpt": "FT",
+    "settimane": {
+      "W31": {
+        "Mon": "PROBLEM SOLVER CD",
+        "Tue": "PICKER",
+        "Thu": "PROBLEM SOLVER 2",
+        "Fri": "STOWER",
+        "Sat": "STOWER"
+      }
+    }
+  },
+  "giordano,marco": {
+    "name": "Giordano,Marco",
+    "ftpt": "PT",
+    "settimane": {
+      "W31": {
+        "Sun": "PUSHER 3",
+        "Mon": "PICKER",
+        "Fri": "WATERSPIDER 3",
+        "Sat": "WATERSPIDER 5"
+      }
+    }
+  },
+  "giuliano,agostino": {
+    "name": "Giuliano,Agostino",
+    "ftpt": "PT",
+    "settimane": {
+      "W31": {
+        "Tue": "UNLOADER 5",
+        "Wed": "PUSHER 6",
+        "Thu": "PICKER",
+        "Fri": "RECEIVER 6"
+      }
+    }
+  },
+  "graziano,salvatore": {
+    "name": "Graziano,Salvatore",
+    "ftpt": "PT",
+    "settimane": {
+      "W31": {
+        "Sun": "UNLOADER 4",
+        "Thu": "RECEIVER 7",
+        "Fri": "PICKER",
+        "Sat": "RECEIVER 3"
+      }
+    }
+  },
+  "iavazzo,paolo": {
+    "name": "Iavazzo,Paolo",
+    "ftpt": "PT",
+    "settimane": {
+      "W31": {
+        "Sun": "WATERSPIDER 3",
+        "Thu": "UNLOADER 3",
+        "Fri": "STOWER",
+        "Sat": "WATERSPIDER 3"
+      }
+    }
+  },
+  "impero,biagio": {
+    "name": "Impero,Biagio",
+    "ftpt": "PT",
+    "settimane": {
+      "W31": {
+        "Mon": "PICKER",
+        "Tue": "PICKER",
+        "Wed": "PICKER",
+        "Thu": "WATERSPIDER 7"
+      }
+    }
+  },
+  "limongelli,mario": {
+    "name": "Limongelli,Mario",
+    "ftpt": "FT",
+    "settimane": {
+      "W31": {
+        "Sat": "PROBLEM SOLVER 4"
+      }
+    }
+  },
+  "marra,pasquale lino": {
+    "name": "Marra,Pasquale Lino",
+    "ftpt": "FT",
+    "settimane": {
+      "W31": {
+        "Sun": "PROBLEM AM",
+        "Tue": "PROBLEM SOLVER 4"
+      }
+    }
+  },
+  "martucci,marco": {
+    "name": "Martucci,Marco",
+    "ftpt": "PT",
+    "settimane": {
+      "W31": {
+        "Tue": "PROBLEM SOLVER 2",
+        "Wed": "PUSHER 5",
+        "Thu": "RECEIVER 4",
+        "Fri": "WATERSPIDER 5"
+      }
+    }
+  },
+  "matrone,christian": {
+    "name": "Matrone,Christian",
+    "ftpt": "FT",
+    "settimane": {
+      "W31": {
+        "Sun": "STOWER"
+      }
+    }
+  },
+  "mocerino,gaetano": {
+    "name": "Mocerino,Gaetano",
+    "ftpt": "FT",
+    "settimane": {
+      "W31": {
+        "Mon": "PROBLEM SOLVER 1",
+        "Tue": "PROBLEM SOLVER CD",
+        "Wed": "PROBLEM SOLVER 1",
+        "Thu": "UNLOADER 6",
+        "Fri": "PICKER"
+      }
+    }
+  },
+  "morelli,alberico": {
+    "name": "Morelli,Alberico",
+    "ftpt": "PT",
+    "settimane": {
+      "W31": {
+        "Sun": "STOWER",
+        "Mon": "RECEIVER 4",
+        "Tue": "PICKER",
+        "Wed": "PICKER"
+      }
+    }
+  },
+  "mosca,andrea": {
+    "name": "Mosca,Andrea",
+    "ftpt": "PT",
+    "settimane": {
+      "W31": {
+        "Tue": "WATERSPIDER 5",
+        "Wed": "STOWER",
+        "Thu": "STOWER",
+        "Fri": "WATERSPIDER 4"
+      }
+    }
+  },
+  "musella,arianna": {
+    "name": "Musella,Arianna",
+    "ftpt": "FT",
+    "settimane": {
+      "W31": {
+        "Sun": "PROBLEM SOLVER 1",
+        "Wed": "PROBLEM SOLVER CD",
+        "Thu": "PROBLEM SOLVER CD",
+        "Fri": "STOWER",
+        "Sat": "STOWER"
+      }
+    }
+  },
+  "muto,daniele": {
+    "name": "Muto,Daniele",
+    "ftpt": "PT",
+    "settimane": {
+      "W31": {
+        "Tue": "UNLOADER 4",
+        "Wed": "PICKER",
+        "Thu": "STOWER",
+        "Fri": "STOWER"
+      }
+    }
+  },
+  "napoli,luca": {
+    "name": "Napoli,Luca",
+    "ftpt": "PT",
+    "settimane": {
+      "W31": {
+        "Sun": "PUSHER 7",
+        "Fri": "BASSO D",
+        "Sat": "PUSHER 1"
+      }
+    }
+  },
+  "nespolino,antonio": {
+    "name": "Nespolino,Antonio",
+    "ftpt": "PT",
+    "settimane": {
+      "W31": {
+        "Tue": "UNLOADER 6",
+        "Wed": "PUSHER 4",
+        "Thu": "RECEIVER 6",
+        "Fri": "PICKER"
+      }
+    }
+  },
+  "nobile,marisa": {
+    "name": "Nobile,Marisa",
+    "ftpt": "PT",
+    "settimane": {
+      "W31": {
+        "Fri": "2 ALTO A/B"
+      }
+    }
+  },
+  "nocera,francesco": {
+    "name": "Nocera,Francesco",
+    "ftpt": "FT",
+    "settimane": {
+      "W31": {
+        "Tue": "2 ALTO A/B",
+        "Wed": "PUSHER 3",
+        "Thu": "DOCK MARSHALL",
+        "Fri": "PROBLEM SOLVER 1",
+        "Sat": "UNLOADER 2"
+      }
+    }
+  },
+  "notte,sergio": {
+    "name": "Notte,Sergio",
+    "ftpt": "FT",
+    "settimane": {
+      "W31": {
+        "Sun": "PICKER",
+        "Mon": "DOCK MARSHALL",
+        "Tue": "PICKER",
+        "Fri": "PUSHER 2",
+        "Sat": "DOCK MARSHALL"
+      }
+    }
+  },
+  "orefice,anna": {
+    "name": "Orefice,Anna",
+    "ftpt": "PT",
+    "settimane": {
+      "W31": {
+        "Tue": "UNLOADER 2",
+        "Wed": "PICKER",
+        "Thu": "PICKER",
+        "Fri": "PICKER"
+      }
+    }
+  },
+  "palladino,antonio": {
+    "name": "Palladino,Antonio",
+    "ftpt": "FT",
+    "settimane": {
+      "W31": {
+        "Mon": "WATERSPIDER 4",
+        "Thu": "PUSHER 5",
+        "Fri": "WATERSPIDER 2"
+      }
+    }
+  },
+  "pelliccia,vincenzo": {
+    "name": "Pelliccia,Vincenzo",
+    "ftpt": "PT",
+    "settimane": {
+      "W31": {
+        "Tue": "STOWER",
+        "Wed": "UNLOADER 2",
+        "Thu": "PICKERSTOWER",
+        "Fri": "STOWER"
+      }
+    }
+  },
+  "pengue,paolo": {
+    "name": "Pengue,Paolo",
+    "ftpt": "PT",
+    "settimane": {
+      "W31": {
+        "Mon": "PUSHER 3",
+        "Tue": "PICKERSTOWER",
+        "Wed": "UNLOADER 4"
+      }
+    }
+  },
+  "piscopo,angela": {
+    "name": "Piscopo,Angela",
+    "ftpt": "PT",
+    "settimane": {
+      "W31": {
+        "Tue": "PICKER",
+        "Wed": "RECEIVER 4",
+        "Thu": "UNLOADER 5",
+        "Fri": "STOWER"
+      }
+    }
+  },
+  "punzo,simone": {
+    "name": "Punzo,Simone",
+    "ftpt": "PT",
+    "settimane": {
+      "W31": {
+        "Mon": "RECEIVER 1"
+      }
+    }
+  },
+  "rea,giovanna": {
+    "name": "Rea,Giovanna",
+    "ftpt": "PT",
+    "settimane": {
+      "W31": {
+        "Mon": "PICKERSTOWER",
+        "Tue": "PROBLEM SOLVER AB",
+        "Wed": "PICKER",
+        "Thu": "RECEIVER 3"
+      }
+    }
+  },
+  "riccardo,antonio": {
+    "name": "Riccardo,Antonio",
+    "ftpt": "PT",
+    "settimane": {
+      "W31": {
+        "Sun": "PROBLEM SOLVER AB",
+        "Mon": "PUSHER 2",
+        "Fri": "PICKER",
+        "Sat": "UNLOADER 4"
+      }
+    }
+  },
+  "russo,ciro": {
+    "name": "Russo,Ciro",
+    "ftpt": "PT",
+    "settimane": {
+      "W31": {
+        "Tue": "WATERSPIDER 4",
+        "Wed": "WATERSPIDER 9",
+        "Thu": "PICKER",
+        "Fri": "PROBLEM SOLVER AB"
+      }
+    }
+  },
+  "russo,roberta": {
+    "name": "Russo,Roberta",
+    "ftpt": "PT",
+    "settimane": {
+      "W31": {
+        "Tue": "PICKER",
+        "Wed": "STOWER",
+        "Thu": "PICKER",
+        "Fri": "STOWER"
+      }
+    }
+  },
+  "salzano,antonia": {
+    "name": "Salzano,Antonia",
+    "ftpt": "PT",
+    "settimane": {
+      "W31": {
+        "Sun": "STOWER",
+        "Thu": "WATERSPIDER 1",
+        "Fri": "PICKER",
+        "Sat": "PROBLEM SOLVER 3"
+      }
+    }
+  },
+  "santaniello,gaetano": {
+    "name": "Santaniello,Gaetano",
+    "ftpt": "FT",
+    "settimane": {
+      "W31": {
+        "Mon": "RECEIVER 3",
+        "Thu": "WATERSPIDER 6",
+        "Fri": "UNLOADER 3",
+        "Sat": "PROBLEM SOLVER 1"
+      }
+    }
+  },
+  "santaniello,luigi": {
+    "name": "Santaniello,Luigi",
+    "ftpt": "PT",
+    "settimane": {
+      "W31": {
+        "Tue": "PUSHER 2",
+        "Wed": "WATERSPIDER 3",
+        "Thu": "STOWER",
+        "Fri": "RECEIVER 3"
+      }
+    }
+  },
+  "santopaolo,marco": {
+    "name": "Santopaolo,Marco",
+    "ftpt": "PT",
+    "settimane": {
+      "W31": {
+        "Tue": "WATERSPIDER 3",
+        "Wed": "PICKER",
+        "Thu": "PICKER",
+        "Fri": "STOWER"
+      }
+    }
+  },
+  "santoro,leandro": {
+    "name": "Santoro,Leandro",
+    "ftpt": "FT",
+    "settimane": {
+      "W31": {
+        "Tue": "DOCK MARSHALL",
+        "Wed": "STOWER",
+        "Thu": "PICKER"
+      }
+    }
+  },
+  "sarnacchiaro,carmine": {
+    "name": "Sarnacchiaro,Carmine",
+    "ftpt": "PT",
+    "settimane": {
+      "W31": {
+        "Mon": "RECEIVER 5",
+        "Fri": "UNLOADER 6",
+        "Sat": "WATERSPIDER 4"
+      }
+    }
+  },
+  "saviano,assunta": {
+    "name": "Saviano,Assunta",
+    "ftpt": "PT",
+    "settimane": {
+      "W31": {
+        "Mon": "UNLOADER 4",
+        "Tue": "STOWER",
+        "Thu": "STOWER",
+        "Fri": "WATERSPIDER 6"
+      }
+    }
+  },
+  "smarrazzo,katia": {
+    "name": "Smarrazzo,Katia",
+    "ftpt": "PT",
+    "settimane": {
+      "W31": {
+        "Sun": "STOWER",
+        "Mon": "RECEIVER 2",
+        "Fri": "RECEIVER 1",
+        "Sat": "PUSHER 2"
+      }
+    }
+  },
+  "smarrazzo,rosa": {
+    "name": "Smarrazzo,Rosa",
+    "ftpt": "PT",
+    "settimane": {
+      "W31": {
+        "Mon": "PUSHER 5",
+        "Fri": "PROBLEM SOLVER 3",
+        "Sat": "UNLOADER 5"
+      }
+    }
+  },
+  "solli,vito": {
+    "name": "Solli,Vito",
+    "ftpt": "PT",
+    "settimane": {
+      "W31": {
+        "Tue": "STOWER",
+        "Wed": "PICKER",
+        "Thu": "UNLOADER 7",
+        "Fri": "STOWER"
+      }
+    }
+  },
+  "sorvillo,gianluigi": {
+    "name": "Sorvillo,Gianluigi",
+    "ftpt": "PT",
+    "settimane": {
+      "W31": {
+        "Tue": "STOWER",
+        "Wed": "UNLOADER 7",
+        "Thu": "STOWER",
+        "Fri": "STOWER"
+      }
+    }
+  },
+  "starita,salvatore": {
+    "name": "Starita,Salvatore",
+    "ftpt": "PT",
+    "settimane": {
+      "W31": {
+        "Tue": "PUSHER 5",
+        "Wed": "WATERSPIDER 7",
+        "Fri": "UNLOADER 7"
+      }
+    }
+  },
+  "talotti,carmine": {
+    "name": "Talotti,Carmine",
+    "ftpt": "PT",
+    "settimane": {
+      "W31": {
+        "Sun": "STOWER",
+        "Thu": "WATERSPIDER 5",
+        "Fri": "PUSHER 1",
+        "Sat": "PUSHER 5"
+      }
+    }
+  },
+  "tramontano,ludovico": {
+    "name": "Tramontano,Ludovico",
+    "ftpt": "PT",
+    "settimane": {
+      "W31": {
+        "Tue": "STOWER",
+        "Wed": "RECEIVER 3"
+      }
+    }
+  },
+  "tramontano,vincenzo": {
+    "name": "Tramontano,Vincenzo",
+    "ftpt": "FT",
+    "settimane": {
+      "W31": {
+        "Tue": "RECEIVER 6",
+        "Thu": "RECEIVER 2",
+        "Fri": "1 ALTO A/B"
+      }
+    }
+  },
+  "truppo,pasquale": {
+    "name": "Truppo,Pasquale",
+    "ftpt": "PT",
+    "settimane": {
+      "W31": {
+        "Tue": "WATERSPIDER 1",
+        "Wed": "PICKER",
+        "Thu": "PICKER",
+        "Fri": "STOWER"
+      }
+    }
+  },
+  "tufano,michele": {
+    "name": "Tufano,Michele",
+    "ftpt": "PT",
+    "settimane": {
+      "W31": {
+        "Sat": "RECEIVER 2"
+      }
+    }
+  },
+  "valletta,vincenzo": {
+    "name": "Valletta,Vincenzo",
+    "ftpt": "PT",
+    "settimane": {
+      "W31": {
+        "Tue": "PUSHER 6",
+        "Wed": "STOWER",
+        "Thu": "STOWER",
+        "Fri": "PICKER"
+      }
+    }
+  },
+  "varriale,oriana": {
+    "name": "Varriale,Oriana",
+    "ftpt": "FT",
+    "settimane": {
+      "W31": {
+        "Sun": "PROBLEM SOLVER CYCLE",
+        "Wed": "PROBLEM SOLVER 2",
+        "Thu": "PUSHER 4"
+      }
+    }
+  },
+  "visone,antonio": {
+    "name": "Visone,Antonio",
+    "ftpt": "FT",
+    "settimane": {
+      "W31": {
+        "Sun": "UNLOADER 2",
+        "Wed": "DOCK MARSHALL",
+        "Thu": "UNLOADER 4"
+      }
+    }
+  },
+  "volpe,elina": {
+    "name": "Volpe,Elina",
+    "ftpt": "PT",
+    "settimane": {
+      "W31": {
+        "Sun": "WATERSPIDER 4",
+        "Fri": "PICKER",
+        "Sat": "PROBLEM SOLVER AB"
+      }
+    }
+  },
+  "volpe,salvatore": {
+    "name": "Volpe,Salvatore",
+    "ftpt": "PT",
+    "settimane": {
+      "W31": {
+        "Mon": "PROBLEM SOLVER 3",
+        "Thu": "PICKER",
+        "Fri": "PICKER"
+      }
+    }
+  }
+}
