@@ -334,7 +334,20 @@
   .log-msg{flex:1;line-height:1.5}
   .log-who{font-size:10.5px;color:var(--muted);font-weight:600;margin-top:2px}
   .gh-overlay{display:none;position:fixed;inset:0;background:rgba(15,23,41,.85);z-index:10001;align-items:center;justify-content:center}
-  .gh-overlay.show{display:flex}</style>
+  .gh-overlay.show{display:flex}
+  .ps-mensile-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px;margin-top:10px}
+  .ps-card{border-radius:12px;padding:10px 14px;border:1.5px solid;display:flex;flex-direction:column;gap:4px}
+  .ps-card.verde{background:#f0fdf4;border-color:#86efac}
+  .ps-card.giallo{background:#fffbeb;border-color:#fde68a}
+  .ps-card.rosso{background:#fff1f2;border-color:#fecaca}
+  .ps-card-nome{font-size:13px;font-weight:750;color:#0f172a}
+  .ps-card-stato{font-size:11.5px;font-weight:650}
+  .ps-card.verde .ps-card-stato{color:#15803d}
+  .ps-card.giallo .ps-card-stato{color:#92400e}
+  .ps-card.rosso .ps-card-stato{color:#b91c1c}
+  .ps-card-sub{font-size:11px;color:#64748b}
+  .ps-sema-title{font-size:15px;font-weight:800;margin:20px 0 6px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .ps-legenda{display:flex;gap:14px;font-size:11.5px;font-weight:600;margin-bottom:10px;flex-wrap:wrap}</style>
 </head>
 <body>
 <div class="wrap">
@@ -1105,42 +1118,48 @@
     // Propone 4 candidati per il giorno che stai preparando, priorita' a chi non fa PS da piu' tempo,
     // con la regola: almeno 1 FT tra i suggeriti. Usa lo storico PS_MONTH + chi e' in turno domani.
     if(MODE==='missing') (function(){
-      // pool: persone in turno il giorno che preparo (se c'e' il file turni), escluse le escluse
+      // SUGGERITORE PS POTENZIATO: 1 FT + 3 PT, priorita' mese solare
+      function getMese(){ return new Date().getFullYear()+'-'+(String(new Date().getMonth()+1).padStart(2,'0')); }
+      var PS_MENSILE = {}; try{ PS_MENSILE=JSON.parse(localStorage.getItem('dnp1_ps_mensile'))||{}; }catch(e){}
+      const meseCorrente = getMese();
+
       let pool = PEOPLE.filter(p=>{
         if(EXCLUDED_SHIFT && EXCLUDED_SHIFT.has(normName(p.name))) return false;
         if(SHIFT_TURN && preparingDay){
           const t = SHIFT_TURN[normName(p.name)];
-          if(t) return t[preparingDay]===true;   // solo chi e' in turno domani
+          if(t) return t[preparingDay]===true;
         }
         return true;
       });
       if(pool.length===0) return;
-      // settimana max nello storico (per calcolare 'da quanto')
-      let maxWk=null; Object.values(PS_MONTH).forEach(r=>{ const n=wkNum(r.last); if(n!==null&&(maxWk===null||n>maxWk)) maxWk=n; });
-      // score: piu' alto = piu' prioritario. Mai fatto PS = massima priorita'.
+
+      // score: 3000=mai fatto PS | 2000=non ancora questo mese | 0-99=gia' fatto
       function score(p){
-        const rec = PS_MONTH[normName(p.name)];
-        if(!rec) return 9999;                       // mai fatto PS
-        const last = wkNum(rec.last);
-        if(last===null || maxWk===null) return 500;
-        return (maxWk - last);                       // settimane da ultima PS
+        const k=normName(p.name);
+        const mr=PS_MENSILE[k]; const wr=PS_MONTH[k];
+        const fattoM=mr&&mr.mesi&&mr.mesi[meseCorrente]>0;
+        if(!wr&&!mr) return 3000;
+        if(!fattoM) return 2000;
+        return Math.max(0,100-((mr.mesi[meseCorrente]||0)*10));
       }
-      pool.forEach(p=>{ p._psScore = score(p); p._isFT = (p.ftpt||'').toUpperCase()==='FT'; });
-      pool.sort((a,b)=> b._psScore-a._psScore || a.name.localeCompare(b.name));
-      // prendi i primi 4, garantendo almeno 1 FT
-      let picks = pool.slice(0,4);
-      if(!picks.some(p=>p._isFT)){
-        const ft = pool.find(p=>p._isFT);
-        if(ft){ picks = picks.slice(0,3); picks.push(ft); }
-      }
-      // etichetta motivo
+      pool.forEach(p=>{ p._psScore=score(p); p._isFT=(p.ftpt||'').toUpperCase()==='FT'; });
+
+      // regola fissa: 1 FT + 3 PT
+      const ftPool=pool.filter(p=>p._isFT).sort((a,b)=>b._psScore-a._psScore||a.name.localeCompare(b.name));
+      const ptPool=pool.filter(p=>!p._isFT).sort((a,b)=>b._psScore-a._psScore||a.name.localeCompare(b.name));
+      let picks=[];
+      if(ftPool.length>0) picks.push(ftPool[0]);
+      ptPool.slice(0,4-picks.length).forEach(p=>picks.push(p));
+      if(picks.length<4) pool.filter(p=>!picks.includes(p)).slice(0,4-picks.length).forEach(p=>picks.push(p));
+
       function reason(p){
-        const rec = PS_MONTH[normName(p.name)];
-        if(!rec) return 'mai fatto PS';
-        const last = wkNum(rec.last);
-        if(last===null||maxWk===null) return 'da tempo';
-        const ago = maxWk-last;
-        return ago===0 ? 'PS settimana corrente' : (ago+' sett. fa');
+        const k=normName(p.name);
+        const mr=PS_MENSILE[k]; const wr=PS_MONTH[k];
+        const fattoM=mr&&mr.mesi&&mr.mesi[meseCorrente]>0;
+        if(!wr&&!mr) return 'mai fatto PS';
+        if(!fattoM){ const u=mr&&mr.ultimoMese?mr.ultimoMese:'n/d'; return 'non ancora questo mese (ult. '+u+')'; }
+        const v=(mr.mesi[meseCorrente]||0);
+        return 'gia\u0027 '+v+'x questo mese';
       }
       const dayLbl = preparingDay ? (DAYS_IT[preparingDay]||preparingDay) : 'domani';
       html += `<div class="section s-green open"><div class="section-head"><div class="sh-icon">🧩</div>
@@ -1200,7 +1219,24 @@
       if(doneFing >= 1 || absC >= 1 || giustificato){ fingOk++; }
       else { fingKo++; noFinger.push({name:p.name, type, done:doneFing, abs:absC, week:p.week}); }
     });
-    savePS();   // salva il tracking PS aggiornato con la settimana corrente
+    savePS();
+      // aggiorna tracking mensile PS
+      (function(){
+        function getM(){ return new Date().getFullYear()+'-'+(String(new Date().getMonth()+1).padStart(2,'0')); }
+        var PM={}; try{PM=JSON.parse(localStorage.getItem('dnp1_ps_mensile'))||{};}catch(e){}
+        var mese=getM();
+        Object.entries(PS_MONTH).forEach(function(pair){
+          var k=pair[0]; var rec=pair[1];
+          if(!PM[k]) PM[k]={name:rec.name,mesi:{},ultimoMese:null};
+          if(!PM[k].mesi[mese]) PM[k].mesi[mese]=0;
+          var og=new Date(); var pM=new Date(og.getFullYear(),og.getMonth(),1);
+          var wkP=Math.ceil(((pM-new Date(pM.getFullYear(),0,1))/86400000+1)/7);
+          var wkM=(rec.weeks||[]).filter(function(w){return(parseInt((w||'').replace(/\D/g,''))||0)>=wkP;});
+          PM[k].mesi[mese]=wkM.length;
+          PM[k].ultimoMese=rec.last||null;
+        });
+        localStorage.setItem('dnp1_ps_mensile',JSON.stringify(PM));
+      })();   // salva il tracking PS aggiornato con la settimana corrente
     const pct = (n)=> tot? Math.round(n/tot*100) : 0;
 
     // KPI percentuali
@@ -1861,6 +1897,7 @@
         });
       }
       document.getElementById('results').innerHTML=html;
+      setTimeout(function(){var r=document.getElementById('results');if(r&&typeof renderRecapPS==='function')renderRecapPS(r);},80);
     }
     window._rst=function(t){_st=t;renderSto();};
     window._fstorico=function(q){
@@ -1896,6 +1933,60 @@
     pull();
     setInterval(pull,120000);
   })();
+
+  // RECAP PS MENSILE - semaforo verde/giallo/rosso
+  function renderRecapPS(container){
+    var mesiLabel={'01':'Gennaio','02':'Febbraio','03':'Marzo','04':'Aprile',
+      '05':'Maggio','06':'Giugno','07':'Luglio','08':'Agosto',
+      '09':'Settembre','10':'Ottobre','11':'Novembre','12':'Dicembre'};
+    var oggi=new Date();
+    var mese=oggi.getFullYear()+'-'+(String(oggi.getMonth()+1).padStart(2,'0'));
+    var fineM=new Date(oggi.getFullYear(),oggi.getMonth()+1,0);
+    var ggRim=fineM.getDate()-oggi.getDate();
+    var mp=mese.split('-');
+    var meseLabel=(mesiLabel[mp[1]]||mp[1])+' '+mp[0];
+    var PM={}; try{PM=JSON.parse(localStorage.getItem('dnp1_ps_mensile'))||{};}catch(e){}
+    var div=document.createElement('div');
+    if(typeof PEOPLE==='undefined'||!PEOPLE||!PEOPLE.length){
+      div.innerHTML='<div class="no-data-msg">Carica un Manning per vedere il recap PS mensile.</div>';
+      container.appendChild(div);return;
+    }
+    var cards=PEOPLE.map(function(p){
+      var k=normName(p.name);
+      var rec=PM[k];
+      var volte=(rec&&rec.mesi&&rec.mesi[mese])||0;
+      var fatto=volte>0;
+      var colore=fatto?'verde':(ggRim<=7?'rosso':'giallo');
+      var statoTxt=fatto?('\u2713 Fatto '+volte+(volte===1?' volta':' volte')+' questo mese'):(ggRim<=7?'\uD83D\uDD34 Urgente! Solo '+ggRim+' giorni':'\uD83D\uDFE1 Non ancora questo mese');
+      var subTxt=rec&&rec.ultimoMese?'Ultimo: '+rec.ultimoMese:'Nessuno storico';
+      return {p:p,colore:colore,statoTxt:statoTxt,subTxt:subTxt,volte:volte};
+    });
+    cards.sort(function(a,b){var o={rosso:0,giallo:1,verde:2};return(o[a.colore]-o[b.colore])||a.p.name.localeCompare(b.p.name);});
+    var nV=cards.filter(function(x){return x.colore==='verde';}).length;
+    var nG=cards.filter(function(x){return x.colore==='giallo';}).length;
+    var nR=cards.filter(function(x){return x.colore==='rosso';}).length;
+    div.innerHTML='<div class="ps-sema-title">\uD83D\uDD14 Rotazione Problem Solver \u2014 '+meseLabel
+      +'<span style="font-size:12px;font-weight:500;color:#64748b;margin-left:8px">'+ggRim+' giorni rimasti nel mese</span></div>'
+      +'<div class="ps-legenda">'
+      +'<span style="color:#15803d">\u25CF Fatto</span>'
+      +'<span style="color:#92400e">\u25CF Non ancora (c\'e\' tempo)</span>'
+      +'<span style="color:#b91c1c">\u25CF Urgente</span></div>'
+      +'<div style="display:flex;gap:10px;margin-bottom:12px;flex-wrap:wrap">'
+      +'<div style="background:#f0fdf4;border:1.5px solid #86efac;border-radius:10px;padding:8px 14px;font-size:13px;font-weight:750;color:#15803d">\u2705 '+nV+' completati</div>'
+      +'<div style="background:#fffbeb;border:1.5px solid #fde68a;border-radius:10px;padding:8px 14px;font-size:13px;font-weight:750;color:#92400e">\u23F3 '+nG+' da pianificare</div>'
+      +(nR>0?'<div style="background:#fff1f2;border:1.5px solid #fecaca;border-radius:10px;padding:8px 14px;font-size:13px;font-weight:750;color:#b91c1c">\uD83D\uDEA8 '+nR+' urgenti</div>':'')
+      +'</div>';
+    var grid=document.createElement('div');grid.className='ps-mensile-grid';
+    cards.forEach(function(item){
+      var card=document.createElement('div');card.className='ps-card '+item.colore;
+      card.innerHTML='<div class="ps-card-nome">'+item.p.name+' <span class="tag '+(item.p.ftpt==='FT'?'ft':'pt')+'">'+(item.p.ftpt||'?')+'</span></div>'
+        +'<div class="ps-card-stato">'+item.statoTxt+'</div>'
+        +'<div class="ps-card-sub">'+item.subTxt+'</div>';
+      grid.appendChild(card);
+    });
+    div.appendChild(grid);container.appendChild(div);
+  }
+
   // init badge profilo attivo
   updateProfBadge();
 </script>
