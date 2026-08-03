@@ -437,7 +437,7 @@
     </div>
 
     <div class="toggle toggle-recap">
-      <button id="mode-storico" onclick="setMode('storico')">&#128100; Storico Persone</button>
+      <button id="mode-storico" onclick="setMode('storico')">&#128100; Storico Persone/Ruoli</button>
       <button id="mode-log" onclick="setMode('log')">&#128221; Log</button>
     </div>
   </div>
@@ -1138,14 +1138,22 @@
       });
       if(pool.length===0) return;
 
-      // score: 3000=mai fatto PS | 2000=non ancora questo mese | 0-99=gia' fatto
+      // score: usa storico reale SP (GitHub) - conta settimane in cui p ha fatto PS
       function score(p){
         const k=normName(p.name);
-        const mr=PS_MENSILE[k]; const wr=PS_MONTH[k];
-        const fattoM=mr&&mr.mesi&&mr.mesi[meseCorrente]>0;
-        if(!wr&&!mr) return 3000;
-        if(!fattoM) return 2000;
-        return Math.max(0,100-((mr.mesi[meseCorrente]||0)*10));
+        // cerca nel SP (storico persone da GitHub) tutte le sett. con ruolo PS
+        var spRec=null; try{ Object.values(SP).forEach(function(r){ if(normName(r.name)===k){spRec=r;throw 0;} }); }catch(e){}
+        if(!spRec||!spRec.settimane) return 3000; // mai in storico = massima priorita'
+        var psWeeks=[]; Object.entries(spRec.settimane).forEach(function(we){
+          var wk=we[0]; var days=we[1];
+          Object.values(days).forEach(function(r){ if(isProblemSolve(r)&&psWeeks.indexOf(wk)<0) psWeeks.push(wk); });
+        });
+        if(!psWeeks.length) return 2800; // in storico ma mai PS
+        // ultima settimana PS
+        psWeeks.sort(); var lastPSwk=psWeeks[psWeeks.length-1];
+        // distanza dalla settimana corrente (approssimata con wkNum)
+        var distanza = (wkNum(CUR_WEEK||lastPSwk)||0) - (wkNum(lastPSwk)||0);
+        return Math.max(0, 200 - distanza*10); // piu' e' lontana, piu' alto il punteggio
       }
       pool.forEach(p=>{ p._psScore=score(p); p._isFT=(p.ftpt||'').toUpperCase()==='FT'; });
 
@@ -1159,12 +1167,16 @@
 
       function reason(p){
         const k=normName(p.name);
-        const mr=PS_MENSILE[k]; const wr=PS_MONTH[k];
-        const fattoM=mr&&mr.mesi&&mr.mesi[meseCorrente]>0;
-        if(!wr&&!mr) return 'mai fatto PS';
-        if(!fattoM){ const u=mr&&mr.ultimoMese?mr.ultimoMese:'n/d'; return 'non ancora questo mese (ult. '+u+')'; }
-        const v=(mr.mesi[meseCorrente]||0);
-        return 'gia\u0027 '+v+'x questo mese';
+        var spRec=null; try{ Object.values(SP).forEach(function(r){ if(normName(r.name)===k){spRec=r;throw 0;} }); }catch(e){}
+        if(!spRec||!spRec.settimane) return 'mai in storico';
+        var psWeeks=[]; Object.entries(spRec.settimane).forEach(function(we){
+          Object.values(we[1]).forEach(function(r){ if(isProblemSolve(r)&&psWeeks.indexOf(we[0])<0) psWeeks.push(we[0]); });
+        });
+        if(!psWeeks.length) return 'mai fatto PS';
+        psWeeks.sort(); var last=psWeeks[psWeeks.length-1];
+        var distanza=(wkNum(CUR_WEEK||last)||0)-(wkNum(last)||0);
+        if(distanza===0) return 'fatto questa settimana ('+last+')';
+        return 'ultima PS: '+last+' ('+distanza+' sett. fa)';
       }
       const dayLbl = preparingDay ? (DAYS_IT[preparingDay]||preparingDay) : 'domani';
       html += `<div class="section s-green open"><div class="section-head"><div class="sh-icon">🧩</div>
@@ -1459,49 +1471,6 @@
       });
       html += `</tbody></table></div></div>`;
     }
-
-    // ===== SEZIONE PROBLEM SOLVE MENSILE =====
-    const psRecs = Object.values(PS_MONTH);  // [{name, weeks, last}]
-    // ultima settimana registrata in assoluto (per calcolare 'da quante settimane')
-    let maxWk=null; psRecs.forEach(r=>{ const n=wkNum(r.last); if(n!==null&&(maxWk===null||n>maxWk)) maxWk=n; });
-    html += `<div class="section s-green open"><div class="section-head"><div class="sh-icon">🧩</div>
-      <div class="sh-text"><span class="sh-title">Problem Solve \u2014 tracking rotazione</span><span class="sh-sub">Obiettivo: far ruotare tutti, senza ripetere la stessa persona settimane consecutive</span></div></div>
-      <div class="section-body">
-        <div style="display:flex;gap:8px;align-items:flex-end;flex-wrap:wrap;margin-bottom:6px">
-          <div style="flex:1;min-width:200px"><div style="font-size:12.5px;color:var(--muted);margin-bottom:4px">Incolla i nomi di chi ha fatto Problem Solve:</div>
-          <textarea id="ps-paste" class="paste-area" style="min-height:70px" placeholder="Rossi,Mario&#10;Bianchi,Anna"></textarea></div>
-          <div><div style="font-size:12.5px;color:var(--muted);margin-bottom:4px">Settimana</div>
-          <input id="ps-week" type="text" placeholder="W31" style="width:90px;font-family:var(--font);font-size:14px;padding:8px 10px;border:1.5px solid var(--border);border-radius:8px"></div>
-        </div>
-        <div style="margin-top:6px">
-          <button class="copy" onclick="importPS()">📥 Aggiungi al tracking</button>
-          ${psRecs.length? ' <button class="copy" style="background:linear-gradient(135deg,#94a3b8,#64748b)" onclick="clearPS()">🗑 Svuota tracking PS</button>' : ''}
-        </div>`;
-    // tabella: chi ha fatto PS, ultima settimana, da quante settimane
-    if(psRecs.length){
-      psRecs.sort((a,b)=> (wkNum(b.last)||0)-(wkNum(a.last)||0) || a.name.localeCompare(b.name));
-      html += `<table class="mtab" style="margin-top:12px"><thead><tr><th>Nome</th><th>Ultima PS</th><th>Da quante sett.</th><th>Volte totali</th></tr></thead><tbody>`;
-      psRecs.forEach(r=>{
-        const ago = (maxWk!==null && wkNum(r.last)!==null) ? (maxWk - wkNum(r.last)) : '\u2014';
-        const agoTxt = ago==='\u2014' ? '\u2014' : (ago===0?'settimana corrente':(ago+' sett. fa'));
-        const warn = (typeof ago==='number' && ago>=2) ? ' style="color:#e11d48;font-weight:700"' : '';
-        html += `<tr><td>${r.name}</td><td>${r.last||'\u2014'}</td><td${warn}>${agoTxt}</td><td>${r.weeks.length}</td></tr>`;
-      });
-      html += `</tbody></table>`;
-    }
-    // chi NON e' ancora passato da PS (confronto con persone della settimana caricata)
-    if(PEOPLE && PEOPLE.length){
-      const psSet = new Set(Object.keys(PS_MONTH));
-      const missing = PEOPLE.filter(p=>{
-        if(EXCLUDED_SHIFT && EXCLUDED_SHIFT.has(normName(p.name))) return false;
-        return !psSet.has(normName(p.name));
-      }).map(p=>p.name);
-      html += `<div style="margin-top:14px">
-          <div style="font-size:13px;font-weight:700;color:#9f1239;margin-bottom:4px">⚠️ Non ancora passati da Problem Solve (${missing.length})</div>
-          <div style="font-size:12.5px;color:var(--muted);line-height:1.8">${missing.length? missing.slice().sort().join(' · ') : 'Tutti passati 👍'}</div>
-        </div>`;
-    }
-    html += `</div></div>`;
 
     $('results').innerHTML = html;
 
@@ -1828,7 +1797,7 @@
       var days=[];try{days=DAYS;}catch(e){days=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];}
       var pers=Object.values(SP);
       var html='<div class="storico-tabs">'
-        +'<button class="storico-tab'+(_st==='persone'?' active':'')+'" onclick="window._rst(\'persone\')">&#128100; Per Persona</button>'
+        +'<button class="storico-tab'+(_st==='persone'?' active':'')+'" onclick="window._rst(\'persone\')">&#128100; Persone/Ruoli</button>'
         +'<button class="storico-tab'+(_st==='settimane'?' active':'')+'" onclick="window._rst(\'settimane\')">&#128197; Per Settimana</button>'
         +'<button class="storico-tab'+(_st==='postazioni'?' active':'')+'" onclick="window._rst(\'postazioni\')">&#128203; Per Postazione</button>'
         +'</div>';
