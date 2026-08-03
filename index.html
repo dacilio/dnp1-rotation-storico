@@ -1323,6 +1323,17 @@
       psWeek: psWeek, psNames: psNames.slice().sort()
     };
 
+    // AUTO-SAVE STORICO: salva la riga della settimana in MONTH_ROWS ad ogni Recap
+    (function(){
+      var wk = DETECTED_WEEK || '';
+      if(!wk){ return; }
+      var rec = { settimana:wk, ds:ACTIVE, tot:tot, pctInd:pct(indOk), indKo:indKo, pctFing:pct(fingOk), fingKo:fingKo, data:new Date().toISOString().slice(0,10) };
+      var key = rec.settimana+'|'+rec.ds;
+      MONTH_ROWS = MONTH_ROWS.filter(function(x){ return (x.settimana+'|'+x.ds)!==key; });
+      MONTH_ROWS.push(rec);
+      saveHist();
+    })();
+
     // copia liste + export riepilogo
     const names = [...noInduct.map(p=>'[Induct] '+p.name), ...noFinger.map(p=>'[Finger] '+p.name)].join('\n');
     html += `<div class="actions">`;
