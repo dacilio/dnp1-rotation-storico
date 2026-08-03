@@ -1397,19 +1397,18 @@
     $('banner').classList.remove('show');
 
     let html = '';
-    // INCOLLA da SharePoint (più righe insieme)
-    html += `<div class="section s-green open"><div class="section-head"><div class="sh-icon">📋</div>
-      <div class="sh-text"><span class="sh-title">Incolla i dati da SharePoint</span><span class="sh-sub">Copia le righe dallo Storico (Ctrl+C) e incollale qui sotto (Ctrl+V) — anche più settimane insieme</span></div></div>
-      <div class="section-body">
-        <textarea id="paste-area" class="paste-area" placeholder="Incolla qui le righe copiate da SharePoint/Excel.&#10;Esempio (colonne separate da TAB o spazi):&#10;W28  DNP1  92  95  4  82  16&#10;W29  DNP1  90  93  6  79  19"></textarea>
-        <div style="font-size:11.5px;color:var(--muted-light);margin-top:6px">Ordine colonne atteso: Settimana · DS · Associates · %Induct · NonConfInduct · %Finger · NonConfFinger</div>
-        <button class="copy" style="margin-top:10px" onclick="importPasted()">📥 Importa righe incollate</button>
-        ${rows.length? ' <button class="copy" style="background:linear-gradient(135deg,#94a3b8,#64748b)" onclick="clearHistory()">🗑 Svuota storico</button>' : ''}
-        ${rows.length? '<div style="font-size:12px;color:var(--muted);margin-top:8px">✓ '+rows.length+' settimana/e nel trend (salvate nel browser).</div>' : '<div class="empty" style="margin-top:10px">Nessun dato ancora. Incolla le righe da SharePoint qui sopra.</div>'}
-      </div></div>`;
+    
+    // Sezione stato GitHub (dati automatici)
+    var syncNote = rows.length
+      ? '<div style="font-size:13px;color:#047857;font-weight:700">\u2713 ' + rows.length + ' settimane caricate da GitHub automaticamente.</div>'
+      : '<div style="font-size:13px;color:#92400e;font-weight:600">\u23F3 Nessun dato ancora. Carica un Manning e clicca Genera \u2014 lo storico si aggiorna da solo.</div>';
+    html += '<div class="section s-green open"><div class="section-head"><div class="sh-icon">\u2601\uFE0F</div>'
+      + '<div class="sh-text"><span class="sh-title">Storico GitHub</span><span class="sh-sub">Aggiornamento automatico ad ogni caricamento Manning</span></div></div>'
+      + '<div class="section-body">' + syncNote
+      + (rows.length ? ' <button class="copy" style="background:linear-gradient(135deg,#94a3b8,#64748b);margin-top:10px" onclick="clearHistory()">\uD83D\uDDD1 Svuota storico locale</button>' : '')
+      + '</div></div>';
 
-
-    // grafico trend (se ci sono dati)
+    // grafico trend// grafico trend (se ci sono dati)
     if(rows.length){
       html += `<div class="section s-red open"><div class="section-head"><div class="sh-icon">📈</div>
         <div class="sh-text"><span class="sh-title">Andamento compliance</span><span class="sh-sub">Trend settimana per settimana</span></div></div>
@@ -1709,7 +1708,7 @@
       try{
         var s=await apiGet(FILES.storico);
         if(s){
-          if(Array.isArray(s.history)){localStorage.setItem('dnp1_history',JSON.stringify(s.history));try{MONTH_ROWS=s.history;}catch(e){}}
+          if(Array.isArray(s.history)){localStorage.setItem('dnp1_jrw_history',JSON.stringify(s.history));try{MONTH_ROWS=s.history; if(typeof saveHist==='function') saveHist();}catch(e){}}
           if(s.psmonth){localStorage.setItem('dnp1_psmonth',JSON.stringify(s.psmonth));try{PS_MONTH=s.psmonth;}catch(e){}}
           if(s.notes){localStorage.setItem('dnp1_notes',JSON.stringify(s.notes));try{NOTES=s.notes;}catch(e){}}
           if(s.profiles&&Object.keys(s.profiles).length){localStorage.setItem('dnp1_profiles',JSON.stringify(s.profiles));try{PROFILES=s.profiles;if(!PROFILES[ACTIVE])ACTIVE=Object.keys(PROFILES)[0];}catch(e){}}
@@ -1721,7 +1720,7 @@
         var now=new Date().toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'});
         var nS=0;try{nS=MONTH_ROWS.length;}catch(e){}
         bar(true,'GitHub: connesso \u2014 '+nS+' sett. | '+Object.keys(SP).length+' persone',now);
-        showAlerts();
+        /* alerts removed */
       }catch(e){if(e.message!=='token non valido')bar(false,'GitHub: errore ('+e.message+')','');}
     }
 
@@ -1762,7 +1761,7 @@
               });
               localStorage.setItem('dnp1_sp',JSON.stringify(SP));
               pushPersone();
-              log('Manning '+wk+' \u2014 '+PEOPLE.length+' persone salvate');
+              /* log removed */
               bar(true,'GitHub: '+wk+' salvato ('+PEOPLE.length+' persone)',new Date().toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'}));
             }catch(e){console.warn('save week:',e);}
           },800);
@@ -1803,20 +1802,7 @@
       localStorage.setItem('dnp1_al',JSON.stringify(AL));
       pushLog();
     }
-    function showAlerts(){
-      try{
-        if(!MONTH_ROWS||!MONTH_ROWS.length)return;
-        var last=MONTH_ROWS.slice().sort(function(a,b){return(parseInt((b.settimana||'').replace(/\D/g,''))||0)-(parseInt((a.settimana||'').replace(/\D/g,''))||0);})[0];
-        var msgs=[];
-        if(last.indKo>0)msgs.push('<b>'+last.settimana+'</b>: '+last.indKo+' persone non conformi Induct');
-        if(last.fingKo>0)msgs.push('<b>'+last.settimana+'</b>: '+last.fingKo+' persone non conformi Finger');
-        if(!msgs.length)return;
-        var old=document.getElementById('opening-alerts');if(old)old.remove();
-        var wrap=document.createElement('div');wrap.id='opening-alerts';
-        msgs.forEach(function(m2){var d=document.createElement('div');d.className='alert-banner warn';d.innerHTML='<span style="font-size:18px">&#9888;</span><div>'+m2+'</div>';wrap.appendChild(d);});
-        var w=document.querySelector('.wrap');if(w)w.insertBefore(wrap,w.querySelector('.panel')||w.firstChild);
-      }catch(e){}
-    }
+    /* showAlerts removed */
 
     // render storico
     var _st='persone';
