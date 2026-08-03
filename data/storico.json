@@ -1,1 +1,84 @@
-{"history":[],"psmonth":{},"notes":{},"profiles":{},"updated":""}
+{
+  "history": [],
+  "psmonth": {
+    "giordano,marco": {
+      "name": "Giordano,Marco",
+      "weeks": [
+        "W32"
+      ],
+      "last": "W32"
+    },
+    "manna,giusy": {
+      "name": "Manna,Giusy",
+      "weeks": [
+        "W32"
+      ],
+      "last": "W32"
+    },
+    "matrone,christian": {
+      "name": "Matrone,Christian",
+      "weeks": [
+        "W32"
+      ],
+      "last": "W32"
+    },
+    "musella,arianna": {
+      "name": "Musella,Arianna",
+      "weeks": [
+        "W32"
+      ],
+      "last": "W32"
+    },
+    "piscopo,angela": {
+      "name": "Piscopo,Angela",
+      "weeks": [
+        "W32"
+      ],
+      "last": "W32"
+    },
+    "valletta,vincenzo": {
+      "name": "Valletta,Vincenzo",
+      "weeks": [
+        "W32"
+      ],
+      "last": "W32"
+    }
+  },
+  "notes": {},
+  "profiles": {
+    "DNP1": {
+      "name": "DNP1",
+      "inductRoles": [
+        "WATERSPIDER",
+        "UNLOADER",
+        "RECEIVER",
+        "PUSHER",
+        "DOCK MARSHALL",
+        "PROBLEM SOLVER"
+      ],
+      "goalFT": 2,
+      "goalPT": 1,
+      "excludeBands": [
+        "06:00-13:00",
+        "06:00-14:00"
+      ],
+      "excludedPeople": [
+        "Monaco,Amodio",
+        "Valenza,Simone",
+        "Sisto,Martina",
+        "Terlizzi,Veronica",
+        "Margiotta,Luca",
+        "Fedele,Chiara",
+        "Compagnone,Raffaella",
+        "Berton,Claudia",
+        "Verde,Perla",
+        "Piscopo,Salvatore Sasa",
+        "Conte,Vito",
+        "Cirillo,Vincenzo"
+      ],
+      "manningSheet": "Conteggio Task weekly",
+      "shiftSheet": "Timetable"
+    }
+  },
+  "updated": "2026-08-03T05:08:50.324Z"
+}
