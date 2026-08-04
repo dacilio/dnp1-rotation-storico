@@ -269,7 +269,9 @@
       "last": "W32"
     }
   },
-  "notes": {},
+  "notes": {
+    "DNP1||buonafede,carla": "Esente per ragioni personali"
+  },
   "profiles": {
     "DNP1": {
       "name": "DNP1",
@@ -305,5 +307,5 @@
       "shiftSheet": "Timetable"
     }
   },
-  "updated": "2026-08-04T23:00:57.319Z"
+  "updated": "2026-08-04T23:02:50.349Z"
 }
