@@ -1132,7 +1132,7 @@
     if(MODE==='missing') (function(){
       // SUGGERITORE PS POTENZIATO: 1 FT + 3 PT, priorita' mese solare
       function getMese(){ return new Date().getFullYear()+'-'+(String(new Date().getMonth()+1).padStart(2,'0')); }
-      var PS_MENSILE = {}; try{ PS_MENSILE=JSON.parse(localStorage.getItem('dnp1_ps_mensile'))||{}; }catch(e){}
+      var PS_MENSILE = {}; // deprecato v11 - dati ora in SP (GitHub)
       const meseCorrente = getMese();
 
       let pool = PEOPLE.filter(p=>{
@@ -1244,23 +1244,7 @@
       else { fingKo++; noFinger.push({name:p.name, type, done:doneFing, abs:absC, week:p.week}); }
     });
     savePS();
-      // aggiorna tracking mensile PS
-      (function(){
-        function getM(){ return new Date().getFullYear()+'-'+(String(new Date().getMonth()+1).padStart(2,'0')); }
-        var PM={}; try{PM=JSON.parse(localStorage.getItem('dnp1_ps_mensile'))||{};}catch(e){}
-        var mese=getM();
-        Object.entries(PS_MONTH).forEach(function(pair){
-          var k=pair[0]; var rec=pair[1];
-          if(!PM[k]) PM[k]={name:rec.name,mesi:{},ultimoMese:null};
-          if(!PM[k].mesi[mese]) PM[k].mesi[mese]=0;
-          var og=new Date(); var pM=new Date(og.getFullYear(),og.getMonth(),1);
-          var wkP=Math.ceil(((pM-new Date(pM.getFullYear(),0,1))/86400000+1)/7);
-          var wkM=(rec.weeks||[]).filter(function(w){return(parseInt((w||'').replace(/\D/g,''))||0)>=wkP;});
-          PM[k].mesi[mese]=wkM.length;
-          PM[k].ultimoMese=rec.last||null;
-        });
-        localStorage.setItem('dnp1_ps_mensile',JSON.stringify(PM));
-      })();   // salva il tracking PS aggiornato con la settimana corrente
+      // tracking PS ora derivato da SP (GitHub) - aggiornamento locale rimosso
     const pct = (n)=> tot? Math.round(n/tot*100) : 0;
 
     // KPI percentuali
@@ -1916,36 +1900,69 @@
   })();
 
   // RECAP PS MENSILE - semaforo verde/giallo/rosso
+  // renderRecapPS v11 - legge da SP (GitHub, condiviso con tutti)
   function renderRecapPS(container){
     var mesiLabel={'01':'Gennaio','02':'Febbraio','03':'Marzo','04':'Aprile',
       '05':'Maggio','06':'Giugno','07':'Luglio','08':'Agosto',
       '09':'Settembre','10':'Ottobre','11':'Novembre','12':'Dicembre'};
     var oggi=new Date();
-    var mese=oggi.getFullYear()+'-'+(String(oggi.getMonth()+1).padStart(2,'0'));
-    var fineM=new Date(oggi.getFullYear(),oggi.getMonth()+1,0);
+    var annoCorrente=oggi.getFullYear();
+    var meseCorrente=oggi.getMonth()+1;
+    var fineM=new Date(annoCorrente,meseCorrente,0);
     var ggRim=fineM.getDate()-oggi.getDate();
-    var mp=mese.split('-');
-    var meseLabel=(mesiLabel[mp[1]]||mp[1])+' '+mp[0];
-    var PM={}; try{PM=JSON.parse(localStorage.getItem('dnp1_ps_mensile'))||{};}catch(e){}
-    var div=document.createElement('div');
-    if(typeof PEOPLE==='undefined'||!PEOPLE||!PEOPLE.length){
-      div.innerHTML='<div class="no-data-msg">Carica un Manning per vedere il recap PS mensile.</div>';
-      container.appendChild(div);return;
+    var meseStr=String(meseCorrente).padStart(2,'0');
+    var meseLabel=(mesiLabel[meseStr]||meseStr)+' '+annoCorrente;
+
+    // Una settimana appartiene al mese se il suo giovedi ISO cade in quel mese
+    function wkBelongsToMonth(wkStr,anno,mese){
+      var n=parseInt((wkStr||'').replace(/\D/g,''));
+      if(!n) return false;
+      var jan1=new Date(anno,0,1);
+      var d=new Date(jan1.getTime()+((n-1)*7*86400000));
+      var dow=d.getDay()||7;
+      d.setDate(d.getDate()+(1-dow)); // lunedi della settimana
+      var thu=new Date(d); thu.setDate(thu.getDate()+3); // giovedi
+      return thu.getFullYear()===anno&&(thu.getMonth()+1)===mese;
     }
-    var cards=PEOPLE.map(function(p){
-      var k=normName(p.name);
-      var rec=PM[k];
-      var volte=(rec&&rec.mesi&&rec.mesi[mese])||0;
+
+    var div=document.createElement('div');
+    var persone=Object.values(typeof SP!=='undefined'?SP:{});
+    if(!persone.length){
+      div.innerHTML='<div class="no-data-msg">Nessun dato storico. Carica un Manning per popolare lo storico condiviso.</div>';
+      container.appendChild(div); return;
+    }
+
+    var cards=persone.map(function(p){
+      var psWksMese=[];
+      var psLastN=0; var psLastWk=null;
+      Object.entries(p.settimane||{}).forEach(function(e){
+        var wk=e[0]; var giorni=e[1];
+        var haPS=Object.values(giorni).some(function(r){
+          return typeof isProblemSolve==='function'?isProblemSolve(r):/problem.solve/i.test(r||'');
+        });
+        if(!haPS) return;
+        var n=parseInt((wk||'').replace(/\D/g,''))||0;
+        if(n>psLastN){psLastN=n;psLastWk=wk;}
+        if(wkBelongsToMonth(wk,annoCorrente,meseCorrente)) psWksMese.push(wk);
+      });
+      var volte=psWksMese.length;
       var fatto=volte>0;
       var colore=fatto?'verde':(ggRim<=7?'rosso':'giallo');
-      var statoTxt=fatto?('\u2713 Fatto '+volte+(volte===1?' volta':' volte')+' questo mese'):(ggRim<=7?'\uD83D\uDD34 Urgente! Solo '+ggRim+' giorni':'\uD83D\uDFE1 Non ancora questo mese');
-      var subTxt=rec&&rec.ultimoMese?'Ultimo: '+rec.ultimoMese:'Nessuno storico';
+      var statoTxt=fatto
+        ?('\u2713 Fatto '+volte+(volte===1?' volta':' volte')+' questo mese')
+        :(ggRim<=7?'\uD83D\uDD34 Urgente! Solo '+ggRim+' giorni':'\uD83D\uDFE1 Non ancora questo mese');
+      var subTxt=psLastWk?('Ultima volta: '+psLastWk):'Mai fatto PS';
       return {p:p,colore:colore,statoTxt:statoTxt,subTxt:subTxt,volte:volte};
     });
-    cards.sort(function(a,b){var o={rosso:0,giallo:1,verde:2};return(o[a.colore]-o[b.colore])||a.p.name.localeCompare(b.p.name);});
+
+    cards.sort(function(a,b){
+      var o={rosso:0,giallo:1,verde:2};
+      return (o[a.colore]-o[b.colore])||a.p.name.localeCompare(b.p.name);
+    });
     var nV=cards.filter(function(x){return x.colore==='verde';}).length;
     var nG=cards.filter(function(x){return x.colore==='giallo';}).length;
     var nR=cards.filter(function(x){return x.colore==='rosso';}).length;
+
     div.innerHTML='<div class="ps-sema-title">\uD83D\uDD14 Rotazione Problem Solver \u2014 '+meseLabel
       +'<span style="font-size:12px;font-weight:500;color:#64748b;margin-left:8px">'+ggRim+' giorni rimasti nel mese</span></div>'
       +'<div class="ps-legenda">'
@@ -1953,21 +1970,22 @@
       +'<span style="color:#92400e">\u25CF Non ancora (c\'e\' tempo)</span>'
       +'<span style="color:#b91c1c">\u25CF Urgente</span></div>'
       +'<div style="display:flex;gap:10px;margin-bottom:12px;flex-wrap:wrap">'
-      +'<div style="background:#f0fdf4;border:1.5px solid #86efac;border-radius:10px;padding:8px 14px;font-size:13px;font-weight:750;color:#15803d">\u2705 '+nV+' completati</div>'
-      +'<div style="background:#fffbeb;border:1.5px solid #fde68a;border-radius:10px;padding:8px 14px;font-size:13px;font-weight:750;color:#92400e">\u23F3 '+nG+' da pianificare</div>'
-      +(nR>0?'<div style="background:#fff1f2;border:1.5px solid #fecaca;border-radius:10px;padding:8px 14px;font-size:13px;font-weight:750;color:#b91c1c">\uD83D\uDEA8 '+nR+' urgenti</div>':'')
+      +'<div style="background:#f0fdf4;border:1.5px solid #86efac;border-radius:10px;padding:8px 14px;font-size:13px;font-weight:700;color:#15803d">\u2705 '+nV+' completati</div>'
+      +'<div style="background:#fffbeb;border:1.5px solid #fde68a;border-radius:10px;padding:8px 14px;font-size:13px;font-weight:700;color:#92400e">\u23F3 '+nG+' da pianificare</div>'
+      +(nR>0?'<div style="background:#fff1f2;border:1.5px solid #fecaca;border-radius:10px;padding:8px 14px;font-size:13px;font-weight:700;color:#b91c1c">\uD83D\uDEA8 '+nR+' urgenti</div>':'')
       +'</div>';
-    var grid=document.createElement('div');grid.className='ps-mensile-grid';
+    var grid=document.createElement('div'); grid.className='ps-mensile-grid';
     cards.forEach(function(item){
-      var card=document.createElement('div');card.className='ps-card '+item.colore;
-      card.innerHTML='<div class="ps-card-nome">'+item.p.name+' <span class="tag '+(item.p.ftpt==='FT'?'ft':'pt')+'">'+(item.p.ftpt||'?')+'</span></div>'
+      var card=document.createElement('div'); card.className='ps-card '+item.colore;
+      var isFT=(item.p.ftpt||'').toString().trim().toUpperCase()==='FT';
+      card.innerHTML='<div class="ps-card-nome">'+item.p.name
+        +' <span class="tag '+(isFT?'ft':'pt')+'">'+(item.p.ftpt||'?')+'</span></div>'
         +'<div class="ps-card-stato">'+item.statoTxt+'</div>'
         +'<div class="ps-card-sub">'+item.subTxt+'</div>';
       grid.appendChild(card);
     });
-    div.appendChild(grid);container.appendChild(div);
+    div.appendChild(grid); container.appendChild(div);
   }
-
   // init badge profilo attivo
   updateProfBadge();
 </script>
