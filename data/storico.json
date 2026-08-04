@@ -3,12 +3,12 @@
     {
       "settimana": "W32",
       "ds": "DNP1",
-      "tot": 45,
-      "pctInd": 69,
+      "tot": 76,
+      "pctInd": 82,
       "indKo": 14,
-      "pctFing": 47,
-      "fingKo": 24,
-      "data": "2026-08-03"
+      "pctFing": 79,
+      "fingKo": 16,
+      "data": "2026-08-04"
     }
   ],
   "psmonth": {
@@ -107,9 +107,10 @@
     "conte,antonio": {
       "name": "Conte,Antonio",
       "weeks": [
-        "W31"
+        "W31",
+        "W32"
       ],
-      "last": "W31"
+      "last": "W32"
     },
     "coppola,alexander": {
       "name": "Coppola,Alexander",
@@ -128,9 +129,10 @@
     "fedele,salvatore": {
       "name": "Fedele,Salvatore",
       "weeks": [
-        "W31"
+        "W31",
+        "W32"
       ],
-      "last": "W31"
+      "last": "W32"
     },
     "fusco,gennaro": {
       "name": "Fusco,Gennaro",
@@ -198,9 +200,10 @@
     "santaniello,gaetano": {
       "name": "Santaniello,Gaetano",
       "weeks": [
-        "W31"
+        "W31",
+        "W32"
       ],
-      "last": "W31"
+      "last": "W32"
     },
     "smarrazzo,rosa": {
       "name": "Smarrazzo,Rosa",
@@ -229,6 +232,41 @@
         "W31"
       ],
       "last": "W31"
+    },
+    "coppola,raffaele": {
+      "name": "Coppola,Raffaele",
+      "weeks": [
+        "W32"
+      ],
+      "last": "W32"
+    },
+    "iavazzo,paolo": {
+      "name": "Iavazzo,Paolo",
+      "weeks": [
+        "W32"
+      ],
+      "last": "W32"
+    },
+    "minopoli,gennaro": {
+      "name": "Minopoli,Gennaro",
+      "weeks": [
+        "W32"
+      ],
+      "last": "W32"
+    },
+    "santoro,leandro": {
+      "name": "Santoro,Leandro",
+      "weeks": [
+        "W32"
+      ],
+      "last": "W32"
+    },
+    "sorvillo,gianluigi": {
+      "name": "Sorvillo,Gianluigi",
+      "weeks": [
+        "W32"
+      ],
+      "last": "W32"
     }
   },
   "notes": {},
@@ -267,5 +305,5 @@
       "shiftSheet": "Timetable"
     }
   },
-  "updated": "2026-08-04T21:48:41.919Z"
+  "updated": "2026-08-04T21:49:20.075Z"
 }
