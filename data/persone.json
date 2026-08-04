@@ -11,7 +11,7 @@
       },
       "W32": {
         "Tue": "PICKER",
-        "Wed": "STOWER"
+        "Wed": "RECEIVER 3"
       }
     }
   },
@@ -26,7 +26,7 @@
         "Sat": "PICKER"
       },
       "W32": {
-        "Wed": "PICKER"
+        "Wed": "PROBLEM CYCLE"
       }
     }
   },
@@ -100,7 +100,7 @@
       },
       "W32": {
         "Tue": "PICKER",
-        "Wed": "WATERSPIDER 1"
+        "Wed": "PICKER"
       }
     }
   },
@@ -144,7 +144,7 @@
       "W32": {
         "Mon": "Ambassador",
         "Tue": "AMBASSADOR",
-        "Wed": "WATERSPIDER 3"
+        "Wed": "PROBLEM SOLVER 2"
       }
     }
   },
@@ -230,7 +230,7 @@
       },
       "W32": {
         "Mon": "STOWER",
-        "Wed": "STOWER"
+        "Wed": "UNLOADER 1"
       }
     }
   },
@@ -279,7 +279,7 @@
       },
       "W32": {
         "Tue": "STOWER",
-        "Wed": "PICKER"
+        "Wed": "STOWER"
       }
     }
   },
@@ -293,7 +293,7 @@
       },
       "W32": {
         "Tue": "PROBLEM SOLVER 3",
-        "Wed": "DOCK MARSHALL"
+        "Wed": "WATERSPIDER 4"
       }
     }
   },
@@ -409,7 +409,8 @@
         "Fri": "PICKER"
       },
       "W32": {
-        "Tue": "UNLOADER 3"
+        "Tue": "UNLOADER 3",
+        "Wed": "WATERSPIDER 2"
       }
     }
   },
@@ -436,7 +437,7 @@
       },
       "W32": {
         "Tue": "STOWER",
-        "Wed": "PICKER"
+        "Wed": "DIVERTER QUALITA'"
       }
     }
   },
@@ -450,7 +451,7 @@
       },
       "W32": {
         "Tue": "WATERSPIDER 7",
-        "Wed": "STOWER"
+        "Wed": "PROBLEM SOLVER AB"
       }
     }
   },
@@ -530,7 +531,7 @@
       "W32": {
         "Sun": "PUSHER 4",
         "Tue": "RECEIVER 4",
-        "Wed": "PROBLEM SOLVER 1"
+        "Wed": "WATERSPIDER 3"
       }
     }
   },
@@ -656,7 +657,7 @@
       },
       "W32": {
         "Tue": "STOWER",
-        "Wed": "PROBLEM SOLVER 2"
+        "Wed": "UNLOADER 7"
       }
     }
   },
@@ -746,7 +747,7 @@
       "W32": {
         "Mon": "WATERSPIDER 4",
         "Tue": "DOCK MARSHALL",
-        "Wed": "UNLOADER 4"
+        "Wed": "WATERSPIDER 1"
       }
     }
   },
@@ -803,7 +804,7 @@
       },
       "W32": {
         "Tue": "PICKER",
-        "Wed": "PICKER"
+        "Wed": "PUSHER 7"
       }
     }
   },
@@ -819,7 +820,7 @@
       "W32": {
         "Mon": "WATERSPIDER 7",
         "Tue": "STOWER",
-        "Wed": "PUSHER 4"
+        "Wed": "PUSHER 3"
       }
     }
   },
@@ -877,7 +878,7 @@
       "W32": {
         "Sun": "RECEIVER 5",
         "Mon": "1 ALTO C/D",
-        "Wed": "WATERSPIDER 2"
+        "Wed": "PICKER"
       }
     }
   },
@@ -927,7 +928,7 @@
       },
       "W32": {
         "Tue": "PICKER",
-        "Wed": "PICKERSTOWER"
+        "Wed": "UNLOADER 4"
       }
     }
   },
@@ -1013,7 +1014,7 @@
       "W32": {
         "Mon": "UNLOADER 2",
         "Tue": "PICKER",
-        "Wed": "PUSHER 1"
+        "Wed": "STOWER"
       }
     }
   },
@@ -1029,7 +1030,7 @@
       },
       "W32": {
         "Tue": "PICKER",
-        "Wed": "STOWER"
+        "Wed": "UNLOADER 6"
       }
     }
   },
@@ -1218,7 +1219,7 @@
       "W32": {
         "Mon": "PUSHER 2",
         "Tue": "RECEIVER 1",
-        "Wed": "UNLOADER 1"
+        "Wed": "WATERSPIDER 9"
       }
     }
   },
@@ -1232,7 +1233,7 @@
       },
       "W32": {
         "Tue": "UNLOADER 7",
-        "Wed": "PICKERSTOWER"
+        "Wed": "PICKER"
       }
     }
   },
@@ -1265,7 +1266,7 @@
       "W32": {
         "Mon": "RECEIVER 2",
         "Tue": "PUSHER 3",
-        "Wed": "STOWER"
+        "Wed": "PICKER"
       }
     }
   },
@@ -1279,7 +1280,7 @@
       "W32": {
         "Mon": "STOWER",
         "Tue": "RECEIVER 2",
-        "Wed": "RECEIVER 3"
+        "Wed": "PROBLEM SOLVER 1"
       }
     }
   },
@@ -1323,7 +1324,7 @@
         "Thu": "UNLOADER 4"
       },
       "W32": {
-        "Wed": "WATERSPIDER 4"
+        "Wed": "DOCK MARSHALL"
       }
     }
   },
@@ -1339,7 +1340,7 @@
       "W32": {
         "Mon": "UNLOADER 4",
         "Tue": "PICKER",
-        "Wed": "PUSHER 3"
+        "Wed": "PUSHER 4"
       }
     }
   },
@@ -1356,7 +1357,7 @@
         "Sun": "UNLOADER 4",
         "Mon": "WATERSPIDER 2",
         "Tue": "PICKER",
-        "Wed": "PICKER"
+        "Wed": "PUSHER 1"
       }
     }
   },
@@ -1367,7 +1368,7 @@
       "W32": {
         "Sun": "PROBLEM SOLVER 1",
         "Tue": "STOWER",
-        "Wed": "AMBASSADOR"
+        "Wed": "RECEIVER 7"
       }
     }
   },
@@ -1386,7 +1387,7 @@
     "settimane": {
       "W32": {
         "Tue": "PUSHER 2",
-        "Wed": "PROBLEM SOLVER 3"
+        "Wed": "WATERSPIDER 7"
       }
     }
   }
