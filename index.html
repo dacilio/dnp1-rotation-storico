@@ -1929,8 +1929,6 @@
     mkSetup();
     pull();
     setInterval(pull,120000);
-  })();
-
   // RECAP PS MENSILE - semaforo verde/giallo/rosso
   // renderRecapPS v11 - legge da SP (GitHub, condiviso con tutti)
   function renderRecapPS(container){
@@ -1958,7 +1956,7 @@
     }
 
     var div=document.createElement('div');
-    var persone=Object.values(typeof SP!=='undefined'?SP:{});
+    var persone=Object.values(SP);
     if(!persone.length){
       div.innerHTML='<div class="no-data-msg">Nessun dato storico. Carica un Manning per popolare lo storico condiviso.</div>';
       container.appendChild(div); return;
@@ -2018,6 +2016,7 @@
     });
     div.appendChild(grid); container.appendChild(div);
   }
+  })();
   // init badge profilo attivo
   updateProfBadge();
 </script>
