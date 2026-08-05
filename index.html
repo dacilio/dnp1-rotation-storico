@@ -362,68 +362,6 @@
   </style>
 </head>
 <body>
-<!-- PIN LOCK SCREEN -->
-<div id="pin-overlay" style="
-  position:fixed;inset:0;z-index:99999;
-  background:linear-gradient(135deg,#0b1120 0%,#172033 50%,#1e1b4b 100%);
-  display:flex;align-items:center;justify-content:center;
-  font-family:'Segoe UI',-apple-system,BlinkMacSystemFont,Roboto,sans-serif;">
-  <div style="background:#fff;border-radius:20px;padding:36px 32px;width:min(400px,90vw);text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.4)">
-    <div style="font-size:40px;margin-bottom:10px">&#128274;</div>
-    <div style="font-size:22px;font-weight:800;color:#0f1729;margin-bottom:6px">DNP1 Rotation</div>
-    <div style="font-size:14px;color:#64748b;margin-bottom:24px">Inserisci il codice di accesso</div>
-    <input id="pin-input" type="password" placeholder="Codice accesso..."
-      style="width:100%;font-size:16px;padding:12px 14px;border:2px solid #e2e8f0;
-      border-radius:12px;margin-bottom:14px;text-align:center;letter-spacing:3px;
-      outline:none;transition:border .2s;box-sizing:border-box"
-      autocomplete="off" autocorrect="off" spellcheck="false">
-    <div id="pin-err" style="color:#e11d48;font-size:13px;margin-bottom:12px;min-height:18px;font-weight:600"></div>
-    <button id="pin-btn"
-      style="width:100%;padding:13px;background:linear-gradient(135deg,#6366f1,#3b82f6);
-      color:#fff;border:none;border-radius:12px;font-size:16px;font-weight:700;cursor:pointer">
-      Entra &rarr;
-    </button>
-  </div>
-</div>
-<script>
-(function(){
-  var HASH_OK = 'dbb6002d03830541148ef8b95bf234a88850935ae9a0da87fad32bf48250bb5b';
-  var LS_PIN  = 'dnp1_pin_ok';
-
-  function unlock(){
-    var el=document.getElementById('pin-overlay');
-    if(el){ el.style.opacity='0'; el.style.transition='opacity .3s'; setTimeout(function(){el.remove();},320); }
-    document.body.style.overflow='';
-  }
-
-  if(sessionStorage.getItem(LS_PIN)==='1'){ document.addEventListener('DOMContentLoaded',unlock); return; }
-
-  document.body.style.overflow='hidden';
-
-  async function checkPin(){
-    var val=(document.getElementById('pin-input').value||'').trim();
-    if(!val) return;
-    var buf=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(val));
-    var hex=Array.from(new Uint8Array(buf)).map(function(b){return b.toString(16).padStart(2,'0');}).join('');
-    if(hex===HASH_OK){
-      sessionStorage.setItem(LS_PIN,'1');
-      unlock();
-    } else {
-      var ei=document.getElementById('pin-err');
-      ei.textContent='Codice non corretto. Riprova.';
-      var inp=document.getElementById('pin-input');
-      inp.value='';
-      inp.style.borderColor='#e11d48';
-      setTimeout(function(){inp.style.borderColor='#e2e8f0';ei.textContent='';},1800);
-    }
-  }
-
-  document.getElementById('pin-btn').addEventListener('click',checkPin);
-  document.getElementById('pin-input').addEventListener('keydown',function(e){if(e.key==='Enter')checkPin();});
-  document.getElementById('pin-input').focus();
-})();
-</script>
-<!-- END PIN LOCK SCREEN -->
 <div class="wrap">
   <header>
     <div class="header-top">
