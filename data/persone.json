@@ -26,7 +26,7 @@
         "Sat": "PICKER"
       },
       "W32": {
-        "Wed": "PROBLEM CYCLE"
+        "Wed": "PROBLEM SOLVER 3"
       }
     }
   },
@@ -264,7 +264,7 @@
       "W32": {
         "Mon": "PICKER",
         "Tue": "WATERSPIDER 2",
-        "Wed": "PICKER"
+        "Wed": "PROBLEM SOLVER CD"
       }
     }
   },
