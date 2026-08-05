@@ -444,6 +444,7 @@
 
     <div class="toggle toggle-recap">
       <button id="mode-storico" onclick="setMode('storico')">&#128100; Storico Persone/Ruoli</button>
+      <button id="mode-recapps" onclick="setMode('recapps')">&#128308; Recap Problem Solver</button>
 
     </div>
   </div>
@@ -903,6 +904,7 @@
   }
 
   function render(){
+    if(MODE==='recapps'){ renderRecapPSsection(); return; }
     if(MODE==='recap'){ renderRecap(); return; }
     if(MODE==='month'){ renderMonth(); return; }
     const evalDay = $('dayeval').value;
@@ -1739,6 +1741,13 @@
             try{document.getElementById('preparinghint').style.display='none';}catch(e){}
             renderSto();return;
           }
+          if(m==='recapps'){
+            var rb2=document.getElementById('mode-recapps');if(rb2)rb2.classList.add('active');
+            try{document.getElementById('dayeval').style.display='none';}catch(e){}
+            try{var lbl=document.querySelector('#controls .lbl');if(lbl)lbl.style.display='none';}catch(e){}
+            try{document.getElementById('preparinghint').style.display='none';}catch(e){}
+            renderRecapPSsection();return;
+          }
 
 
             try{document.getElementById('dayeval').style.display='none';}catch(e){}
@@ -1899,6 +1908,16 @@
   })();
 
   // RECAP PS MENSILE - semaforo verde/giallo/rosso
+  // Sezione dedicata Recap Problem Solver (pulsante mode-recapps)
+  function renderRecapPSsection(){
+    try{document.getElementById('kpis').classList.remove('show');}catch(e){}
+    try{document.getElementById('banner').classList.remove('show');}catch(e){}
+    var c=document.getElementById('results');
+    if(!c) return;
+    c.innerHTML='';
+    if(typeof renderRecapPS==='function'){ renderRecapPS(c); }
+  }
+
   // renderRecapPS v11 - legge da SP (GitHub, condiviso con tutti)
   function renderRecapPS(container){
     var mesiLabel={'01':'Gennaio','02':'Febbraio','03':'Marzo','04':'Aprile',
