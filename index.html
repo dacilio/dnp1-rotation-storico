@@ -1997,7 +1997,7 @@
     }
 
     var div=document.createElement('div');
-    var persone=Object.values(typeof SP!=='undefined'?SP:{});
+    var persone=Object.values((typeof window.SP!=='undefined'&&window.SP)?window.SP:{});
     if(!persone.length){
       div.innerHTML='<div class="no-data-msg">Nessun dato storico. Carica un Manning per popolare lo storico condiviso.</div>';
       container.appendChild(div); return;
