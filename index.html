@@ -1191,7 +1191,7 @@
         // ultima settimana PS
         psWeeks.sort(); var lastPSwk=psWeeks[psWeeks.length-1];
         // distanza dalla settimana corrente (approssimata con wkNum)
-        var distanza = (wkNum(CUR_WEEK||lastPSwk)||0) - (wkNum(lastPSwk)||0);
+        var distanza = (wkNum(DETECTED_WEEK||lastPSwk)||0) - (wkNum(lastPSwk)||0);
         return Math.max(0, 200 - distanza*10); // piu' e' lontana, piu' alto il punteggio
       }
       pool.forEach(p=>{ p._psScore=score(p); p._isFT=(p.ftpt||'').toUpperCase()==='FT'; });
@@ -1213,7 +1213,7 @@
         });
         if(!psWeeks.length) return 'mai fatto PS';
         psWeeks.sort(); var last=psWeeks[psWeeks.length-1];
-        var distanza=(wkNum(CUR_WEEK||last)||0)-(wkNum(last)||0);
+        var distanza=(wkNum(DETECTED_WEEK||last)||0)-(wkNum(last)||0);
         if(distanza===0) return 'fatto questa settimana ('+last+')';
         return 'ultima PS: '+last+' ('+distanza+' sett. fa)';
       }
