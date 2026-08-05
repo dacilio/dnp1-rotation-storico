@@ -1807,6 +1807,11 @@
               });
               localStorage.setItem('dnp1_sp',JSON.stringify(SP));
               pushPersone();
+              // refresh semaforo PS subito dopo aggiornamento SP da Manning
+              (function(){
+                var cPS=document.getElementById('ps-recap-container');
+                if(cPS&&typeof renderRecapPS==='function'){ cPS.innerHTML=''; renderRecapPS(cPS); }
+              })();
               /* log removed */
               bar(true,'GitHub: '+wk+' salvato ('+PEOPLE.length+' persone)',new Date().toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'}));
             }catch(e){console.warn('save week:',e);}
