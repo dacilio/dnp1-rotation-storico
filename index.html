@@ -857,7 +857,7 @@
 
   ['dragover','dragenter'].forEach(e=>drop.addEventListener(e,ev=>{ev.preventDefault();drop.classList.add('over')}));
   ['dragleave','drop'].forEach(e=>drop.addEventListener(e,ev=>{ev.preventDefault();drop.classList.remove('over')}));
-    drop.addEventListener('drop',ev=>{ ev.preventDefault(); if(ev.dataTransfer.files.length) handleFile(ev.dataTransfer.files[0]); });
+  drop.addEventListener('drop',ev=>{ if(ev.dataTransfer.files.length) handleFile(ev.dataTransfer.files[0]); });
   fileInput.addEventListener('change',ev=>{ if(ev.target.files.length) handleFile(ev.target.files[0]); });
   // Fallback robusto: click sulla dropzone apre il selettore file (in caso il label non scatti nell'iframe)
   drop.addEventListener('click', ev=>{ if(ev.target!==fileInput){ ev.preventDefault(); fileInput.click(); } });
@@ -1515,7 +1515,7 @@
 
     // bind area PS
     // Semaforo PS mensile (verde/giallo/rosso)
-    setTimeout(function(){var c=document.getElementById('results');if(c)renderRecapPS(c);},80);
+    setTimeout(function(){var c=document.getElementById('results');if(c&&typeof renderRecapPS==='function')renderRecapPS(c);},80);
 
 
     // bind del caricamento file
@@ -1928,7 +1928,6 @@
         });
       }
       document.getElementById('results').innerHTML=html;
-    setTimeout(function(){var c=document.getElementById('results');if(c&&typeof renderRecapPS==='function')renderRecapPS(c);},80);
 
     }
     window._rst=function(t){_st=t;renderSto();};
@@ -1941,7 +1940,7 @@
     };
 
     // render log
-
+    function renderLog(){
       // auto-pulizia voci spurie Ã‚ prima di mostrare
       var _bad=String.fromCharCode(194);
       AL=AL.filter(function(e){return e&&e.msg&&e.msg.indexOf(_bad)<0&&e.msg.trim()!==_bad&&e.msg.trim()!=='';});
