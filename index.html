@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="it">
 <head>
 <meta charset="UTF-8">
@@ -412,19 +412,19 @@
   <!-- Upload panel -->
   <div class="panel" id="uploadpanel">
     <div class="drop-grid">
-      <div class="drop" id="drop">
+      <div class="drop" id="drop" style="position:relative">
         <div class="ico">📂</div>
         <div class="big">File Manning (W**)</div>
         <div class="small">Trascina qui o clicca — .xlsm / .xlsx</div>
         <div class="dstatus" id="dstatus-w"></div>
-        <input type="file" id="file" >
+        <input type="file" id="file" style="position:absolute;inset:0;opacity:0;cursor:pointer;z-index:2;width:100%;height:100%">
       </div>
-      <div class="drop optional" id="drop-shift">
+      <div class="drop optional" id="drop-shift" style="position:relative">
         <div class="ico">🗓️</div>
         <div class="big">SA Shift Pattern</div>
         <div class="small">Per contare le assenze (off/ferie/sick)</div>
         <div class="dstatus" id="dstatus-shift"></div>
-        <input type="file" id="file-shift" >
+        <input type="file" id="file-shift" style="position:absolute;inset:0;opacity:0;cursor:pointer;z-index:2;width:100%;height:100%">
       </div>
     <div class="gen-row">
       <button class="gen-btn" id="genbtn" onclick="generate()" disabled>⚡ Genera controllo</button>
@@ -1990,3 +1990,4 @@
 </script>
 </body>
 </html>
+
