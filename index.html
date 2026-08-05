@@ -857,7 +857,7 @@
 
   ['dragover','dragenter'].forEach(e=>drop.addEventListener(e,ev=>{ev.preventDefault();drop.classList.add('over')}));
   ['dragleave','drop'].forEach(e=>drop.addEventListener(e,ev=>{ev.preventDefault();drop.classList.remove('over')}));
-  drop.addEventListener('drop',ev=>{ if(ev.dataTransfer.files.length) handleFile(ev.dataTransfer.files[0]); });
+    drop.addEventListener('drop',ev=>{ ev.preventDefault(); if(ev.dataTransfer.files.length) handleFile(ev.dataTransfer.files[0]); });
   fileInput.addEventListener('change',ev=>{ if(ev.target.files.length) handleFile(ev.target.files[0]); });
   // Fallback robusto: click sulla dropzone apre il selettore file (in caso il label non scatti nell'iframe)
   drop.addEventListener('click', ev=>{ if(ev.target!==fileInput){ ev.preventDefault(); fileInput.click(); } });
