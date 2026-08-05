@@ -1811,11 +1811,11 @@
             try{document.getElementById('preparinghint').style.display='none';}catch(e){}
             renderSto();return;
           }
-          if(m==='log'){
+
 
             try{document.getElementById('dayeval').style.display='none';}catch(e){}
             try{document.getElementById('preparinghint').style.display='none';}catch(e){}
-            renderLog();return;
+
           }
           oSM(m);
         };
@@ -1940,7 +1940,7 @@
     };
 
     // render log
-    function renderLog(){
+
       // auto-pulizia voci spurie Ã‚ prima di mostrare
       var _bad=String.fromCharCode(194);
       AL=AL.filter(function(e){return e&&e.msg&&e.msg.indexOf(_bad)<0&&e.msg.trim()!==_bad&&e.msg.trim()!=='';});
