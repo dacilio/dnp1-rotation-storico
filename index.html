@@ -1928,6 +1928,7 @@
         });
       }
       document.getElementById('results').innerHTML=html;
+    setTimeout(function(){var c=document.getElementById('results');if(c&&typeof renderRecapPS==='function')renderRecapPS(c);},80);
 
     }
     window._rst=function(t){_st=t;renderSto();};
