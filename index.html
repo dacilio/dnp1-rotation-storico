@@ -1672,6 +1672,7 @@
     var SP     = {};  // Storico Persone
     var AL     = [];  // Activity Log
     try{SP=JSON.parse(localStorage.getItem('dnp1_sp'))||{};}catch(e){}
+    window.SP=SP; // esposto globalmente per renderRecapPS
     try{AL=(JSON.parse(localStorage.getItem('dnp1_al'))||[]).filter(function(e){var bad=String.fromCharCode(194);return e&&e.msg&&e.msg.indexOf(bad)<0&&e.msg.trim()!==bad&&e.msg.trim()!=='';});}catch(e){}
 
     function tok(){
@@ -1745,6 +1746,7 @@
         }
         var p=await apiGet(FILES.persone);
         if(p){SP=p;localStorage.setItem('dnp1_sp',JSON.stringify(p));}
+        window.SP=SP; // esposto globalmente per renderRecapPS
         var l=await apiGet(FILES.log);
         if(l){AL=l.filter(function(e){return e&&e.msg&&e.msg.indexOf('\u00c2')<0&&e.msg.trim()!=='';});localStorage.setItem('dnp1_al',JSON.stringify(AL));}
         var now=new Date().toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'});
@@ -1790,6 +1792,7 @@
                 days.forEach(function(d){if(p.week&&p.week[d])SP[k].settimane[wk][d]=p.week[d];});
               });
               localStorage.setItem('dnp1_sp',JSON.stringify(SP));
+              window.SP=SP; // esposto globalmente per renderRecapPS
               pushPersone();
               /* log removed */
               bar(true,'GitHub: '+wk+' salvato ('+PEOPLE.length+' persone)',new Date().toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'}));
