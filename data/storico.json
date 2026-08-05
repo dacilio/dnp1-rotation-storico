@@ -3,12 +3,12 @@
     {
       "settimana": "W32",
       "ds": "DNP1",
-      "tot": 76,
-      "pctInd": 82,
-      "indKo": 14,
-      "pctFing": 79,
-      "fingKo": 16,
-      "data": "2026-08-04"
+      "tot": 74,
+      "pctInd": 89,
+      "indKo": 8,
+      "pctFing": 77,
+      "fingKo": 17,
+      "data": "2026-08-05"
     }
   ],
   "psmonth": {
@@ -156,5 +156,5 @@
       "shiftSheet": "Timetable"
     }
   },
-  "updated": "2026-08-05T02:33:53.793Z"
+  "updated": "2026-08-05T02:35:48.797Z"
 }
