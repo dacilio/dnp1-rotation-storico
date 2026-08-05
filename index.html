@@ -1511,11 +1511,28 @@
       html += `</tbody></table></div></div>`;
     }
 
+    // aggiungi container dedicato per semaforo PS in fondo
+    html += '<div id="ps-recap-container"></div>';
     $('results').innerHTML = html;
 
-    // bind area PS
-    // Semaforo PS mensile (verde/giallo/rosso)
-    setTimeout(function(){var c=document.getElementById('results');if(c&&typeof renderRecapPS==='function')renderRecapPS(c);},80);
+    // Semaforo PS mensile - usa container dedicato, attende SP da GitHub
+    (function(){
+      function doRenderPS(){
+        var c=document.getElementById('ps-recap-container');
+        if(c&&typeof renderRecapPS==='function'){ c.innerHTML=''; renderRecapPS(c); }
+      }
+      if(typeof SP!=='undefined'&&Object.keys(SP).length>0){
+        doRenderPS();
+      } else {
+        var _psAtt=0;
+        var _psTmr=setInterval(function(){
+          _psAtt++;
+          if((typeof SP!=='undefined'&&Object.keys(SP).length>0)||_psAtt>30){
+            clearInterval(_psTmr); doRenderPS();
+          }
+        },150);
+      }
+    })();
 
     // bind del caricamento file
     const mf = document.getElementById('month-files');
