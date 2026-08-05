@@ -477,7 +477,7 @@
 
     <div class="toggle toggle-recap">
       <button id="mode-storico" onclick="setMode('storico')">&#128100; Storico Persone/Ruoli</button>
-      <button id="mode-log" onclick="setMode('log')">&#128221; Log</button>
+
     </div>
   </div>
 
@@ -1484,7 +1484,7 @@
 
     // bind area PS
     // Semaforo PS mensile (verde/giallo/rosso)
-    setTimeout(function(){var c=document.getElementById('results');if(c&&typeof renderRecapPS==='function')renderRecapPS(c);},80);
+    setTimeout(function(){var c=document.getElementById('results');if(c)renderRecapPS(c);},80);
 
     // bind del caricamento file
     const mf = document.getElementById('month-files');
@@ -1773,7 +1773,7 @@
             renderSto();return;
           }
           if(m==='log'){
-            var lb=document.getElementById('mode-log');if(lb)lb.classList.add('active');
+
             try{document.getElementById('dayeval').style.display='none';}catch(e){}
             try{document.getElementById('preparinghint').style.display='none';}catch(e){}
             renderLog();return;
