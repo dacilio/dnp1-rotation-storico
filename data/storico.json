@@ -183,9 +183,10 @@
     "fedele,salvatore": {
       "name": "Fedele,Salvatore",
       "weeks": [
-        "W31"
+        "W31",
+        "W32"
       ],
-      "last": "W31"
+      "last": "W32"
     },
     "fusco,gennaro": {
       "name": "Fusco,Gennaro",
@@ -277,6 +278,27 @@
         "W31"
       ],
       "last": "W31"
+    },
+    "esposito,giuseppe": {
+      "name": "Esposito,Giuseppe",
+      "weeks": [
+        "W32"
+      ],
+      "last": "W32"
+    },
+    "esposito,mirko": {
+      "name": "Esposito,Mirko",
+      "weeks": [
+        "W32"
+      ],
+      "last": "W32"
+    },
+    "mosca,andrea": {
+      "name": "Mosca,Andrea",
+      "weeks": [
+        "W32"
+      ],
+      "last": "W32"
     }
   },
   "notes": {
@@ -318,5 +340,5 @@
       "shiftSheet": "Timetable"
     }
   },
-  "updated": "2026-08-05T04:53:51.077Z"
+  "updated": "2026-08-06T00:53:57.645Z"
 }
