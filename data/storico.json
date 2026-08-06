@@ -63,7 +63,8 @@
       "name": "Musella,Arianna",
       "weeks": [
         "W32",
-        "W31"
+        "W31",
+        "W30"
       ],
       "last": "W32"
     },
@@ -113,7 +114,8 @@
     "amatucci,luigi": {
       "name": "Amatucci,Luigi",
       "weeks": [
-        "W31"
+        "W31",
+        "W30"
       ],
       "last": "W31"
     },
@@ -134,21 +136,24 @@
     "capasso,davide": {
       "name": "Capasso,Davide",
       "weeks": [
-        "W31"
+        "W31",
+        "W30"
       ],
       "last": "W31"
     },
     "carannante,francesco": {
       "name": "Carannante,Francesco",
       "weeks": [
-        "W31"
+        "W31",
+        "W30"
       ],
       "last": "W31"
     },
     "coppola,alexander": {
       "name": "Coppola,Alexander",
       "weeks": [
-        "W31"
+        "W31",
+        "W30"
       ],
       "last": "W31"
     },
@@ -163,14 +168,16 @@
       "name": "Fedele,Salvatore",
       "weeks": [
         "W31",
-        "W32"
+        "W32",
+        "W30"
       ],
       "last": "W32"
     },
     "fusco,gennaro": {
       "name": "Fusco,Gennaro",
       "weeks": [
-        "W31"
+        "W31",
+        "W30"
       ],
       "last": "W31"
     },
@@ -198,14 +205,16 @@
     "nocera,francesco": {
       "name": "Nocera,Francesco",
       "weeks": [
-        "W31"
+        "W31",
+        "W30"
       ],
       "last": "W31"
     },
     "rea,giovanna": {
       "name": "Rea,Giovanna",
       "weeks": [
-        "W31"
+        "W31",
+        "W30"
       ],
       "last": "W31"
     },
@@ -240,7 +249,8 @@
     "varriale,oriana": {
       "name": "Varriale,Oriana",
       "weeks": [
-        "W31"
+        "W31",
+        "W30"
       ],
       "last": "W31"
     },
@@ -261,7 +271,8 @@
     "esposito,giuseppe": {
       "name": "Esposito,Giuseppe",
       "weeks": [
-        "W32"
+        "W32",
+        "W30"
       ],
       "last": "W32"
     },
@@ -278,6 +289,90 @@
         "W32"
       ],
       "last": "W32"
+    },
+    "caputo,pasquale": {
+      "name": "Caputo,Pasquale",
+      "weeks": [
+        "W30"
+      ],
+      "last": "W30"
+    },
+    "d'amore,luigi": {
+      "name": "D'Amore,Luigi",
+      "weeks": [
+        "W30"
+      ],
+      "last": "W30"
+    },
+    "d'angelo,giuseppe": {
+      "name": "D'Angelo,Giuseppe",
+      "weeks": [
+        "W30"
+      ],
+      "last": "W30"
+    },
+    "de luca,andrea": {
+      "name": "De Luca,Andrea",
+      "weeks": [
+        "W30"
+      ],
+      "last": "W30"
+    },
+    "graziano,salvatore": {
+      "name": "Graziano,Salvatore",
+      "weeks": [
+        "W30"
+      ],
+      "last": "W30"
+    },
+    "iavazzo,paolo": {
+      "name": "Iavazzo,Paolo",
+      "weeks": [
+        "W30"
+      ],
+      "last": "W30"
+    },
+    "minopoli,gennaro": {
+      "name": "Minopoli,Gennaro",
+      "weeks": [
+        "W30"
+      ],
+      "last": "W30"
+    },
+    "nespolino,antonio": {
+      "name": "Nespolino,Antonio",
+      "weeks": [
+        "W30"
+      ],
+      "last": "W30"
+    },
+    "palladino,antonio": {
+      "name": "Palladino,Antonio",
+      "weeks": [
+        "W30"
+      ],
+      "last": "W30"
+    },
+    "punzo,simone": {
+      "name": "Punzo,Simone",
+      "weeks": [
+        "W30"
+      ],
+      "last": "W30"
+    },
+    "tramontano,vincenzo": {
+      "name": "Tramontano,Vincenzo",
+      "weeks": [
+        "W30"
+      ],
+      "last": "W30"
+    },
+    "zantino,marco": {
+      "name": "Zantino,Marco",
+      "weeks": [
+        "W30"
+      ],
+      "last": "W30"
     }
   },
   "notes": {
@@ -319,5 +414,5 @@
       "shiftSheet": "Timetable"
     }
   },
-  "updated": "2026-08-06T01:00:24.328Z"
+  "updated": "2026-08-06T01:02:13.840Z"
 }
