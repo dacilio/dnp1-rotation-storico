@@ -123,6 +123,9 @@
         "Wed": "UNLOADER 6",
         "Thu": "PUSHER 4",
         "Fri": "RECEIVER 4"
+      },
+      "W32": {
+        "Thu": "PROBLEM SOLVER CD"
       }
     }
   },
@@ -466,7 +469,8 @@
       "W32": {
         "Mon": "PUSHER 3",
         "Tue": "PUSHER 4",
-        "Wed": "RECEIVER 1"
+        "Wed": "RECEIVER 1",
+        "Thu": "WATERSPIDER 9"
       },
       "W30": {
         "Sun": "WATERSPIDER 2",
@@ -1927,7 +1931,8 @@
       "W32": {
         "Sun": "PROBLEM SOLVER 1",
         "Tue": "STOWER",
-        "Wed": "RECEIVER 7"
+        "Wed": "RECEIVER 7",
+        "Thu": "PICKER"
       },
       "W30": {
         "Fri": "PROBLEM SOLVER CD"
@@ -1939,7 +1944,7 @@
     "ftpt": "FT",
     "settimane": {
       "W32": {
-        "Wed": "PROBLEM SOLVER AB"
+        "Thu": "STOWER"
       }
     }
   },
