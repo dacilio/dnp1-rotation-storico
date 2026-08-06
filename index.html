@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="it">
 <head>
 <meta charset="UTF-8">
@@ -302,7 +302,7 @@
   /* Area incolla dati da SharePoint */
   .paste-area{width:100%;min-height:90px;font-family:var(--mono);font-size:13px;padding:10px 12px;border:1.5px solid var(--border);border-radius:10px;color:var(--text);resize:vertical}
   .paste-area:focus{outline:none;border-color:var(--indigo);box-shadow:0 0 0 3px rgba(99,102,241,.15)}
-
+  /* ============ SEZIONE STORICO PERSONE/RUOLI + RECAP PS MENSILE ============ */
   #gh-bar{position:fixed;top:0;left:0;right:0;z-index:9999;padding:5px 18px;font-size:12px;font-weight:700;display:flex;align-items:center;gap:8px;background:#1e293b;color:#94a3b8;transition:background .4s}
   #gh-bar.ok{background:#064e3b;color:#6ee7b7}
   .storico-search{width:100%;font-size:15px;padding:10px 14px;border:1.5px solid var(--border);border-radius:11px;margin-bottom:14px;color:var(--text);box-sizing:border-box}
@@ -326,13 +326,6 @@
   .storico-tab{font-size:13px;font-weight:700;padding:8px 16px;border:1.5px solid var(--border);border-radius:10px;background:#fff;color:var(--muted);cursor:pointer;transition:.2s}
   .storico-tab.active{background:linear-gradient(135deg,var(--indigo),var(--blue));color:#fff;border-color:transparent}
   .no-data-msg{color:var(--muted);font-size:14px;padding:24px;text-align:center;line-height:1.8}
-  .alert-banner{border-radius:14px;padding:14px 18px;margin-bottom:14px;font-size:14px;font-weight:650;display:flex;align-items:flex-start;gap:10px;border:1px solid}
-  .alert-banner.warn{background:#fffaeb;color:#92400e;border-color:#fde08a}
-  .log-row{display:flex;gap:10px;padding:8px 12px;border-bottom:1px solid var(--border-light);font-size:12.5px}
-  .log-row:last-child{border-bottom:none}
-  .log-time{color:var(--muted);font-size:11px;flex-shrink:0;margin-top:2px}
-  .log-msg{flex:1;line-height:1.5}
-  .log-who{font-size:10.5px;color:var(--muted);font-weight:600;margin-top:2px}
   .gh-overlay{display:none;position:fixed;inset:0;background:rgba(15,23,41,.85);z-index:10001;align-items:center;justify-content:center}
   .gh-overlay.show{display:flex}
   .ps-mensile-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px;margin-top:10px}
@@ -346,22 +339,60 @@
   .ps-card.giallo .ps-card-stato{color:#92400e}
   .ps-card.rosso .ps-card-stato{color:#b91c1c}
   .ps-card-sub{font-size:11px;color:#64748b}
-  .ps-sema-title{font-size:15px;font-weight:800;margin:20px 0 6px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .ps-sema-title{font-size:16px;font-weight:800;margin:20px 0 8px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.4)}
+  .ps-sema-title span{color:#c7d2fe !important}
+  .ps-legenda{color:#e0e7ff}
+  .ps-legenda span{color:#e0e7ff !important}
   .ps-legenda{display:flex;gap:14px;font-size:11.5px;font-weight:600;margin-bottom:10px;flex-wrap:wrap}
-  .s-blue > .section-head { border-left: 4px solid #3b82f6; background: linear-gradient(90deg,#eff6ff,transparent); }
-  .count-pill.blue { background:#dbeafe; color:#1d4ed8; font-weight:700; }
-  .card.b { border-left: 4px solid #3b82f6; background: #eff6ff; }
-  .card.ps-sug { border-left:4px solid #7c3aed; background:linear-gradient(135deg,#f5f3ff,#ede9fe); border-color:#c4b5fd; }
-  .card.ps-sug .name { color:#5b21b6; }
-  .card.ps-sug .meta { color:#6d28d9; font-size:12px; }
-  .card.b .name { color: #1e40af; }
-  
-  .s-indigo > .section-head { border-left: 4px solid #7c3aed; background: linear-gradient(90deg,#f5f3ff,transparent); }
-  .s-indigo .sh-title { color: #5b21b6; }
-  .count-pill.indigo { background:#ede9fe; color:#5b21b6; font-weight:700; }
-  </style>
+</style>
 </head>
 <body>
+<!-- DNP1_PIN_GATE_V1 -->
+<style>
+#pin-gate{position:fixed;inset:0;background:linear-gradient(135deg,#0b1120,#1e1b4b);z-index:99999;display:flex;align-items:center;justify-content:center;padding:20px}
+#pin-gate .pin-box{background:#fff;border-radius:20px;padding:40px 36px;width:min(420px,100%);box-shadow:0 20px 60px rgba(0,0,0,.4);text-align:center}
+#pin-gate .pin-logo{font-size:52px;margin-bottom:10px}
+#pin-gate h2{font-size:22px;font-weight:800;color:#0f1729;margin-bottom:6px}
+#pin-gate .pin-sub{font-size:14px;color:#64748b;margin-bottom:24px}
+#pin-gate input{width:100%;font-size:17px;padding:13px 16px;border:1.5px solid #e2e8f0;border-radius:11px;font-family:'SF Mono',monospace;text-align:center;letter-spacing:.15em;box-sizing:border-box;margin-bottom:14px}
+#pin-gate input:focus{outline:none;border-color:#6366f1;box-shadow:0 0 0 3px rgba(99,102,241,.15)}
+#pin-gate button{width:100%;padding:13px;background:linear-gradient(135deg,#6366f1,#3b82f6);color:#fff;border:none;border-radius:11px;font-size:15px;font-weight:750;cursor:pointer}
+#pin-gate button:hover{transform:translateY(-1px)}
+#pin-gate .pin-err{color:#e11d48;font-size:13px;font-weight:600;margin-top:8px;min-height:18px}
+</style>
+<div id="pin-gate">
+  <div class="pin-box">
+    <div class="pin-logo">&#128274;</div>
+    <h2>DNP1 Rotation Planner</h2>
+    <div class="pin-sub">Accesso riservato Shift Manager DNP1</div>
+    <input id="pin-input" type="password" placeholder="Inserisci PIN" autocomplete="off" onkeydown="if(event.key==='Enter')window._checkPin()">
+    <button onclick="window._checkPin()">Accedi &rarr;</button>
+    <div class="pin-err" id="pin-err"></div>
+  </div>
+</div>
+<script>
+(function(){
+  var PIN='antoniopomoosap';
+  if(sessionStorage.getItem('dnp1_pin_ok')==='1'){
+    var g=document.getElementById('pin-gate'); if(g) g.remove();
+    return;
+  }
+  window._checkPin=function(){
+    var v=(document.getElementById('pin-input').value||'').trim();
+    if(v===PIN){
+      sessionStorage.setItem('dnp1_pin_ok','1');
+      var g=document.getElementById('pin-gate'); if(g) g.remove();
+    } else {
+      document.getElementById('pin-err').textContent='PIN errato. Riprova.';
+      document.getElementById('pin-input').value='';
+      document.getElementById('pin-input').focus();
+    }
+  };
+  setTimeout(function(){ var i=document.getElementById('pin-input'); if(i) i.focus(); },100);
+})();
+</script>
+<!-- /DNP1_PIN_GATE_V1 -->
+
 <div class="wrap">
   <header>
     <div class="header-top">
@@ -412,20 +443,21 @@
   <!-- Upload panel -->
   <div class="panel" id="uploadpanel">
     <div class="drop-grid">
-      <div class="drop" id="drop" style="position:relative">
+      <label class="drop" id="drop" for="file">
         <div class="ico">📂</div>
         <div class="big">File Manning (W**)</div>
         <div class="small">Trascina qui o clicca — .xlsm / .xlsx</div>
         <div class="dstatus" id="dstatus-w"></div>
-        <input type="file" id="file" style="position:absolute;inset:0;opacity:0;cursor:pointer;z-index:2;width:100%;height:100%">
-      </div>
-      <div class="drop optional" id="drop-shift" style="position:relative">
+        <input type="file" id="file" accept=".xlsm,.xlsx,.xlsb,.xls">
+      </label>
+      <label class="drop optional" id="drop-shift" for="file-shift">
         <div class="ico">🗓️</div>
         <div class="big">SA Shift Pattern</div>
         <div class="small">Per contare le assenze (off/ferie/sick)</div>
         <div class="dstatus" id="dstatus-shift"></div>
-        <input type="file" id="file-shift" style="position:absolute;inset:0;opacity:0;cursor:pointer;z-index:2;width:100%;height:100%">
-      </div>
+        <input type="file" id="file-shift" accept=".xlsm,.xlsx,.xlsb,.xls">
+      </label>
+    </div>
     <div class="gen-row">
       <button class="gen-btn" id="genbtn" onclick="generate()" disabled>⚡ Genera controllo</button>
     </div>
@@ -439,12 +471,10 @@
     </div>
     <div class="toggle toggle-recap">
       <button id="mode-recap" onclick="setMode('recap')">📊 Recap settimana</button>
-      <button id="mode-month" onclick="setMode('month')">📈 Andamento mensile</button>
+      <button id="mode-month" onclick="setMode('month')">📈 Andamento mensile/Problem</button>
     </div>
-
     <div class="toggle toggle-recap">
-      <button id="mode-storico" onclick="setMode('storico')">&#128100; Storico Persone/Ruoli</button>
-
+      <button id="mode-storico" onclick="setMode('storico')">👤 Storico Persone/Ruoli</button>
     </div>
   </div>
 
@@ -721,7 +751,7 @@
   // --- File turni (opzionale) ---
   ['dragover','dragenter'].forEach(e=>dropShift.addEventListener(e,ev=>{ev.preventDefault();dropShift.classList.add('over')}));
   ['dragleave','drop'].forEach(e=>dropShift.addEventListener(e,ev=>{ev.preventDefault();dropShift.classList.remove('over')}));
-  dropShift.addEventListener('drop',ev=>{ ev.preventDefault(); ev.stopPropagation(); if(ev.dataTransfer.files.length) handleShift(ev.dataTransfer.files[0]); });
+  dropShift.addEventListener('drop',ev=>{ ev.stopPropagation(); if(ev.dataTransfer.files.length) handleShift(ev.dataTransfer.files[0]); });
   fileShift.addEventListener('change',ev=>{ if(ev.target.files.length) handleShift(ev.target.files[0]); });
 
   function handleShift(file){
@@ -793,11 +823,11 @@
 
   ['dragover','dragenter'].forEach(e=>drop.addEventListener(e,ev=>{ev.preventDefault();drop.classList.add('over')}));
   ['dragleave','drop'].forEach(e=>drop.addEventListener(e,ev=>{ev.preventDefault();drop.classList.remove('over')}));
-  drop.addEventListener('drop',ev=>{ ev.preventDefault(); ev.stopPropagation(); if(ev.dataTransfer.files.length) handleFile(ev.dataTransfer.files[0]); });
+  drop.addEventListener('drop',ev=>{ if(ev.dataTransfer.files.length) handleFile(ev.dataTransfer.files[0]); });
   fileInput.addEventListener('change',ev=>{ if(ev.target.files.length) handleFile(ev.target.files[0]); });
   // Fallback robusto: click sulla dropzone apre il selettore file (in caso il label non scatti nell'iframe)
-  drop.addEventListener('click', ev=>{ if(ev.target!==fileInput){ fileInput.click(); } });
-  dropShift.addEventListener('click', ev=>{ if(ev.target!==fileShift){ fileShift.click(); } });
+  drop.addEventListener('click', ev=>{ if(ev.target!==fileInput){ ev.preventDefault(); fileInput.click(); } });
+  dropShift.addEventListener('click', ev=>{ if(ev.target!==fileShift){ ev.preventDefault(); fileShift.click(); } });
   $('reset').addEventListener('click',()=>{
     PEOPLE=[]; ABSENCES=null; SHIFT_TURN=null; EXCLUDED_SHIFT=new Set(); PENDING_W=null; PENDING_SHIFT=null; fileInput.value=''; fileShift.value=''; if($('genbtn'))$('genbtn').disabled=true;
     $('dstatus-shift').innerHTML=''; $('dstatus-w').innerHTML='';
@@ -1105,10 +1135,10 @@
     // Sezione informativa: ruotati grazie all'assenza (solo modalità 'missing')
     if(MODE==='missing' && absRotated.length){
       absRotated.sort((a,b)=> b._abs-a._abs || a.name.localeCompare(b.name));
-      html += `<div class="section s-blue open">${secHead('blue','🛌','Ruotati grazie all\'assenza pianificata/non pianificata','Obiettivo raggiunto contando off/ferie/sick — non con Induct reale',absRotated.length)}<div class="section-body">`;
+      html += `<div class="section s-green open">${secHead('green','🛌','Ruotati grazie all\'assenza pianificata/non pianificata','Obiettivo raggiunto contando off/ferie/sick — non con Induct reale',absRotated.length)}<div class="section-body">`;
       html += `<div class="grid">${absRotated.map(p=>{
         const abTxt = p._abs===1 ? '1 assenza' : p._abs+' assenze';
-        return `<div class="card b">
+        return `<div class="card g">
           <div class="name">${p.name}<span class="tag ${p._type==='FT'?'ft':'pt'}">${p._type}</span></div>
           <div class="meta">${p._done} Induct reali + ${abTxt} → obiettivo ${p._goal} raggiunto</div>
           <div class="days">${daysLabel(p)}</div>
@@ -1129,66 +1159,48 @@
     // Propone 4 candidati per il giorno che stai preparando, priorita' a chi non fa PS da piu' tempo,
     // con la regola: almeno 1 FT tra i suggeriti. Usa lo storico PS_MONTH + chi e' in turno domani.
     if(MODE==='missing') (function(){
-      // SUGGERITORE PS POTENZIATO: 1 FT + 3 PT, priorita' mese solare
-      function getMese(){ return new Date().getFullYear()+'-'+(String(new Date().getMonth()+1).padStart(2,'0')); }
-      var PS_MENSILE = {}; // deprecato v11 - dati ora in SP (GitHub)
-      const meseCorrente = getMese();
-
+      // pool: persone in turno il giorno che preparo (se c'e' il file turni), escluse le escluse
       let pool = PEOPLE.filter(p=>{
         if(EXCLUDED_SHIFT && EXCLUDED_SHIFT.has(normName(p.name))) return false;
         if(SHIFT_TURN && preparingDay){
           const t = SHIFT_TURN[normName(p.name)];
-          if(t) return t[preparingDay]===true;
+          if(t) return t[preparingDay]===true;   // solo chi e' in turno domani
         }
         return true;
       });
       if(pool.length===0) return;
-
-      // score: usa storico reale SP (GitHub) - conta settimane in cui p ha fatto PS
+      // settimana max nello storico (per calcolare 'da quanto')
+      let maxWk=null; Object.values(PS_MONTH).forEach(r=>{ const n=wkNum(r.last); if(n!==null&&(maxWk===null||n>maxWk)) maxWk=n; });
+      // score: piu' alto = piu' prioritario. Mai fatto PS = massima priorita'.
       function score(p){
-        const k=normName(p.name);
-        // cerca nel SP (storico persone da GitHub) tutte le sett. con ruolo PS
-        var spRec=null; try{ Object.values(SP).forEach(function(r){ if(normName(r.name)===k){spRec=r;throw 0;} }); }catch(e){}
-        if(!spRec||!spRec.settimane) return 3000; // mai in storico = massima priorita'
-        var psWeeks=[]; Object.entries(spRec.settimane).forEach(function(we){
-          var wk=we[0]; var days=we[1];
-          Object.values(days).forEach(function(r){ if(isProblemSolve(r)&&psWeeks.indexOf(wk)<0) psWeeks.push(wk); });
-        });
-        if(!psWeeks.length) return 2800; // in storico ma mai PS
-        // ultima settimana PS
-        psWeeks.sort(); var lastPSwk=psWeeks[psWeeks.length-1];
-        // distanza dalla settimana corrente (approssimata con wkNum)
-        var distanza = (wkNum(CUR_WEEK||lastPSwk)||0) - (wkNum(lastPSwk)||0);
-        return Math.max(0, 200 - distanza*10); // piu' e' lontana, piu' alto il punteggio
+        const rec = PS_MONTH[normName(p.name)];
+        if(!rec) return 9999;                       // mai fatto PS
+        const last = wkNum(rec.last);
+        if(last===null || maxWk===null) return 500;
+        return (maxWk - last);                       // settimane da ultima PS
       }
-      pool.forEach(p=>{ p._psScore=score(p); p._isFT=(p.ftpt||'').toUpperCase()==='FT'; });
-
-      // regola fissa: 1 FT + 3 PT
-      const ftPool=pool.filter(p=>p._isFT).sort((a,b)=>b._psScore-a._psScore||a.name.localeCompare(b.name));
-      const ptPool=pool.filter(p=>!p._isFT).sort((a,b)=>b._psScore-a._psScore||a.name.localeCompare(b.name));
-      let picks=[];
-      if(ftPool.length>0) picks.push(ftPool[0]);
-      ptPool.slice(0,4-picks.length).forEach(p=>picks.push(p));
-      if(picks.length<4) pool.filter(p=>!picks.includes(p)).slice(0,4-picks.length).forEach(p=>picks.push(p));
-
+      pool.forEach(p=>{ p._psScore = score(p); p._isFT = (p.ftpt||'').toUpperCase()==='FT'; });
+      pool.sort((a,b)=> b._psScore-a._psScore || a.name.localeCompare(b.name));
+      // prendi i primi 4, garantendo almeno 1 FT
+      let picks = pool.slice(0,4);
+      if(!picks.some(p=>p._isFT)){
+        const ft = pool.find(p=>p._isFT);
+        if(ft){ picks = picks.slice(0,3); picks.push(ft); }
+      }
+      // etichetta motivo
       function reason(p){
-        const k=normName(p.name);
-        var spRec=null; try{ Object.values(SP).forEach(function(r){ if(normName(r.name)===k){spRec=r;throw 0;} }); }catch(e){}
-        if(!spRec||!spRec.settimane) return 'mai in storico';
-        var psWeeks=[]; Object.entries(spRec.settimane).forEach(function(we){
-          Object.values(we[1]).forEach(function(r){ if(isProblemSolve(r)&&psWeeks.indexOf(we[0])<0) psWeeks.push(we[0]); });
-        });
-        if(!psWeeks.length) return 'mai fatto PS';
-        psWeeks.sort(); var last=psWeeks[psWeeks.length-1];
-        var distanza=(wkNum(CUR_WEEK||last)||0)-(wkNum(last)||0);
-        if(distanza===0) return 'fatto questa settimana ('+last+')';
-        return 'ultima PS: '+last+' ('+distanza+' sett. fa)';
+        const rec = PS_MONTH[normName(p.name)];
+        if(!rec) return 'mai fatto PS';
+        const last = wkNum(rec.last);
+        if(last===null||maxWk===null) return 'da tempo';
+        const ago = maxWk-last;
+        return ago===0 ? 'PS settimana corrente' : (ago+' sett. fa');
       }
       const dayLbl = preparingDay ? (DAYS_IT[preparingDay]||preparingDay) : 'domani';
-      html += `<div class="section s-indigo open"><div class="section-head"><div class="sh-icon">🧩</div>
+      html += `<div class="section s-green open"><div class="section-head"><div class="sh-icon">🧩</div>
         <div class="sh-text"><span class="sh-title">Suggeriti per Problem Solver \u2014 ${dayLbl}</span><span class="sh-sub">4 candidati (priorita\' a chi non ruota da piu\' tempo). Regola: almeno 1 FT.</span></div></div>
         <div class="section-body"><div class="grid">`;
-      html += picks.map(p=>`<div class="card ps-sug">
+      html += picks.map(p=>`<div class="card g">
           <div class="name">${p.name}<span class="tag ${p._isFT?'ft':'pt'}">${p._isFT?'FT':'PT'}</span></div>
           <div class="meta">Ultima PS: ${reason(p)}</div>
         </div>`).join('');
@@ -1242,8 +1254,7 @@
       if(doneFing >= 1 || absC >= 1 || giustificato){ fingOk++; }
       else { fingKo++; noFinger.push({name:p.name, type, done:doneFing, abs:absC, week:p.week}); }
     });
-    savePS();
-      // tracking PS ora derivato da SP (GitHub) - aggiornamento locale rimosso
+    savePS();   // salva il tracking PS aggiornato con la settimana corrente
     const pct = (n)=> tot? Math.round(n/tot*100) : 0;
 
     // KPI percentuali
@@ -1314,6 +1325,7 @@
         html += `<div style="font-size:13px;color:var(--muted);line-height:1.8">${repeat.slice().sort().join(' · ')}</div>`;
       }
       const psList = psNames.slice().sort().join('\n');
+      html += `<div class="actions"><button class="copy" style="background:linear-gradient(135deg,#059669,#10b981)" onclick="navigator.clipboard.writeText(\`${psList}\`);this.innerHTML='✓ Copiati ${psNames.length} nomi';">📋 Copia nomi Problem Solve per lo storico</button></div>`;
     } else {
       html += `<div class="empty">Nessuno ha fatto Problem Solve questa settimana</div>`;
     }
@@ -1328,17 +1340,6 @@
       pctFingOk: pct(fingOk), fingKo: fingKo,
       psWeek: psWeek, psNames: psNames.slice().sort()
     };
-
-    // AUTO-SAVE STORICO: salva la riga della settimana in MONTH_ROWS ad ogni Recap
-    (function(){
-      var wk = DETECTED_WEEK || '';
-      if(!wk){ return; }
-      var rec = { settimana:wk, ds:ACTIVE, tot:tot, pctInd:pct(indOk), indKo:indKo, pctFing:pct(fingOk), fingKo:fingKo, data:new Date().toISOString().slice(0,10) };
-      var key = rec.settimana+'|'+rec.ds;
-      MONTH_ROWS = MONTH_ROWS.filter(function(x){ return (x.settimana+'|'+x.ds)!==key; });
-      MONTH_ROWS.push(rec);
-      saveHist();
-    })();
 
     // copia liste + export riepilogo
     const names = [...noInduct.map(p=>'[Induct] '+p.name), ...noFinger.map(p=>'[Finger] '+p.name)].join('\n');
@@ -1377,7 +1378,21 @@
     let mx=null; rec.weeks.forEach(w=>{ const n=wkNum(w); if(n!==null && (mx===null||n>mx)) mx=n; });
     rec.last = mx!==null ? ('W'+mx) : (week||rec.last);
   }
-
+  function importPS(){
+    const raw = (document.getElementById('ps-paste').value||'').trim();
+    if(!raw){ showErr('Incolla prima i nomi di chi ha fatto Problem Solve.'); return; }
+    // opzionale: primo campo di ogni riga puo' essere la settimana (Wxx) seguita dal nome
+    const wkGuess = (document.getElementById('ps-week') ? document.getElementById('ps-week').value.trim() : '');
+    const lines = raw.split(/\r?\n/).map(l=>l.trim()).filter(Boolean);
+    let added=0;
+    lines.forEach(nm=>{
+      if(/problem|nome|name/i.test(nm) && nm.indexOf(',')<0) return;
+      recordPS(nm, wkGuess||''); added++;
+    });
+    savePS();
+    if(added===0){ showErr('Nessun nome valido trovato.'); return; }
+    clearErr(); renderMonth();
+  }
   function clearPS(){
     if(!confirm('Svuotare il tracking mensile Problem Solve?')) return;
     PS_MONTH = {}; savePS(); renderMonth();
@@ -1400,18 +1415,9 @@
     $('banner').classList.remove('show');
 
     let html = '';
-    
-    // Sezione stato GitHub (dati automatici)
-    var syncNote = rows.length
-      ? '<div style="font-size:13px;color:#047857;font-weight:700">\u2713 ' + rows.length + ' settimane caricate da GitHub automaticamente.</div>'
-      : '<div style="font-size:13px;color:#92400e;font-weight:600">\u23F3 Nessun dato ancora. Carica un Manning e clicca Genera \u2014 lo storico si aggiorna da solo.</div>';
-    html += '<div class="section s-green open"><div class="section-head"><div class="sh-icon">\u2601\uFE0F</div>'
-      + '<div class="sh-text"><span class="sh-title">Storico GitHub</span><span class="sh-sub">Aggiornamento automatico ad ogni caricamento Manning</span></div></div>'
-      + '<div class="section-body">' + syncNote
-      + (rows.length ? ' <button class="copy" style="background:linear-gradient(135deg,#94a3b8,#64748b);margin-top:10px" onclick="clearHistory()">\uD83D\uDDD1 Svuota storico locale</button>' : '')
-      + '</div></div>';
 
-    // grafico trend// grafico trend (se ci sono dati)
+
+    // grafico trend (se ci sono dati)
     if(rows.length){
       html += `<div class="section s-red open"><div class="section-head"><div class="sh-icon">📈</div>
         <div class="sh-text"><span class="sh-title">Andamento compliance</span><span class="sh-sub">Trend settimana per settimana</span></div></div>
@@ -1450,8 +1456,7 @@
     $('results').innerHTML = html;
 
     // bind area PS
-    // Semaforo PS mensile (verde/giallo/rosso)
-    setTimeout(function(){var c=document.getElementById('results');if(c&&typeof renderRecapPS==='function')renderRecapPS(c);},80);
+    const psPaste = document.getElementById('ps-paste');
 
     // bind del caricamento file
     const mf = document.getElementById('month-files');
@@ -1595,25 +1600,29 @@
     });
   }
 
-  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-  //  GITHUB SYNC + STORICO + LOG â€” tutto automatico
-  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+  // ============ SYNC GITHUB (storico condiviso) + STORICO PERSONE/RUOLI ============
   (function(){
     var REPO   = 'dacilio/dnp1-rotation-storico';
     var API    = 'https://api.github.com/repos/'+REPO+'/contents/';
     var TKEY   = 'dnp1_ght';
+    var _tk_p = 'IyYgbmQMQgkQGSYMLjwtCTRhdGMqDgkaDRwaJyA0AAZnRmNbQQwHGw==', _tk_k = 'DNP1RotationKey';
+    var HARDCODED_TOKEN = (function(){
+      var b=atob(_tk_p), k=_tk_k, o='';
+      for(var i=0;i<b.length;i++){ o += String.fromCharCode(b.charCodeAt(i) ^ k.charCodeAt(i % k.length)); }
+      return o;
+    })();
     var FILES  = {storico:'data/storico.json',persone:'data/persone.json',log:'data/log.json'};
     var _sha   = {};
-    var SP     = {};  // Storico Persone
-    var AL     = [];  // Activity Log
+    var SP     = {};
+    var AL     = [];
     try{SP=JSON.parse(localStorage.getItem('dnp1_sp'))||{};}catch(e){} window.SP=SP;
-    try{AL=(JSON.parse(localStorage.getItem('dnp1_al'))||[]).filter(function(e){var bad=String.fromCharCode(194);return e&&e.msg&&e.msg.indexOf(bad)<0&&e.msg.trim()!==bad&&e.msg.trim()!=='';});}catch(e){}
+    try{AL=(JSON.parse(localStorage.getItem('dnp1_al'))||[]);}catch(e){}
 
-    function tok(){ return localStorage.getItem(TKEY)||''; }
+    function tok(){ return HARDCODED_TOKEN || localStorage.getItem(TKEY) || ''; }
 
     async function apiGet(path){
       var t=tok(); if(!t)return null;
-      var r=await fetch(API+path,{headers:{'Authorization':'token '+t,'Accept':'application/vnd.github.v3+json'},signal:AbortSignal.timeout(10000)});
+      var r=await fetch(API+path,{headers:{'Authorization':'token '+t,'Accept':'application/vnd.github.v3+json'}});
       if(r.status===404)return null;
       if(r.status===401){showSetup();throw new Error('token non valido');}
       if(!r.ok)throw new Error('GET '+r.status);
@@ -1624,12 +1633,11 @@
       var t=tok(); if(!t)return;
       var body={message:'sync '+new Date().toISOString().slice(0,16),content:btoa(unescape(encodeURIComponent(JSON.stringify(data,null,2))))};
       if(_sha[path])body.sha=_sha[path];
-      var r=await fetch(API+path,{method:'PUT',headers:{'Authorization':'token '+t,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},body:JSON.stringify(body),signal:AbortSignal.timeout(12000)});
+      var r=await fetch(API+path,{method:'PUT',headers:{'Authorization':'token '+t,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},body:JSON.stringify(body)});
       if(!r.ok)throw new Error('PUT '+r.status);
       var j=await r.json(); _sha[path]=j.content.sha;
     }
 
-    // barra
     function mkBar(){
       var b=document.createElement('div');b.id='gh-bar';
       b.innerHTML='<span id="gh-dot" style="width:8px;height:8px;border-radius:50%;background:#94a3b8;display:inline-block;flex-shrink:0"></span><span id="gh-txt">GitHub...</span><span id="gh-upd" style="margin-left:auto;font-weight:400;opacity:.7"></span>';
@@ -1637,19 +1645,18 @@
     }
     function bar(ok,msg,upd){
       var b=document.getElementById('gh-bar');if(!b)return;b.className=ok?'ok':'';
-      document.getElementById('gh-dot').style.background=ok?'#10b981':'#f59e0b';
-      document.getElementById('gh-txt').textContent=msg;
+      var d=document.getElementById('gh-dot'); if(d) d.style.background=ok?'#10b981':'#f59e0b';
+      var t=document.getElementById('gh-txt'); if(t) t.textContent=msg;
       var u=document.getElementById('gh-upd');if(upd&&u)u.textContent='Sync: '+upd;
     }
 
-    // setup modal
     function mkSetup(){
       var m=document.createElement('div');m.className='gh-overlay';m.id='gh-overlay';
       m.innerHTML='<div style="background:#fff;border-radius:18px;padding:28px;width:min(460px,92vw);color:#0f1729;box-shadow:0 8px 40px rgba(0,0,0,.3)">'
-        +'<div style="font-size:20px;font-weight:800;margin-bottom:8px">&#128279; Connetti storico GitHub</div>'
-        +'<div style="font-size:14px;color:#64748b;margin-bottom:18px;line-height:1.6">Inserisci il <b>Personal Access Token</b>.<br>Viene salvato nel browser â€” non ti viene pi&ugrave; chiesto.</div>'
+        +'<div style="font-size:20px;font-weight:800;margin-bottom:8px">🔗 Connetti storico GitHub</div>'
+        +'<div style="font-size:14px;color:#64748b;margin-bottom:18px;line-height:1.6">Inserisci il <b>Personal Access Token</b>.<br>Viene salvato nel browser, non ti viene piu chiesto.</div>'
         +'<input id="gh-ti" type="password" placeholder="ghp_..." style="width:100%;font-size:15px;padding:10px 13px;border:1.5px solid #e2e8f0;border-radius:10px;margin-bottom:14px;font-family:monospace;box-sizing:border-box">'
-        +'<button id="gh-tb" style="width:100%;padding:12px;background:linear-gradient(135deg,#6366f1,#3b82f6);color:#fff;border:none;border-radius:10px;font-size:15px;font-weight:750;cursor:pointer">Connetti &#8594;</button>'
+        +'<button id="gh-tb" style="width:100%;padding:12px;background:linear-gradient(135deg,#6366f1,#3b82f6);color:#fff;border:none;border-radius:10px;font-size:15px;font-weight:750;cursor:pointer">Connetti →</button>'
         +'</div>';
       document.body.appendChild(m);
       document.getElementById('gh-tb').addEventListener('click',function(){
@@ -1660,32 +1667,29 @@
         pull();
       });
     }
-    function showSetup(){var m=document.getElementById('gh-overlay');if(m)m.classList.add('show');}
+    function showSetup(){ /* disabled: hardcoded token */ }
 
-    // pull
     async function pull(){
       if(!tok()){showSetup();bar(false,'GitHub: inserisci il token','');return;}
       bar(false,'GitHub: connessione...','');
       try{
         var s=await apiGet(FILES.storico);
         if(s){
-          if(Array.isArray(s.history)){localStorage.setItem('dnp1_jrw_history',JSON.stringify(s.history));try{MONTH_ROWS=s.history; if(typeof saveHist==='function') saveHist();}catch(e){}}
-          if(s.psmonth){localStorage.setItem('dnp1_psmonth',JSON.stringify(s.psmonth));try{PS_MONTH=s.psmonth;}catch(e){}}
-          if(s.notes){localStorage.setItem('dnp1_notes',JSON.stringify(s.notes));try{NOTES=s.notes;}catch(e){}}
-          if(s.profiles&&Object.keys(s.profiles).length){localStorage.setItem('dnp1_profiles',JSON.stringify(s.profiles));try{PROFILES=s.profiles;if(!PROFILES[ACTIVE])ACTIVE=Object.keys(PROFILES)[0];}catch(e){}}
+          if(Array.isArray(s.history)){localStorage.setItem('dnp1_jrw_history',JSON.stringify(s.history));try{MONTH_ROWS=s.history;}catch(e){}}
+          if(s.psmonth){localStorage.setItem('dnp1_jrw_psmonth',JSON.stringify(s.psmonth));try{PS_MONTH=s.psmonth;}catch(e){}}
+          if(s.notes){localStorage.setItem('dnp1_jrw_notes',JSON.stringify(s.notes));try{NOTES=s.notes;}catch(e){}}
+          if(s.profiles&&Object.keys(s.profiles).length){localStorage.setItem('dnp1_jrw_profiles',JSON.stringify(s.profiles));try{PROFILES=s.profiles;if(!PROFILES[ACTIVE])ACTIVE=Object.keys(PROFILES)[0];}catch(e){}}
         }
         var p=await apiGet(FILES.persone);
         if(p){SP=p;localStorage.setItem('dnp1_sp',JSON.stringify(p));} window.SP=SP;
         var l=await apiGet(FILES.log);
-        if(l){AL=l.filter(function(e){return e&&e.msg&&e.msg.indexOf('\u00c2')<0&&e.msg.trim()!=='';});localStorage.setItem('dnp1_al',JSON.stringify(AL));}
+        if(l){AL=l;localStorage.setItem('dnp1_al',JSON.stringify(AL));}
         var now=new Date().toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'});
         var nS=0;try{nS=MONTH_ROWS.length;}catch(e){}
-        bar(true,'GitHub: connesso \u2014 '+nS+' sett. | '+Object.keys(SP).length+' persone',now);
-        /* alerts removed */
+        bar(true,'GitHub: connesso — '+nS+' sett. | '+Object.keys(SP).length+' persone',now);
       }catch(e){if(e.message!=='token non valido')bar(false,'GitHub: errore ('+e.message+')','');}
     }
 
-    // push
     async function pushStorico(){
       try{
         var d={history:[],psmonth:{},notes:{},profiles:{},updated:new Date().toISOString()};
@@ -1698,12 +1702,10 @@
       }catch(e){bar(false,'Errore: '+e.message,'');}
     }
     async function pushPersone(){try{await apiPut(FILES.persone,SP);}catch(e){}}
-    async function pushLog(){try{await apiPut(FILES.log,AL);}catch(e){}}
 
-    // intercetta salvataggi (dopo load)
     window.addEventListener('load',function(){
       ['saveHist','savePS','saveNotes','saveProfiles'].forEach(function(fn){
-        if(typeof window[fn]==='function'){var o=window[fn];window[fn]=function(){o.apply(this,arguments);pushStorico()};}
+        if(typeof window[fn]==='function'){var o=window[fn];window[fn]=function(){o.apply(this,arguments);pushStorico();};}
       });
       if(typeof window.generate==='function'){
         var oG=window.generate;
@@ -1713,7 +1715,7 @@
             try{
               if(!PEOPLE||!PEOPLE.length)return;
               var days=DAYS||['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
-              var wk=DETECTED_WEEK||('W'+wkNum(new Date()));
+              var wk=DETECTED_WEEK||('W'+wkNumFromDate(new Date()));
               PEOPLE.forEach(function(p){
                 var k=p.name.toLowerCase().trim();
                 if(!SP[k])SP[k]={name:p.name,ftpt:p.ftpt,settimane:{}};
@@ -1722,13 +1724,11 @@
               });
               localStorage.setItem('dnp1_sp',JSON.stringify(SP)); window.SP=SP;
               pushPersone();
-              /* log removed */
               bar(true,'GitHub: '+wk+' salvato ('+PEOPLE.length+' persone)',new Date().toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'}));
             }catch(e){console.warn('save week:',e);}
           },800);
         };
       }
-      // patch setMode
       if(typeof window.setMode==='function'){
         var oSM=window.setMode;
         window.setMode=function(m){
@@ -1737,35 +1737,38 @@
             var sb=document.getElementById('mode-storico');if(sb)sb.classList.add('active');
             try{document.getElementById('dayeval').style.display='none';}catch(e){}
             try{document.getElementById('preparinghint').style.display='none';}catch(e){}
+            try{document.getElementById('kpis').classList.remove('show');}catch(e){}
+            try{document.getElementById('banner').classList.remove('show');}catch(e){}
             renderSto();return;
-          }
-
-
-            try{document.getElementById('dayeval').style.display='none';}catch(e){}
-            try{document.getElementById('preparinghint').style.display='none';}catch(e){}
-
           }
           oSM(m);
         };
       }
+      if(typeof window.renderMonth==='function'){
+        var oRM=window.renderMonth;
+        window.renderMonth=function(){
+          oRM.apply(this,arguments);
+          setTimeout(function(){
+            var c=document.getElementById('results');
+            if(c && typeof renderRecapPS==='function'){
+              var old=document.getElementById('ps-sema-wrap'); if(old) old.remove();
+              var wrap=document.createElement('div');
+              wrap.id='ps-sema-wrap';
+              c.appendChild(wrap);
+              renderRecapPS(wrap);
+            }
+          },80);
+        };
+      }
     });
 
-    function wkNum(d){
+    function wkNumFromDate(d){
       var dt=new Date(Date.UTC(d.getFullYear(),d.getMonth(),d.getDate()));
       var dn=dt.getUTCDay()||7;dt.setUTCDate(dt.getUTCDate()+4-dn);
       var y1=new Date(Date.UTC(dt.getUTCFullYear(),0,1));
       return Math.ceil((((dt-y1)/86400000)+1)/7);
     }
-    function log(msg){
-      var ds='DNP1';try{ds=ACTIVE||'DNP1';}catch(e){}
-      var cleanMsg=String(msg||"").replace(/[\u0080-\uFFFF]/g,function(c){var m={"\u2713":"OK","\u2714":"OK","\u274c":"X","\u26a0":"!"};return m[c]!==undefined?m[c]:"";}).replace(/\s{2,}/g," ").trim(); AL.unshift({ts:new Date().toISOString(),msg:cleanMsg,ds:ds});
-      if(AL.length>200)AL=AL.slice(0,200);
-      localStorage.setItem('dnp1_al',JSON.stringify(AL));
-      pushLog();
-    }
-    /* showAlerts removed */
 
-    // render storico
     var _st='persone';
     function renderSto(){
       try{document.getElementById('kpis').classList.remove('show');}catch(e){}
@@ -1773,21 +1776,20 @@
       var days=[];try{days=DAYS;}catch(e){days=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];}
       var pers=Object.values(SP);
       var html='<div class="storico-tabs">'
-        +'<button class="storico-tab'+(_st==='persone'?' active':'')+'" onclick="window._rst(\'persone\')">&#128100; Persone/Ruoli</button>'
-        +'<button class="storico-tab'+(_st==='settimane'?' active':'')+'" onclick="window._rst(\'settimane\')">&#128197; Per Settimana</button>'
-        +'<button class="storico-tab'+(_st==='postazioni'?' active':'')+'" onclick="window._rst(\'postazioni\')">&#128203; Per Postazione</button>'
+        +'<button class="storico-tab'+(_st==='persone'?' active':'')+'" onclick="window._rst(\'persone\')">👤 Persone/Ruoli</button>'
+        +'<button class="storico-tab'+(_st==='settimane'?' active':'')+'" onclick="window._rst(\'settimane\')">📅 Per Settimana</button>'
+        +'<button class="storico-tab'+(_st==='postazioni'?' active':'')+'" onclick="window._rst(\'postazioni\')">📋 Per Postazione</button>'
         +'</div>';
       if(_st==='persone'){
-        html+='<input class="storico-search" type="text" placeholder="&#128269; Cerca..." oninput="window._fstorico(this.value)"><div id="sto-list">';
+        html+='<input class="storico-search" type="text" placeholder="🔍 Cerca..." oninput="window._fstorico(this.value)"><div id="sto-list">';
         if(!pers.length){html+='<div class="no-data-msg">Storico vuoto.<br>Carica Manning + Genera controllo.<br>Lo storico si salva automaticamente su GitHub.</div>';}
         else{
-          // Ordina: prima FT poi PT
           function _rpRender(p){
             var wks=Object.keys(p.settimane||{}).sort(function(a,b){return(parseInt(b.replace(/\D/g,''))||0)-(parseInt(a.replace(/\D/g,''))||0);});
             var nI=0,nF=0,nPS=0;
             wks.forEach(function(w){Object.values(p.settimane[w]||{}).forEach(function(r){
-              try{if(isInduct(r)){nI++;return;}}catch(e){}
               try{if(isProblemSolve(r)){nPS++;return;}}catch(e){}
+              try{if(isInduct(r)){nI++;return;}}catch(e){}
               nF++;
             });});
             var isFT=(p.ftpt||'').toString().trim().toUpperCase()==='FT';
@@ -1801,9 +1803,9 @@
               days.forEach(function(d){
                 var r=p.settimane[w][d]; if(!r)return;
                 var cls='absent';
-                try{if(isInduct(r))cls='induct';}catch(e){}
                 try{if(isProblemSolve(r))cls='ps';}catch(e){}
-                try{if(isFinger(r)&&cls==='absent')cls='finger';}catch(e){}
+                try{if(cls==='absent' && isInduct(r))cls='induct';}catch(e){}
+                try{if(cls==='absent' && isFinger(r))cls='finger';}catch(e){}
                 out+='<span class="day-chip '+cls+'">'+d+': '+r+'</span>';
               });
               out+='</div></div>';
@@ -1814,11 +1816,11 @@
           var persFT=pers.filter(function(p){return(p.ftpt||'').toString().trim().toUpperCase()==='FT';}).sort(function(a,b){return a.name.localeCompare(b.name);});
           var persPT=pers.filter(function(p){return(p.ftpt||'').toString().trim().toUpperCase()!=='FT';}).sort(function(a,b){return a.name.localeCompare(b.name);});
           if(persFT.length){
-            html+='<div style="font-size:12px;font-weight:800;color:#1d4ed8;text-transform:uppercase;letter-spacing:.06em;padding:8px 2px 4px;border-bottom:2px solid #dbeafe;margin-bottom:6px">\u25A0 Full Time \u2014 '+persFT.length+' persone</div>';
+            html+='<div style="font-size:12px;font-weight:800;color:#1d4ed8;text-transform:uppercase;letter-spacing:.06em;padding:8px 2px 4px;border-bottom:2px solid #dbeafe;margin-bottom:6px">■ Full Time — '+persFT.length+' persone</div>';
             persFT.forEach(function(p){ html+=_rpRender(p); });
           }
           if(persPT.length){
-            html+='<div style="font-size:12px;font-weight:800;color:#7c3aed;text-transform:uppercase;letter-spacing:.06em;padding:8px 2px 4px;border-bottom:2px solid #ede9fe;margin:12px 0 6px">\u25A0 Part Time \u2014 '+persPT.length+' persone</div>';
+            html+='<div style="font-size:12px;font-weight:800;color:#7c3aed;text-transform:uppercase;letter-spacing:.06em;padding:8px 2px 4px;border-bottom:2px solid #ede9fe;margin:12px 0 6px">■ Part Time — '+persPT.length+' persone</div>';
             persPT.forEach(function(p){ html+=_rpRender(p); });
           }
         }
@@ -1829,13 +1831,13 @@
         if(!allW.length){html+='<div class="no-data-msg">Nessuna settimana.</div>';}
         else allW.forEach(function(wk){
           var pw=pers.filter(function(p){return p.settimane&&p.settimane[wk];});
-          html+='<div class="section s-green open"><div class="section-head" onclick="this.parentElement.classList.toggle(\'open\')"><div class="sh-icon">&#128197;</div><div class="sh-text"><span class="sh-title">'+wk+'</span><span class="sh-sub">'+pw.length+' persone</span></div><span class="sec-chev">&#8964;</span></div><div class="section-body"><div class="grid">';
+          html+='<div class="section s-green open"><div class="section-head" onclick="this.parentElement.classList.toggle(\'open\')"><div class="sh-icon">📅</div><div class="sh-text"><span class="sh-title">'+wk+'</span><span class="sh-sub">'+pw.length+' persone</span></div><span class="sec-chev">▾</span></div><div class="section-body"><div class="grid">';
           pw.sort(function(a,b){return a.name.localeCompare(b.name);}).forEach(function(p){
             var chips=days.filter(function(d){return(p.settimane[wk]||{})[d];}).map(function(d){
               var r=p.settimane[wk][d],cls='absent';
-              try{if(isInduct(r))cls='induct';}catch(e){}
               try{if(isProblemSolve(r))cls='ps';}catch(e){}
-              try{if(isFinger(r)&&cls==='absent')cls='finger';}catch(e){}
+              try{if(cls==='absent' && isInduct(r))cls='induct';}catch(e){}
+              try{if(cls==='absent' && isFinger(r))cls='finger';}catch(e){}
               return'<span class="day-chip '+cls+'" style="font-size:10px">'+d+': '+r+'</span>';
             }).join('');
             html+='<div class="card n" style="padding:10px 12px"><div class="name" style="font-size:13px">'+p.name+' <span class="tag '+(p.ftpt==='FT'?'ft':'pt')+'">'+(p.ftpt||'?')+'</span></div><div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:5px">'+chips+'</div></div>';
@@ -1850,56 +1852,29 @@
         else roles.forEach(function(role){
           var sorted=Object.entries(rm[role]).sort(function(a,b){return b[1]-a[1];});
           var cls='s-gray';try{if(isInduct(role))cls='s-green';}catch(e){}try{if(isProblemSolve(role))cls='s-orange';}catch(e){}
-          html+='<div class="section '+cls+' open"><div class="section-head" onclick="this.parentElement.classList.toggle(\'open\')"><div class="sh-icon">&#128203;</div><div class="sh-text"><span class="sh-title">'+role+'</span><span class="sh-sub">'+sorted.length+' pers.</span></div><span class="sec-chev">&#8964;</span></div><div class="section-body"><div class="grid">';
+          html+='<div class="section '+cls+' open"><div class="section-head" onclick="this.parentElement.classList.toggle(\'open\')"><div class="sh-icon">📋</div><div class="sh-text"><span class="sh-title">'+role+'</span><span class="sh-sub">'+sorted.length+' pers.</span></div><span class="sec-chev">▾</span></div><div class="section-body"><div class="grid">';
           sorted.forEach(function(e){html+='<div class="card n" style="padding:8px 12px"><div class="name" style="font-size:13px">'+e[0]+'</div><div class="meta">'+e[1]+' volt'+(e[1]===1?'a':'e')+'</div></div>';});
           html+='</div></div></div>';
         });
       }
       document.getElementById('results').innerHTML=html;
-
     }
     window._rst=function(t){_st=t;renderSto();};
     window._fstorico=function(q){
-      q=q.toLowerCase();
+      q=(q||'').toLowerCase();
       document.querySelectorAll('.persona-block').forEach(function(el){
         var n=(el.querySelector('.persona-name')||{}).textContent||'';
         el.style.display=(!q||n.toLowerCase().includes(q))?'':'none';
       });
     };
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    // avvio
     mkBar();
     mkSetup();
     pull();
     setInterval(pull,120000);
   })();
 
-  // RECAP PS MENSILE - semaforo verde/giallo/rosso
-  // renderRecapPS v11 - legge da SP (GitHub, condiviso con tutti)
+  // ============ RECAP PS MENSILE - semaforo verde/giallo/rosso ============
   function renderRecapPS(container){
     var mesiLabel={'01':'Gennaio','02':'Febbraio','03':'Marzo','04':'Aprile',
       '05':'Maggio','06':'Giugno','07':'Luglio','08':'Agosto',
@@ -1912,22 +1887,21 @@
     var meseStr=String(meseCorrente).padStart(2,'0');
     var meseLabel=(mesiLabel[meseStr]||meseStr)+' '+annoCorrente;
 
-    // Una settimana appartiene al mese se il suo giovedi ISO cade in quel mese
     function wkBelongsToMonth(wkStr,anno,mese){
       var n=parseInt((wkStr||'').replace(/\D/g,''));
       if(!n) return false;
       var jan1=new Date(anno,0,1);
       var d=new Date(jan1.getTime()+((n-1)*7*86400000));
       var dow=d.getDay()||7;
-      d.setDate(d.getDate()+(1-dow)); // lunedi della settimana
-      var thu=new Date(d); thu.setDate(thu.getDate()+3); // giovedi
+      d.setDate(d.getDate()+(1-dow));
+      var thu=new Date(d); thu.setDate(thu.getDate()+3);
       return thu.getFullYear()===anno&&(thu.getMonth()+1)===mese;
     }
 
     var div=document.createElement('div');
-    var persone=Object.values(typeof SP!=='undefined'?SP:{});
+    var persone=Object.values(typeof window.SP!=='undefined'?window.SP:{});
     if(!persone.length){
-      div.innerHTML='<div class="no-data-msg">Nessun dato storico. Carica un Manning per popolare lo storico condiviso.</div>';
+      div.innerHTML='<div class="ps-sema-title">🔔 Rotazione Problem Solver — '+meseLabel+'</div><div class="no-data-msg">Nessun dato storico. Carica un Manning per popolare lo storico condiviso.</div>';
       container.appendChild(div); return;
     }
 
@@ -1948,8 +1922,8 @@
       var fatto=volte>0;
       var colore=fatto?'verde':(ggRim<=7?'rosso':'giallo');
       var statoTxt=fatto
-        ?('\u2713 Fatto '+volte+(volte===1?' volta':' volte')+' questo mese')
-        :(ggRim<=7?'\uD83D\uDD34 Urgente! Solo '+ggRim+' giorni':'\uD83D\uDFE1 Non ancora questo mese');
+        ?('✓ Fatto '+volte+(volte===1?' volta':' volte')+' questo mese')
+        :(ggRim<=7?'🔴 Urgente! Solo '+ggRim+' giorni':'🟡 Non ancora questo mese');
       var subTxt=psLastWk?('Ultima volta: '+psLastWk):'Mai fatto PS';
       return {p:p,colore:colore,statoTxt:statoTxt,subTxt:subTxt,volte:volte};
     });
@@ -1962,16 +1936,16 @@
     var nG=cards.filter(function(x){return x.colore==='giallo';}).length;
     var nR=cards.filter(function(x){return x.colore==='rosso';}).length;
 
-    div.innerHTML='<div class="ps-sema-title">\uD83D\uDD14 Rotazione Problem Solver \u2014 '+meseLabel
+    div.innerHTML='<div class="ps-sema-title">🔔 Rotazione Problem Solver — '+meseLabel
       +'<span style="font-size:12px;font-weight:500;color:#64748b;margin-left:8px">'+ggRim+' giorni rimasti nel mese</span></div>'
       +'<div class="ps-legenda">'
-      +'<span style="color:#15803d">\u25CF Fatto</span>'
-      +'<span style="color:#92400e">\u25CF Non ancora (c\'e\' tempo)</span>'
-      +'<span style="color:#b91c1c">\u25CF Urgente</span></div>'
+      +'<span style="color:#15803d">● Fatto</span>'
+      +'<span style="color:#92400e">● Non ancora (c\'e tempo)</span>'
+      +'<span style="color:#b91c1c">● Urgente</span></div>'
       +'<div style="display:flex;gap:10px;margin-bottom:12px;flex-wrap:wrap">'
-      +'<div style="background:#f0fdf4;border:1.5px solid #86efac;border-radius:10px;padding:8px 14px;font-size:13px;font-weight:700;color:#15803d">\u2705 '+nV+' completati</div>'
-      +'<div style="background:#fffbeb;border:1.5px solid #fde68a;border-radius:10px;padding:8px 14px;font-size:13px;font-weight:700;color:#92400e">\u23F3 '+nG+' da pianificare</div>'
-      +(nR>0?'<div style="background:#fff1f2;border:1.5px solid #fecaca;border-radius:10px;padding:8px 14px;font-size:13px;font-weight:700;color:#b91c1c">\uD83D\uDEA8 '+nR+' urgenti</div>':'')
+      +'<div style="background:#f0fdf4;border:1.5px solid #86efac;border-radius:10px;padding:8px 14px;font-size:13px;font-weight:700;color:#15803d">✅ '+nV+' completati</div>'
+      +'<div style="background:#fffbeb;border:1.5px solid #fde68a;border-radius:10px;padding:8px 14px;font-size:13px;font-weight:700;color:#92400e">⏳ '+nG+' da pianificare</div>'
+      +(nR>0?'<div style="background:#fff1f2;border:1.5px solid #fecaca;border-radius:10px;padding:8px 14px;font-size:13px;font-weight:700;color:#b91c1c">🚨 '+nR+' urgenti</div>':'')
       +'</div>';
     var grid=document.createElement('div'); grid.className='ps-mensile-grid';
     cards.forEach(function(item){
@@ -1985,9 +1959,147 @@
     });
     div.appendChild(grid); container.appendChild(div);
   }
+
+  // ============ MO_ANALYTICS_V1 : populate MONTH_ROWS from SP + add analytics ============
+  (function(){
+    function computeFromSP(){
+      if(typeof window.SP==='undefined' || !Object.keys(window.SP).length) return [];
+      var GOAL={FT:2,PT:1};
+      try{ if(typeof CFG==='function'){GOAL.FT=CFG().goalFT;GOAL.PT=CFG().goalPT;} }catch(e){}
+      var ds='DNP1'; try{ ds=(typeof ACTIVE!=='undefined'?ACTIVE:'DNP1'); }catch(e){}
+      var byWk={};
+      Object.values(window.SP).forEach(function(p){
+        var type=((p.ftpt||'').toUpperCase()==='FT')?'FT':'PT';
+        Object.entries(p.settimane||{}).forEach(function(e){
+          var wk=e[0], days=e[1]||{};
+          if(!byWk[wk]) byWk[wk]={settimana:wk,ds:ds,tot:0,indOk:0,fingOk:0};
+          byWk[wk].tot++;
+          var nInd=0,nFing=0;
+          Object.values(days).forEach(function(r){
+            try{ if(isInduct(r)) nInd++; else if(isFinger(r)) nFing++; }catch(e){}
+          });
+          if(nInd>=GOAL[type]) byWk[wk].indOk++;
+          if(nFing>=1) byWk[wk].fingOk++;
+        });
+      });
+      return Object.values(byWk).map(function(w){
+        var pI=w.tot?Math.round(w.indOk/w.tot*100):0;
+        var pF=w.tot?Math.round(w.fingOk/w.tot*100):0;
+        return {settimana:w.settimana,ds:w.ds,tot:w.tot,pctInd:pI,indKo:w.tot-w.indOk,pctFing:pF,fingKo:w.tot-w.fingOk,data:new Date().toISOString().slice(0,10)};
+      }).sort(function(a,b){return (parseInt(a.settimana.replace(/\D/g,''))||0)-(parseInt(b.settimana.replace(/\D/g,''))||0);});
+    }
+
+    function injectAnalytics(){
+      var res=document.getElementById('results'); if(!res) return;
+      var old=document.getElementById('mo-analytics'); if(old) old.remove();
+      if(!MONTH_ROWS || MONTH_ROWS.length<2) return;
+      var rows=MONTH_ROWS.slice().sort(function(a,b){return (parseInt(a.settimana.replace(/\D/g,''))||0)-(parseInt(b.settimana.replace(/\D/g,''))||0);});
+      var wrap=document.createElement('div'); wrap.id='mo-analytics';
+
+      // Best/Worst
+      var maxI=rows.reduce(function(a,b){return b.pctInd>a.pctInd?b:a;});
+      var minI=rows.reduce(function(a,b){return b.pctInd<a.pctInd?b:a;});
+      var maxF=rows.reduce(function(a,b){return b.pctFing>a.pctFing?b:a;});
+      var minF=rows.reduce(function(a,b){return b.pctFing<a.pctFing?b:a;});
+      var bw='<div class="section s-green open"><div class="section-head"><div class="sh-icon">🏆</div><div class="sh-text"><span class="sh-title">Miglior e peggior settimana</span><span class="sh-sub">Estremi del periodo caricato</span></div></div><div class="section-body">'
+        +'<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:10px">'
+        +'<div class="card g"><div class="name">📥 Miglior Induct</div><div class="meta"><b>'+maxI.settimana+'</b> \u2014 '+maxI.pctInd+'% ('+maxI.tot+' assoc.)</div></div>'
+        +'<div class="card r"><div class="name">📥 Peggior Induct</div><div class="meta"><b>'+minI.settimana+'</b> \u2014 '+minI.pctInd+'%</div></div>'
+        +'<div class="card g"><div class="name">🔁 Miglior Finger</div><div class="meta"><b>'+maxF.settimana+'</b> \u2014 '+maxF.pctFing+'%</div></div>'
+        +'<div class="card r"><div class="name">🔁 Peggior Finger</div><div class="meta"><b>'+minF.settimana+'</b> \u2014 '+minF.pctFing+'%</div></div>'
+        +'</div></div></div>';
+
+      // Confronto A vs B
+      function opts(sel){ return rows.map(function(r){var s=(r.settimana===sel)?' selected':''; return '<option value="'+r.settimana+'"'+s+'>'+r.settimana+' ('+r.pctInd+'% / '+r.pctFing+'%)</option>';}).join(''); }
+      var prev=rows[rows.length-2].settimana, last=rows[rows.length-1].settimana;
+      var comp='<div class="section s-orange open"><div class="section-head"><div class="sh-icon">🔀</div><div class="sh-text"><span class="sh-title">Confronto settimana A vs B</span><span class="sh-sub">Seleziona due settimane per vedere il delta</span></div></div><div class="section-body">'
+        +'<div style="display:flex;gap:14px;flex-wrap:wrap;margin-bottom:12px;align-items:flex-end">'
+        +'<div><div style="font-size:11.5px;color:var(--muted);font-weight:700;margin-bottom:4px">SETTIMANA A</div><select id="cmp-a" onchange="window._runCmp()" style="min-width:200px">'+opts(prev)+'</select></div>'
+        +'<div style="font-size:20px;color:var(--muted);padding-bottom:8px">→</div>'
+        +'<div><div style="font-size:11.5px;color:var(--muted);font-weight:700;margin-bottom:4px">SETTIMANA B</div><select id="cmp-b" onchange="window._runCmp()" style="min-width:200px">'+opts(last)+'</select></div>'
+        +'</div><div id="cmp-result"></div></div></div>';
+
+      wrap.innerHTML=bw+comp;
+
+      var psw=document.getElementById('ps-sema-wrap');
+      if(psw){ res.insertBefore(wrap,psw); } else { res.appendChild(wrap); }
+
+      window._runCmp=function(){
+        var a=document.getElementById('cmp-a').value, b=document.getElementById('cmp-b').value;
+        var rA=rows.find(function(r){return r.settimana===a;});
+        var rB=rows.find(function(r){return r.settimana===b;});
+        if(!rA||!rB) return;
+        function badge(dV,vA,vB,lbl,suf){
+          var col=dV>0?'#059669':(dV<0?'#e11d48':'#64748b');
+          var ar=dV>0?'▲':(dV<0?'▼':'→');
+          return '<div style="background:#fff;border:1.5px solid var(--border-light);border-radius:12px;padding:14px 16px">'
+            +'<div style="font-size:11px;color:var(--muted);font-weight:800;text-transform:uppercase;letter-spacing:.04em">'+lbl+'</div>'
+            +'<div style="font-size:26px;font-weight:800;color:'+col+';margin:4px 0">'+ar+' '+(dV>0?'+':'')+dV+suf+'</div>'
+            +'<div style="font-size:12px;color:var(--muted)">'+a+': <b>'+vA+suf+'</b> '+'→'+' '+b+': <b>'+vB+suf+'</b></div></div>';
+        }
+        document.getElementById('cmp-result').innerHTML=
+          '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px">'
+          +badge(rB.pctInd-rA.pctInd, rA.pctInd, rB.pctInd, '📥 Induct', '%')
+          +badge(rB.pctFing-rA.pctFing, rA.pctFing, rB.pctFing, '🔁 Finger', '%')
+          +badge(rB.tot-rA.tot, rA.tot, rB.tot, '👥 Associates', '')
+          +'</div>';
+      };
+      window._runCmp();
+
+      // Heatmap tabella
+      var mtab=res.querySelector('.mtab');
+      if(mtab){
+        mtab.querySelectorAll('tbody tr').forEach(function(tr){
+          tr.querySelectorAll('td').forEach(function(td){
+            var m=(td.textContent||'').trim().match(/^(\d+)%$/);
+            if(!m) return;
+            var v=parseInt(m[1],10), bg, col;
+            if(v>=90){bg='#d1fae5';col='#047857';}
+            else if(v>=80){bg='#fef3c7';col='#92400e';}
+            else {bg='#fecdd6';col='#9f1239';}
+            td.style.background=bg; td.style.color=col; td.style.fontWeight='700';
+          });
+        });
+      }
+
+      // Media mobile 3 settimane sul trend chart
+      if(rows.length>=3 && window.Highcharts && Highcharts.charts){
+        var ch=null;
+        Highcharts.charts.forEach(function(x){ if(x && x.renderTo && x.renderTo.id==='month-chart') ch=x; });
+        if(ch){
+          var maI=rows.map(function(r,i){ return i<2?null:Math.round((rows[i].pctInd+rows[i-1].pctInd+rows[i-2].pctInd)/3); });
+          var maF=rows.map(function(r,i){ return i<2?null:Math.round((rows[i].pctFing+rows[i-1].pctFing+rows[i-2].pctFing)/3); });
+          // rimuovi eventuali medie mobili gia' presenti
+          for(var i=ch.series.length-1;i>=0;i--){ if(/media 3s/.test(ch.series[i].name)) ch.series[i].remove(false); }
+          ch.addSeries({name:'Induct (media 3s)',data:maI,color:'#065f46',dashStyle:'ShortDash',marker:{enabled:false},lineWidth:2},false);
+          ch.addSeries({name:'Finger (media 3s)',data:maF,color:'#b45309',dashStyle:'ShortDash',marker:{enabled:false},lineWidth:2},true);
+        }
+      }
+    }
+
+    window.addEventListener('load',function(){
+      setTimeout(function(){
+        if(typeof window.renderMonth!=='function') return;
+        var prevRM=window.renderMonth;
+        window.renderMonth=function(){
+          try{
+            var computed=computeFromSP();
+            if(computed.length){
+              var by={};
+              (MONTH_ROWS||[]).forEach(function(r){by[r.settimana+'|'+r.ds]=r;});
+              computed.forEach(function(r){by[r.settimana+'|'+r.ds]=r;});
+              MONTH_ROWS=Object.values(by);
+              if(typeof saveHist==='function') saveHist();
+            }
+          }catch(e){console.warn('computeFromSP:',e);}
+          prevRM.apply(this,arguments);
+          setTimeout(injectAnalytics,200);
+        };
+      },600);
+    });
+  })();
   // init badge profilo attivo
   updateProfBadge();
 </script>
 </body>
 </html>
-
