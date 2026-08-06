@@ -23,9 +23,9 @@
     {
       "settimana": "W32",
       "ds": "DNP1",
-      "tot": 81,
-      "pctInd": 80,
-      "indKo": 16,
+      "tot": 82,
+      "pctInd": 79,
+      "indKo": 17,
       "pctFing": 68,
       "fingKo": 26,
       "data": "2026-08-06"
@@ -445,5 +445,5 @@
       "shiftSheet": "Timetable"
     }
   },
-  "updated": "2026-08-06T01:51:39.075Z"
+  "updated": "2026-08-06T01:51:40.082Z"
 }
