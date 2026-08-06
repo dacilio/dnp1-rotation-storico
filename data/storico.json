@@ -1,5 +1,36 @@
 {
-  "history": [],
+  "history": [
+    {
+      "settimana": "W30",
+      "ds": "DNP1",
+      "tot": 96,
+      "pctInd": 84,
+      "indKo": 15,
+      "pctFing": 79,
+      "fingKo": 20,
+      "data": "2026-08-06"
+    },
+    {
+      "settimana": "W31",
+      "ds": "DNP1",
+      "tot": 91,
+      "pctInd": 92,
+      "indKo": 7,
+      "pctFing": 85,
+      "fingKo": 14,
+      "data": "2026-08-06"
+    },
+    {
+      "settimana": "W32",
+      "ds": "DNP1",
+      "tot": 81,
+      "pctInd": 80,
+      "indKo": 16,
+      "pctFing": 68,
+      "fingKo": 26,
+      "data": "2026-08-06"
+    }
+  ],
   "psmonth": {
     "altamura,angela": {
       "name": "Altamura,Angela",
@@ -414,5 +445,5 @@
       "shiftSheet": "Timetable"
     }
   },
-  "updated": "2026-08-06T01:02:13.840Z"
+  "updated": "2026-08-06T01:07:31.549Z"
 }
