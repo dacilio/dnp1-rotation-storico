@@ -226,9 +226,7 @@
         "Thu": "STOWER"
       },
       "W34": {
-        "Sun": "PICKER",
-        "Mon": "PROBLEM SOLVER AB",
-        "Fri": "PROBLEM SOLVER AB"
+        "Sun": "PICKER"
       }
     }
   },
@@ -302,9 +300,7 @@
         "Thu": "PROBLEM SOLVER AB"
       },
       "W34": {
-        "Sun": "PROBLEM SOLVER AB",
-        "Mon": "PICKER",
-        "Fri": "RECEIVER 6"
+        "Sun": "PROBLEM SOLVER AB"
       }
     }
   },
@@ -399,7 +395,7 @@
         "Fri": "PICKER"
       },
       "W34": {
-        "Thu": "PICKER"
+        "Sun": "WATERSPIDER 9"
       }
     }
   },
@@ -549,9 +545,7 @@
         "Sat": "PUSHER 1"
       },
       "W34": {
-        "Sun": "UNLOADER 4",
-        "Tue": "PUSHER 5",
-        "Wed": "WATERSPIDER 6"
+        "Sun": "UNLOADER 5"
       }
     }
   },
@@ -650,8 +644,7 @@
         "Thu": "STOWER"
       },
       "W34": {
-        "Tue": "STOWER",
-        "Wed": "1 ALTO C/D"
+        "Sun": "PUSHER 3"
       }
     }
   },
@@ -792,9 +785,7 @@
         "Fri": "PICKER"
       },
       "W34": {
-        "Sun": "PICKER",
-        "Mon": "STOWER",
-        "Fri": "UNLOADER 2"
+        "Sun": "PUSHER 4"
       }
     }
   },
@@ -1188,11 +1179,7 @@
         "Sat": "PROBLEM SOLVER AM"
       },
       "W34": {
-        "Mon": "PROBLEM SOLVER 2",
-        "Tue": "STOWER",
-        "Wed": "PROBLEM SOLVER 1",
-        "Thu": "PUSHER 1",
-        "Fri": "UNLOADER 4"
+        "Sun": "PROBLEM SOLVER 1"
       }
     }
   },
@@ -1598,9 +1585,7 @@
         "Sat": "PICKER"
       },
       "W34": {
-        "Sun": "WATERSPIDER 2",
-        "Thu": "DOCK MARSHALL AFFIANCAMENTO",
-        "Fri": "DOCK MARSHALL"
+        "Sun": "PROBLEM SOLVER Cycle"
       }
     }
   },
@@ -1710,8 +1695,7 @@
         "Fri": "PICKER"
       },
       "W34": {
-        "Mon": "PICKER",
-        "Tue": "PICKER"
+        "Sun": "PROBLEM SOLVER 2"
       }
     }
   },
@@ -1769,9 +1753,7 @@
         "Sat": "PICKER"
       },
       "W34": {
-        "Sun": "DOCK MARSHALL",
-        "Mon": "WATERSPIDER 3",
-        "Fri": "PICKER"
+        "Sun": "PICKER"
       }
     }
   },
@@ -2146,9 +2128,7 @@
         "Fri": "STOWER"
       },
       "W34": {
-        "Sun": "RECEIVER 5",
-        "Mon": "PICKER",
-        "Tue": "PICKER"
+        "Sun": "UNLOADER 2"
       }
     }
   },
