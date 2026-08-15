@@ -36,8 +36,8 @@
       "tot": 75,
       "pctInd": 80,
       "indKo": 15,
-      "pctFing": 63,
-      "fingKo": 28,
+      "pctFing": 53,
+      "fingKo": 35,
       "data": "2026-08-15"
     }
   ],
@@ -524,5 +524,5 @@
       "shiftSheet": "Timetable"
     }
   },
-  "updated": "2026-08-15T23:10:07.806Z"
+  "updated": "2026-08-15T23:10:11.187Z"
 }
