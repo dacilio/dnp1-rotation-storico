@@ -18,6 +18,12 @@
         "Thu": "PUSHER 2",
         "Fri": "PICKER",
         "Sat": "STOWER"
+      },
+      "W34": {
+        "Mon": "UNLOADER 5",
+        "Tue": "WATERSPIDER 2",
+        "Wed": "UNLOADER 5",
+        "Thu": "UNLOADER 5"
       }
     }
   },
@@ -39,6 +45,12 @@
       "W30": {
         "Mon": "PICKER",
         "Sat": "PICKER"
+      },
+      "W34": {
+        "Tue": "PUSHER 1",
+        "Wed": "STOWER",
+        "Thu": "STOWER",
+        "Fri": "WATERSPIDER 1"
       }
     }
   },
@@ -85,6 +97,10 @@
         "Thu": "WATERSPIDER 1",
         "Fri": "UNLOADER 1",
         "Sat": "WATERSPIDER 4"
+      },
+      "W34": {
+        "Sun": "UNLOADER 3",
+        "Mon": "UNLOADER 1"
       }
     }
   },
@@ -107,6 +123,11 @@
         "Wed": "RECEIVER 3",
         "Thu": "PICKER",
         "Fri": "PICKER"
+      },
+      "W34": {
+        "Sun": "1 ALTO C/D",
+        "Thu": "PROBLEM SOLVER AB",
+        "Fri": "STOWER"
       }
     }
   },
@@ -129,6 +150,11 @@
       },
       "W32": {
         "Thu": "PROBLEM SOLVER CD"
+      },
+      "W34": {
+        "Mon": "PROBLEM AM",
+        "Tue": "PROBLEM SOLVER AM",
+        "Fri": "PROBLEM SOLVER AM"
       }
     }
   },
@@ -173,6 +199,9 @@
         "Wed": "UNLOADER 4",
         "Thu": "RECEIVER 1",
         "Fri": "WATERSPIDER 7"
+      },
+      "W34": {
+        "Sun": "RECEIVER 4"
       }
     }
   },
@@ -195,6 +224,11 @@
         "Tue": "PICKER",
         "Wed": "STOWER",
         "Thu": "STOWER"
+      },
+      "W34": {
+        "Sun": "PICKER",
+        "Mon": "PROBLEM SOLVER AB",
+        "Fri": "PROBLEM SOLVER AB"
       }
     }
   },
@@ -218,6 +252,11 @@
       "W30": {
         "Tue": "PROBLEM SOLVER AM",
         "Thu": "PROBLEM AM"
+      },
+      "W34": {
+        "Sun": "PROBLEM SOLVER 1",
+        "Mon": "PROBLEM SOLVER 1",
+        "Tue": "PROBLEM SOLVER AB"
       }
     }
   },
@@ -234,6 +273,11 @@
         "Tue": "STOWER",
         "Wed": "PICKER",
         "Fri": "PROBLEM SOLVER AB"
+      },
+      "W34": {
+        "Tue": "2 ALTO C/D",
+        "Thu": "PICKER",
+        "Fri": "PICKER"
       }
     }
   },
@@ -256,6 +300,11 @@
         "Mon": "WATERSPIDER",
         "Wed": "RECEIVER 7",
         "Thu": "PROBLEM SOLVER AB"
+      },
+      "W34": {
+        "Sun": "PROBLEM SOLVER AB",
+        "Mon": "PICKER",
+        "Fri": "RECEIVER 6"
       }
     }
   },
@@ -279,6 +328,10 @@
         "Wed": "PUSHER 5",
         "Thu": "RECEIVER 5",
         "Fri": "UNLOADER 3"
+      },
+      "W34": {
+        "Sun": "PUSHER 3",
+        "Mon": "PUSHER 5"
       }
     }
   },
@@ -318,6 +371,10 @@
       },
       "W32": {
         "Fri": "PROBLEM SOLVER 3"
+      },
+      "W34": {
+        "Sun": "RECEIVER 3",
+        "Mon": "RECEIVER 2"
       }
     }
   },
@@ -340,6 +397,9 @@
         "Wed": "PICKER",
         "Thu": "BASSO A",
         "Fri": "PICKER"
+      },
+      "W34": {
+        "Thu": "PICKER"
       }
     }
   },
@@ -361,6 +421,11 @@
         "Mon": "PUSHER 3",
         "Tue": "STOWER",
         "Wed": "PICKER"
+      },
+      "W34": {
+        "Sun": "STOWER",
+        "Mon": "STOWER",
+        "Fri": "PUSHER 6"
       }
     }
   },
@@ -385,6 +450,11 @@
       "W30": {
         "Mon": "PROBLEM AM",
         "Wed": "PROBLEM AM"
+      },
+      "W34": {
+        "Sun": "PICKER",
+        "Mon": "WATERSPIDER 5",
+        "Tue": "PROBLEM SOLVER Cycle"
       }
     }
   },
@@ -406,6 +476,9 @@
         "Wed": "STOWER",
         "Thu": "WATERSPIDER 9",
         "Fri": "WATERSPIDER 9"
+      },
+      "W34": {
+        "Thu": "PROBLEM AM"
       }
     }
   },
@@ -427,6 +500,12 @@
         "Mon": "BASSO C",
         "Tue": "WATERSPIDER 3",
         "Sat": "PICKER"
+      },
+      "W34": {
+        "Tue": "STOWER",
+        "Wed": "PICKER",
+        "Thu": "STOWER",
+        "Fri": "WATERSPIDER 3"
       }
     }
   },
@@ -468,6 +547,11 @@
         "Thu": "UNLOADER 6",
         "Fri": "STOWER",
         "Sat": "PUSHER 1"
+      },
+      "W34": {
+        "Sun": "UNLOADER 4",
+        "Tue": "PUSHER 5",
+        "Wed": "WATERSPIDER 6"
       }
     }
   },
@@ -491,6 +575,12 @@
         "Thu": "WATERSPIDER 6",
         "Fri": "PUSHER 7",
         "Sat": "PUSHER 5"
+      },
+      "W34": {
+        "Mon": "WATERSPIDER 2",
+        "Tue": "RECEIVER 5",
+        "Wed": "RECEIVER 2",
+        "Thu": "RECEIVER 4"
       }
     }
   },
@@ -515,6 +605,12 @@
         "Thu": "PUSHER 5",
         "Fri": "PROBLEM SOLVER 2",
         "Sat": "UNLOADER 5"
+      },
+      "W34": {
+        "Mon": "RECEIVER 4",
+        "Tue": "WATERSPIDER 1",
+        "Wed": "WATERSPIDER 1+2",
+        "Thu": "UNLOADER 4"
       }
     }
   },
@@ -552,6 +648,10 @@
         "Tue": "PICKER",
         "Wed": "RECEIVER 1",
         "Thu": "STOWER"
+      },
+      "W34": {
+        "Tue": "STOWER",
+        "Wed": "1 ALTO C/D"
       }
     }
   },
@@ -574,6 +674,11 @@
         "Mon": "RECEIVER 5",
         "Fri": "RECEIVER 6",
         "Sat": "WATERSPIDER 7"
+      },
+      "W34": {
+        "Mon": "RECEIVER 3",
+        "Wed": "RECEIVER 4",
+        "Thu": "UNLOADER 3"
       }
     }
   },
@@ -597,6 +702,11 @@
         "Mon": "PROBLEM SOLVER AB",
         "Fri": "PUSHER 6",
         "Sat": "RECEIVER 2"
+      },
+      "W34": {
+        "Tue": "RECEIVER 3",
+        "Wed": "PUSHER 3",
+        "Thu": "UNLOADER 1"
       }
     }
   },
@@ -632,6 +742,11 @@
         "Wed": "DIVERTER QUALITA'",
         "Thu": "PICKER",
         "Fri": "PICKER"
+      },
+      "W34": {
+        "Wed": "WATERSPIDER 4",
+        "Thu": "STOWER",
+        "Fri": "PUSHER 1"
       }
     }
   },
@@ -647,6 +762,11 @@
         "Tue": "WATERSPIDER 7",
         "Wed": "PROBLEM SOLVER AB",
         "Thu": "STOWER",
+        "Fri": "PICKER"
+      },
+      "W34": {
+        "Wed": "RECEIVER 6",
+        "Thu": "PICKER",
         "Fri": "PICKER"
       }
     }
@@ -670,6 +790,11 @@
         "Wed": "RECEIVER 6",
         "Thu": "PICKER",
         "Fri": "PICKER"
+      },
+      "W34": {
+        "Sun": "PICKER",
+        "Mon": "STOWER",
+        "Fri": "UNLOADER 2"
       }
     }
   },
@@ -694,6 +819,12 @@
         "Mon": "RECEIVER 2",
         "Fri": "UNLOADER 7",
         "Sat": "UNLOADER 4"
+      },
+      "W34": {
+        "Mon": "STOWER",
+        "Tue": "BASSO B",
+        "Wed": "STOWER",
+        "Thu": "PICKER"
       }
     }
   },
@@ -741,6 +872,11 @@
         "Thu": "PICKER",
         "Fri": "PICKER",
         "Sat": "RECEIVER 7"
+      },
+      "W34": {
+        "Tue": "STOWER",
+        "Wed": "PUSHER 5",
+        "Thu": "PUSHER 5"
       }
     }
   },
@@ -786,6 +922,10 @@
         "Wed": "STOWER",
         "Thu": "PICKER",
         "Fri": "STOWER"
+      },
+      "W34": {
+        "Sun": "BASSO D",
+        "Mon": "PICKER"
       }
     }
   },
@@ -806,6 +946,10 @@
         "Thu": "PROBLEM SOLVER 3",
         "Fri": "UNLOADER 6",
         "Sat": "DOCK MARSHALL"
+      },
+      "W34": {
+        "Wed": "WATERSPIDER 1",
+        "Thu": "PROBLEM SOLVER AM"
       }
     }
   },
@@ -829,6 +973,10 @@
         "Wed": "WATERSPIDER 3",
         "Thu": "UNLOADER 4",
         "Fri": "RECEIVER 3"
+      },
+      "W34": {
+        "Sun": "RECEIVER 2",
+        "Mon": "RECEIVER 1"
       }
     }
   },
@@ -852,6 +1000,9 @@
         "Thu": "PICKER",
         "Fri": "WATERSPIDER 5",
         "Sat": "PICKER"
+      },
+      "W34": {
+        "Tue": "PROBLEM SOLVER AM"
       }
     }
   },
@@ -876,6 +1027,12 @@
         "Mon": "WATERSPIDER",
         "Fri": "RECEIVER 7",
         "Sat": "RECEIVER 4"
+      },
+      "W34": {
+        "Mon": "WATERSPIDER 1",
+        "Tue": "UNLOADER 4",
+        "Wed": "PROBLEM SOLVER AB",
+        "Thu": "PUSHER 3"
       }
     }
   },
@@ -899,6 +1056,10 @@
         "Wed": "WATERSPIDER 1",
         "Thu": "PICKER",
         "Fri": "STOWER"
+      },
+      "W34": {
+        "Sun": "UNLOADER 5",
+        "Mon": "PICKER"
       }
     }
   },
@@ -922,6 +1083,12 @@
         "Thu": "PUSHER 1",
         "Fri": "DIVERTER QUALITA'",
         "Sat": "RECEIVER 5"
+      },
+      "W34": {
+        "Mon": "PICKER",
+        "Tue": "UNLOADER 5",
+        "Wed": "UNLOADER 4",
+        "Thu": "WATERSPIDER 3"
       }
     }
   },
@@ -945,6 +1112,12 @@
         "Thu": "UNLOADER 1",
         "Fri": "STOWER",
         "Sat": "PROBLEM SOLVER 2"
+      },
+      "W34": {
+        "Mon": "RECEIVER 5",
+        "Tue": "RECEIVER 4",
+        "Wed": "PROBLEM SOLVER 2",
+        "Thu": "RECEIVER 1"
       }
     }
   },
@@ -987,6 +1160,12 @@
         "Thu": "PICKER",
         "Fri": "STOWER",
         "Sat": "PUSHER 2"
+      },
+      "W34": {
+        "Mon": "AMBASSADOR AM",
+        "Tue": "ABASSADOR",
+        "Wed": "PROBLEM SOLVER AM",
+        "Fri": "PROBLEM SOLVER AM"
       }
     }
   },
@@ -1007,6 +1186,13 @@
       },
       "W30": {
         "Sat": "PROBLEM SOLVER AM"
+      },
+      "W34": {
+        "Mon": "PROBLEM SOLVER 2",
+        "Tue": "STOWER",
+        "Wed": "PROBLEM SOLVER 1",
+        "Thu": "PUSHER 1",
+        "Fri": "UNLOADER 4"
       }
     }
   },
@@ -1049,6 +1235,13 @@
       "W30": {
         "Tue": "PUSHER 5",
         "Sat": "PROBLEM SOLVER AM"
+      },
+      "W34": {
+        "Mon": "PICKER",
+        "Tue": "STOWER",
+        "Wed": "STOWER",
+        "Thu": "RECEIVER 5",
+        "Fri": "WATERSPIDER 4"
       }
     }
   },
@@ -1073,6 +1266,11 @@
       "W30": {
         "Wed": "WATERSPIDER 9",
         "Fri": "PROBLEM SOLVER AM"
+      },
+      "W34": {
+        "Sun": "WATERSPIDER 5",
+        "Mon": "WATERSPIDER 4",
+        "Tue": "RECEIVER 2"
       }
     }
   },
@@ -1113,6 +1311,9 @@
         "Tue": "UNLOADER 6",
         "Wed": "STOWER",
         "Thu": "STOWER"
+      },
+      "W34": {
+        "Sun": "STOWER"
       }
     }
   },
@@ -1138,6 +1339,11 @@
         "Wed": "PROBLEM SOLVER 2",
         "Thu": "PROBLEM SOLVER 1",
         "Fri": "PROBLEM SOLVER 1"
+      },
+      "W34": {
+        "Sun": "STOWER",
+        "Wed": "PICKER",
+        "Fri": "PROBLEM SOLVER 1"
       }
     }
   },
@@ -1160,6 +1366,10 @@
         "Tue": "PICKER",
         "Thu": "STOWER",
         "Fri": "PUSHER 1"
+      },
+      "W34": {
+        "Sun": "PUSHER 4",
+        "Mon": "PICKER"
       }
     }
   },
@@ -1182,6 +1392,12 @@
         "Sun": "STOWER",
         "Mon": "PUSHER 2",
         "Sat": "PUSHER 4"
+      },
+      "W34": {
+        "Mon": "STOWER",
+        "Tue": "WATERSPIDER 5",
+        "Wed": "PICKER",
+        "Thu": "WATERSPIDER 1"
       }
     }
   },
@@ -1262,6 +1478,12 @@
       "W30": {
         "Thu": "DOCK MARSHALL",
         "Fri": "PICKER"
+      },
+      "W34": {
+        "Sun": "PROBLEM SOLVER 2",
+        "Wed": "STOWER",
+        "Thu": "WATERSPIDER 4",
+        "Fri": "RECEIVER 2"
       }
     }
   },
@@ -1344,6 +1566,12 @@
         "Mon": "PICKER",
         "Tue": "PICKER",
         "Sat": "WATERSPIDER 2"
+      },
+      "W34": {
+        "Tue": "PICKER",
+        "Wed": "UNLOADER 3",
+        "Thu": "PICKER",
+        "Fri": "RECEIVER 3"
       }
     }
   },
@@ -1368,6 +1596,11 @@
         "Wed": "RECEIVER 2",
         "Thu": "PICKER",
         "Sat": "PICKER"
+      },
+      "W34": {
+        "Sun": "WATERSPIDER 2",
+        "Thu": "DOCK MARSHALL AFFIANCAMENTO",
+        "Fri": "DOCK MARSHALL"
       }
     }
   },
@@ -1383,6 +1616,11 @@
         "Mon": "RECEIVER 1",
         "Fri": "PROBLEM SOLVER AB",
         "Sat": "PICKER"
+      },
+      "W34": {
+        "Tue": "RECEIVER 1",
+        "Thu": "PROBLEM SOLVER Cycle",
+        "Fri": "PROBLEM SOLVER 2"
       }
     }
   },
@@ -1470,6 +1708,10 @@
         "Wed": "STOWER",
         "Thu": "STOWER",
         "Fri": "PICKER"
+      },
+      "W34": {
+        "Mon": "PICKER",
+        "Tue": "PICKER"
       }
     }
   },
@@ -1493,6 +1735,12 @@
         "Thu": "WATERSPIDER 2",
         "Fri": "PICKER",
         "Sat": "STOWER"
+      },
+      "W34": {
+        "Tue": "PICKER",
+        "Wed": "WATERSPIDER 5",
+        "Thu": "PROBLEM SOLVER 2",
+        "Fri": "RECEIVER 1"
       }
     }
   },
@@ -1519,6 +1767,11 @@
         "Tue": "PUSHER 3",
         "Fri": "PICKER",
         "Sat": "PICKER"
+      },
+      "W34": {
+        "Sun": "DOCK MARSHALL",
+        "Mon": "WATERSPIDER 3",
+        "Fri": "PICKER"
       }
     }
   },
@@ -1542,6 +1795,9 @@
         "Wed": "UNLOADER 5",
         "Thu": "UNLOADER 7",
         "Fri": "RECEIVER 5"
+      },
+      "W34": {
+        "Sun": "WATERSPIDER 4"
       }
     }
   },
@@ -1564,6 +1820,9 @@
         "Wed": "UNLOADER 7",
         "Thu": "STOWER",
         "Fri": "RECEIVER 2"
+      },
+      "W34": {
+        "Sun": "PUSHER 5"
       }
     }
   },
@@ -1586,6 +1845,9 @@
         "Wed": "STOWER",
         "Thu": "WATERSPIDER 4",
         "Fri": "PICKER"
+      },
+      "W34": {
+        "Sun": "PUSHER 2"
       }
     }
   },
@@ -1632,6 +1894,12 @@
         "Tue": "UNLOADER 1",
         "Fri": "UNLOADER 2",
         "Sat": "PICKER"
+      },
+      "W34": {
+        "Tue": "PROBLEM SOLVER 2",
+        "Wed": "RECEIVER 3",
+        "Thu": "WATERSPIDER 5",
+        "Fri": "PROBLEM SOLVER CYCLE"
       }
     }
   },
@@ -1655,6 +1923,12 @@
         "Mon": "STOWER",
         "Fri": "STOWER",
         "Sat": "STOWER"
+      },
+      "W34": {
+        "Tue": "PUSHER 3",
+        "Wed": "PICKER",
+        "Thu": "RECEIVER 3",
+        "Fri": "WATERSPIDER 2"
       }
     }
   },
@@ -1677,6 +1951,12 @@
         "Mon": "RECEIVER 3",
         "Fri": "PICKER",
         "Sat": "PICKER"
+      },
+      "W34": {
+        "Tue": "WATERSPIDER 4",
+        "Wed": "PUSHER 4",
+        "Thu": "UNLOADER 2",
+        "Fri": "RECEIVER 4"
       }
     }
   },
@@ -1724,6 +2004,11 @@
         "Wed": "WATERSPIDER 7",
         "Thu": "STOWER",
         "Fri": "PICKER"
+      },
+      "W34": {
+        "Mon": "PICKER",
+        "Tue": "PICKER",
+        "Wed": "UNLOADER 2"
       }
     }
   },
@@ -1746,6 +2031,11 @@
         "Thu": "PICKER",
         "Fri": "PICKER",
         "Sat": "WATERSPIDER 1"
+      },
+      "W34": {
+        "Sun": "PICKER",
+        "Mon": "UNLOADER 4",
+        "Tue": "WATERSPIDER 3"
       }
     }
   },
@@ -1770,6 +2060,12 @@
         "Thu": "UNLOADER 3",
         "Fri": "WATERSPIDER 1",
         "Sat": "WATERSPIDER 5"
+      },
+      "W34": {
+        "Sun": "WATERSPIDER 3",
+        "Mon": "UNLOADER 3",
+        "Tue": "PUSHER 2",
+        "Wed": "PICKER"
       }
     }
   },
@@ -1791,6 +2087,10 @@
         "Wed": "PICKER",
         "Thu": "RECEIVER 6",
         "Fri": "STOWER"
+      },
+      "W34": {
+        "Sun": "STOWER",
+        "Mon": "STOWER"
       }
     }
   },
@@ -1815,6 +2115,12 @@
         "Thu": "PICKER",
         "Fri": "WATERSPIDER 3",
         "Sat": "PICKER"
+      },
+      "W34": {
+        "Tue": "PICKER",
+        "Wed": "DOCK MARSHALL",
+        "Thu": "PICKER",
+        "Fri": "UNLOADER 1"
       }
     }
   },
@@ -1838,6 +2144,11 @@
         "Wed": "PICKER",
         "Thu": "PICKER",
         "Fri": "STOWER"
+      },
+      "W34": {
+        "Sun": "RECEIVER 5",
+        "Mon": "PICKER",
+        "Tue": "PICKER"
       }
     }
   },
@@ -1857,6 +2168,12 @@
       "W30": {
         "Mon": "UNLOADER 4",
         "Fri": "PICKER"
+      },
+      "W34": {
+        "Mon": "PUSHER 3",
+        "Tue": "PUSHER 4",
+        "Wed": "PICKER",
+        "Thu": "RECEIVER 2"
       }
     }
   },
@@ -1880,6 +2197,10 @@
         "Wed": "BASSO C",
         "Thu": "PICKER",
         "Fri": "PICKER"
+      },
+      "W34": {
+        "Sun": "UNLOADER 2",
+        "Mon": "PUSHER 2"
       }
     }
   },
@@ -1949,6 +2270,12 @@
         "Mon": "RECEIVER 4",
         "Fri": "WATERSPIDER 6",
         "Sat": "STOWER"
+      },
+      "W34": {
+        "Mon": "PUSHER 4",
+        "Tue": "UNLOADER 3",
+        "Wed": "STOWER",
+        "Thu": "PUSHER 2"
       }
     }
   },
@@ -1972,6 +2299,11 @@
         "Thu": "WATERSPIDER 3",
         "Fri": "PICKER",
         "Sat": "STOWER"
+      },
+      "W34": {
+        "Tue": "STOWER",
+        "Wed": "RECEIVER 5",
+        "Thu": "PICKER"
       }
     }
   },
@@ -1988,6 +2320,10 @@
       },
       "W30": {
         "Fri": "PROBLEM SOLVER CD"
+      },
+      "W34": {
+        "Mon": "AMBASSADOR",
+        "Tue": "PROBLEM SOLVER 1"
       }
     }
   },
@@ -2017,6 +2353,12 @@
         "Wed": "PROBLEM SOLVER AB",
         "Thu": "WATERSPIDER 7",
         "Fri": "STOWER"
+      },
+      "W34": {
+        "Tue": "PICKER",
+        "Wed": "WATERSPIDER 3",
+        "Thu": "PROBLEM SOLVER 1",
+        "Fri": "PUSHER 2"
       }
     }
   },
@@ -2029,6 +2371,12 @@
         "Thu": "WATERSPIDER 5",
         "Fri": "PICKER",
         "Sat": "WATERSPIDER 3"
+      },
+      "W34": {
+        "Mon": "UNLOADER 2",
+        "Tue": "UNLOADER 2",
+        "Wed": "PUSHER 2",
+        "Thu": "WATERSPIDER 2"
       }
     }
   },
@@ -2040,6 +2388,13 @@
         "Wed": "UNLOADER 2",
         "Thu": "RECEIVER 4",
         "Fri": "PUSHER 4"
+      },
+      "W34": {
+        "Mon": "DOCK MARSHALL",
+        "Tue": "STOWER",
+        "Wed": "PROBLEM SOLVER Cycle",
+        "Thu": "PICKER",
+        "Fri": "PICKER"
       }
     }
   },
@@ -2071,6 +2426,11 @@
     "settimane": {
       "W30": {
         "Fri": "PICKER"
+      },
+      "W34": {
+        "Sun": "RECEIVER 6",
+        "Mon": "PROBLEM SOLVER 3",
+        "Tue": "PICKER"
       }
     }
   },
@@ -2086,6 +2446,12 @@
       },
       "W32": {
         "Fri": "DOCK MARSHALL"
+      },
+      "W34": {
+        "Sun": "PICKER",
+        "Mon": "PUSHER 1",
+        "Thu": "DOCK MARSHALL",
+        "Fri": "DOCK MARSHALL"
       }
     }
   },
@@ -2099,6 +2465,18 @@
         "Thu": "PICKER",
         "Fri": "STOWER",
         "Sat": "PICKER"
+      },
+      "W34": {
+        "Tue": "DOCK MARSHALL"
+      }
+    }
+  },
+  "affinito,domenico": {
+    "name": "Affinito,Domenico",
+    "ftpt": "FT",
+    "settimane": {
+      "W34": {
+        "Wed": "PROBLEM SOLVER AM"
       }
     }
   }
