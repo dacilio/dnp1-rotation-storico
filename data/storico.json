@@ -117,9 +117,10 @@
     "piscopo,angela": {
       "name": "Piscopo,Angela",
       "weeks": [
-        "W32"
+        "W32",
+        "W34"
       ],
-      "last": "W32"
+      "last": "W34"
     },
     "santaniello,gaetano": {
       "name": "Santaniello,Gaetano",
@@ -476,6 +477,13 @@
         "W34"
       ],
       "last": "W34"
+    },
+    "russo,roberta": {
+      "name": "Russo,Roberta",
+      "weeks": [
+        "W34"
+      ],
+      "last": "W34"
     }
   },
   "notes": {
@@ -516,5 +524,5 @@
       "shiftSheet": "Timetable"
     }
   },
-  "updated": "2026-08-15T23:09:52.487Z"
+  "updated": "2026-08-15T23:10:07.806Z"
 }
