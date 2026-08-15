@@ -42,17 +42,19 @@
     "bonanni,italo": {
       "name": "Bonanni,Italo",
       "weeks": [
-        "W32"
+        "W32",
+        "W34"
       ],
-      "last": "W32"
+      "last": "W34"
     },
     "chianese,katia": {
       "name": "Chianese,Katia",
       "weeks": [
         "W32",
-        "W31"
+        "W31",
+        "W34"
       ],
-      "last": "W32"
+      "last": "W34"
     },
     "conte,antonio": {
       "name": "Conte,Antonio",
@@ -72,16 +74,18 @@
     "giordano,marco": {
       "name": "Giordano,Marco",
       "weeks": [
-        "W32"
+        "W32",
+        "W34"
       ],
-      "last": "W32"
+      "last": "W34"
     },
     "manna,giusy": {
       "name": "Manna,Giusy",
       "weeks": [
-        "W32"
+        "W32",
+        "W34"
       ],
-      "last": "W32"
+      "last": "W34"
     },
     "matrone,christian": {
       "name": "Matrone,Christian",
@@ -95,9 +99,10 @@
       "weeks": [
         "W32",
         "W31",
-        "W30"
+        "W30",
+        "W34"
       ],
-      "last": "W32"
+      "last": "W34"
     },
     "piscopo,angela": {
       "name": "Piscopo,Angela",
@@ -153,24 +158,27 @@
     "auletta,giuseppe": {
       "name": "Auletta,Giuseppe",
       "weeks": [
-        "W31"
+        "W31",
+        "W34"
       ],
-      "last": "W31"
+      "last": "W34"
     },
     "bifolco,cristian": {
       "name": "Bifolco,Cristian",
       "weeks": [
-        "W31"
+        "W31",
+        "W34"
       ],
-      "last": "W31"
+      "last": "W34"
     },
     "capasso,davide": {
       "name": "Capasso,Davide",
       "weeks": [
         "W31",
-        "W30"
+        "W30",
+        "W34"
       ],
-      "last": "W31"
+      "last": "W34"
     },
     "carannante,francesco": {
       "name": "Carannante,Francesco",
@@ -215,9 +223,10 @@
     "gaudiero,massimo": {
       "name": "Gaudiero,Massimo",
       "weeks": [
-        "W31"
+        "W31",
+        "W34"
       ],
-      "last": "W31"
+      "last": "W34"
     },
     "martucci,marco": {
       "name": "Martucci,Marco",
@@ -266,9 +275,10 @@
     "salzano,antonia": {
       "name": "Salzano,Antonia",
       "weeks": [
-        "W31"
+        "W31",
+        "W34"
       ],
-      "last": "W31"
+      "last": "W34"
     },
     "smarrazzo,rosa": {
       "name": "Smarrazzo,Rosa",
@@ -359,16 +369,18 @@
     "iavazzo,paolo": {
       "name": "Iavazzo,Paolo",
       "weeks": [
-        "W30"
+        "W30",
+        "W34"
       ],
-      "last": "W30"
+      "last": "W34"
     },
     "minopoli,gennaro": {
       "name": "Minopoli,Gennaro",
       "weeks": [
-        "W30"
+        "W30",
+        "W34"
       ],
-      "last": "W30"
+      "last": "W34"
     },
     "nespolino,antonio": {
       "name": "Nespolino,Antonio",
@@ -387,9 +399,10 @@
     "punzo,simone": {
       "name": "Punzo,Simone",
       "weeks": [
-        "W30"
+        "W30",
+        "W34"
       ],
-      "last": "W30"
+      "last": "W34"
     },
     "tramontano,vincenzo": {
       "name": "Tramontano,Vincenzo",
@@ -404,6 +417,55 @@
         "W30"
       ],
       "last": "W30"
+    },
+    "affinito,domenico": {
+      "name": "Affinito,Domenico",
+      "weeks": [
+        "W34"
+      ],
+      "last": "W34"
+    },
+    "auletta,angelo": {
+      "name": "Auletta,Angelo",
+      "weeks": [
+        "W34"
+      ],
+      "last": "W34"
+    },
+    "forestiero,raffaele2": {
+      "name": "Forestiero,Raffaele2",
+      "weeks": [
+        "W34"
+      ],
+      "last": "W34"
+    },
+    "imbriani,christian": {
+      "name": "Imbriani,Christian",
+      "weeks": [
+        "W34"
+      ],
+      "last": "W34"
+    },
+    "marra,pasquale lino": {
+      "name": "Marra,Pasquale Lino",
+      "weeks": [
+        "W34"
+      ],
+      "last": "W34"
+    },
+    "notte,sergio": {
+      "name": "Notte,Sergio",
+      "weeks": [
+        "W34"
+      ],
+      "last": "W34"
+    },
+    "saviano,assunta": {
+      "name": "Saviano,Assunta",
+      "weeks": [
+        "W34"
+      ],
+      "last": "W34"
     }
   },
   "notes": {
@@ -444,5 +506,5 @@
       "shiftSheet": "Timetable"
     }
   },
-  "updated": "2026-08-15T23:08:14.857Z"
+  "updated": "2026-08-15T23:08:22.053Z"
 }
