@@ -63,7 +63,8 @@
       "name": "Bonanni,Italo",
       "weeks": [
         "W32",
-        "W34"
+        "W34",
+        "W33"
       ],
       "last": "W34"
     },
@@ -72,7 +73,8 @@
       "weeks": [
         "W32",
         "W31",
-        "W34"
+        "W34",
+        "W33"
       ],
       "last": "W34"
     },
@@ -95,7 +97,8 @@
       "name": "Giordano,Marco",
       "weeks": [
         "W32",
-        "W34"
+        "W34",
+        "W33"
       ],
       "last": "W34"
     },
@@ -103,7 +106,8 @@
       "name": "Manna,Giusy",
       "weeks": [
         "W32",
-        "W34"
+        "W34",
+        "W33"
       ],
       "last": "W34"
     },
@@ -120,7 +124,8 @@
         "W32",
         "W31",
         "W30",
-        "W34"
+        "W34",
+        "W33"
       ],
       "last": "W34"
     },
@@ -189,7 +194,8 @@
       "name": "Bifolco,Cristian",
       "weeks": [
         "W31",
-        "W34"
+        "W34",
+        "W33"
       ],
       "last": "W34"
     },
@@ -198,7 +204,8 @@
       "weeks": [
         "W31",
         "W30",
-        "W34"
+        "W34",
+        "W33"
       ],
       "last": "W34"
     },
@@ -298,7 +305,8 @@
       "name": "Salzano,Antonia",
       "weeks": [
         "W31",
-        "W34"
+        "W34",
+        "W33"
       ],
       "last": "W34"
     },
@@ -393,7 +401,8 @@
       "name": "Iavazzo,Paolo",
       "weeks": [
         "W30",
-        "W34"
+        "W34",
+        "W33"
       ],
       "last": "W34"
     },
@@ -401,7 +410,8 @@
       "name": "Minopoli,Gennaro",
       "weeks": [
         "W30",
-        "W34"
+        "W34",
+        "W33"
       ],
       "last": "W34"
     },
@@ -424,7 +434,8 @@
       "name": "Punzo,Simone",
       "weeks": [
         "W30",
-        "W34"
+        "W34",
+        "W33"
       ],
       "last": "W34"
     },
@@ -452,42 +463,48 @@
     "auletta,angelo": {
       "name": "Auletta,Angelo",
       "weeks": [
-        "W34"
+        "W34",
+        "W33"
       ],
       "last": "W34"
     },
     "forestiero,raffaele2": {
       "name": "Forestiero,Raffaele2",
       "weeks": [
-        "W34"
+        "W34",
+        "W33"
       ],
       "last": "W34"
     },
     "imbriani,christian": {
       "name": "Imbriani,Christian",
       "weeks": [
-        "W34"
+        "W34",
+        "W33"
       ],
       "last": "W34"
     },
     "marra,pasquale lino": {
       "name": "Marra,Pasquale Lino",
       "weeks": [
-        "W34"
+        "W34",
+        "W33"
       ],
       "last": "W34"
     },
     "notte,sergio": {
       "name": "Notte,Sergio",
       "weeks": [
-        "W34"
+        "W34",
+        "W33"
       ],
       "last": "W34"
     },
     "saviano,assunta": {
       "name": "Saviano,Assunta",
       "weeks": [
-        "W34"
+        "W34",
+        "W33"
       ],
       "last": "W34"
     },
@@ -558,5 +575,5 @@
       "shiftSheet": "Timetable"
     }
   },
-  "updated": "2026-08-18T11:05:22.733Z"
+  "updated": "2026-08-18T11:05:54.843Z"
 }
