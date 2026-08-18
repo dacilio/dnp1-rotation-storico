@@ -327,9 +327,10 @@
     "volpe,salvatore": {
       "name": "Volpe,Salvatore",
       "weeks": [
-        "W31"
+        "W31",
+        "W34"
       ],
-      "last": "W31"
+      "last": "W34"
     },
     "esposito,giuseppe": {
       "name": "Esposito,Giuseppe",
@@ -414,9 +415,10 @@
     "palladino,antonio": {
       "name": "Palladino,Antonio",
       "weeks": [
-        "W30"
+        "W30",
+        "W34"
       ],
-      "last": "W30"
+      "last": "W34"
     },
     "punzo,simone": {
       "name": "Punzo,Simone",
@@ -556,5 +558,5 @@
       "shiftSheet": "Timetable"
     }
   },
-  "updated": "2026-08-18T11:04:47.697Z"
+  "updated": "2026-08-18T11:05:22.733Z"
 }
