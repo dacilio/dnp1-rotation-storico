@@ -313,9 +313,10 @@
     "smarrazzo,rosa": {
       "name": "Smarrazzo,Rosa",
       "weeks": [
-        "W31"
+        "W31",
+        "W34"
       ],
-      "last": "W31"
+      "last": "W34"
     },
     "varriale,oriana": {
       "name": "Varriale,Oriana",
@@ -379,9 +380,10 @@
     "d'angelo,giuseppe": {
       "name": "D'Angelo,Giuseppe",
       "weeks": [
-        "W30"
+        "W30",
+        "W34"
       ],
-      "last": "W30"
+      "last": "W34"
     },
     "de luca,andrea": {
       "name": "De Luca,Andrea",
@@ -535,6 +537,34 @@
         "W34"
       ],
       "last": "W34"
+    },
+    "buonafede,carla": {
+      "name": "Buonafede,Carla",
+      "weeks": [
+        "W34"
+      ],
+      "last": "W34"
+    },
+    "d'amato,francesco": {
+      "name": "D'Amato,Francesco",
+      "weeks": [
+        "W34"
+      ],
+      "last": "W34"
+    },
+    "de felice,raimondo": {
+      "name": "De Felice,Raimondo",
+      "weeks": [
+        "W34"
+      ],
+      "last": "W34"
+    },
+    "visone,antonio": {
+      "name": "Visone,Antonio",
+      "weeks": [
+        "W34"
+      ],
+      "last": "W34"
     }
   },
   "notes": {
@@ -575,5 +605,5 @@
       "shiftSheet": "Timetable"
     }
   },
-  "updated": "2026-08-19T09:42:30.385Z"
+  "updated": "2026-08-19T10:23:45.053Z"
 }
