@@ -2240,6 +2240,127 @@
       setTimeout(attachObserver, 5000);
     });
   })();
+
+  // MO_PSKPI_V1 - Point 3: KPI Problem Solver mensile
+  (function(){
+    function isPS(role){ return typeof isProblemSolve==='function' ? isProblemSolve(role) : /problem.solve/i.test(role||''); }
+    
+    function wkBelongsToMonth(wkStr, anno, mese){
+      var n = parseInt((wkStr||'').replace(/\D/g,''))||0;
+      if(!n) return false;
+      var jan1 = new Date(anno,0,1);
+      var d = new Date(jan1.getTime()+((n-1)*7*86400000));
+      var dow = d.getDay()||7;
+      d.setDate(d.getDate()+(1-dow));
+      var thu = new Date(d);
+      thu.setDate(thu.getDate()+3);
+      return thu.getFullYear()===anno && (thu.getMonth()+1)===mese;
+    }
+    
+    function injectPSKPI(){
+      if(typeof window.SP==='undefined' || !window.SP) return;
+      var results = document.getElementById('results');
+      if(!results) return;
+      
+      // Rimuovi versione precedente
+      var old = document.getElementById('ps-kpi-block');
+      if(old) old.remove();
+      
+      var oggi = new Date();
+      var anno = oggi.getFullYear();
+      var mese = oggi.getMonth()+1;
+      var fine = new Date(anno, mese, 0);
+      var gg = fine.getDate() - oggi.getDate();
+      var mesiLabel = ['Gennaio','Febbraio','Marzo','Aprile','Maggio','Giugno','Luglio','Agosto','Settembre','Ottobre','Novembre','Dicembre'];
+      
+      var pers = Object.values(window.SP);
+      var fatto = 0, urgenti = 0;
+      var perPersona = {};
+      var wksMese = {};
+      
+      pers.forEach(function(p){
+        var conto = 0;
+        Object.entries(p.settimane||{}).forEach(function(e){
+          var wk = e[0], days = e[1];
+          if(!wkBelongsToMonth(wk, anno, mese)) return;
+          wksMese[wk] = true;
+          Object.values(days).forEach(function(r){
+            if(isPS(r)) conto++;
+          });
+        });
+        if(conto > 0){
+          fatto++;
+          perPersona[p.name] = conto;
+        } else {
+          urgenti++;
+        }
+      });
+      
+      var nWks = Math.max(1, Object.keys(wksMese).length);
+      var mediaWk = (fatto/nWks).toFixed(1);
+      
+      // Top 5 performers
+      var top = Object.entries(perPersona)
+        .sort(function(a,b){ return b[1]-a[1]; })
+        .slice(0,5);
+      var topHtml = top.length 
+        ? top.map(function(t){ return '<b>'+t[0]+'</b> ('+t[1]+')'; }).join(' &middot; ')
+        : '&mdash;';
+      
+      var urgColor = urgenti > 0 ? (gg <= 7 ? '#e11d48' : (gg <= 15 ? '#d97706' : '#0f1729')) : '#0f1729';
+      
+      var block = document.createElement('div');
+      block.id = 'ps-kpi-block';
+      block.style.cssText = 'background:linear-gradient(135deg,#fffbeb,#fff);border:1.5px solid #fde68a;border-radius:14px;padding:16px 18px;margin:14px 0';
+      block.innerHTML = 
+        '<div style="font-size:15px;font-weight:800;color:#92400e;margin-bottom:12px;display:flex;align-items:center;gap:8px">'+
+          '&#128202; KPI Problem Solver &mdash; '+mesiLabel[mese-1]+' '+anno+
+        '</div>'+
+        '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px">'+
+          '<div style="background:#fff;border:1px solid #fde68a;border-radius:10px;padding:12px 14px">'+
+            '<div style="font-size:26px;font-weight:800;color:#059669;font-family:SF Mono,monospace;line-height:1">'+fatto+'</div>'+
+            '<div style="font-size:11px;font-weight:650;color:#64748b;margin-top:4px;text-transform:uppercase;letter-spacing:.03em">&#10003; Hanno fatto PS</div>'+
+          '</div>'+
+          '<div style="background:#fff;border:1px solid #fde68a;border-radius:10px;padding:12px 14px">'+
+            '<div style="font-size:26px;font-weight:800;color:'+urgColor+';font-family:SF Mono,monospace;line-height:1">'+urgenti+'</div>'+
+            '<div style="font-size:11px;font-weight:650;color:#64748b;margin-top:4px;text-transform:uppercase;letter-spacing:.03em">&#128680; Non ancora fatto</div>'+
+          '</div>'+
+          '<div style="background:#fff;border:1px solid #fde68a;border-radius:10px;padding:12px 14px">'+
+            '<div style="font-size:26px;font-weight:800;color:#0f1729;font-family:SF Mono,monospace;line-height:1">'+mediaWk+'</div>'+
+            '<div style="font-size:11px;font-weight:650;color:#64748b;margin-top:4px;text-transform:uppercase;letter-spacing:.03em">&#128200; Media PS/sett.</div>'+
+          '</div>'+
+          '<div style="background:#fff;border:1px solid #fde68a;border-radius:10px;padding:12px 14px">'+
+            '<div style="font-size:26px;font-weight:800;color:#0f1729;font-family:SF Mono,monospace;line-height:1">'+gg+'</div>'+
+            '<div style="font-size:11px;font-weight:650;color:#64748b;margin-top:4px;text-transform:uppercase;letter-spacing:.03em">&#128197; Giorni rimasti</div>'+
+          '</div>'+
+        '</div>'+
+        '<div style="margin-top:12px;font-size:13px;color:#0f1729;line-height:1.7">'+
+          '&#127942; <b style="color:#92400e">Top performers PS:</b> '+topHtml+
+        '</div>';
+      
+      // Inserisci PRIMA del ps-sema-wrap (semaforo). Se non esiste, in cima ai results
+      var semaWrap = document.getElementById('ps-sema-wrap');
+      if(semaWrap){
+        results.insertBefore(block, semaWrap);
+      } else {
+        results.appendChild(block);
+      }
+    }
+    
+    // Hook renderMonth per iniettare il blocco KPI dopo ogni render
+    window.addEventListener('load', function(){
+      setTimeout(function(){
+        if(typeof window.renderMonth === 'function'){
+          var orig = window.renderMonth;
+          window.renderMonth = function(){
+            var r = orig.apply(this, arguments);
+            setTimeout(injectPSKPI, 150);
+            return r;
+          };
+        }
+      }, 500);
+    });
+  })();
   // init badge profilo attivo
   updateProfBadge();
 </script>
