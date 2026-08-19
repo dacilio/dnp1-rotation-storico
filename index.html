@@ -2790,10 +2790,10 @@
           H.push('<td colspan="2" style="background:'+bg+';color:'+fg+';font-weight:bold;text-align:center">'+esc(val)+'</td>');
           H.push('</tr>');
         }
-        bwRow('ðŸ† Miglior Induct', maxI.settimana, maxI.pctInd+'%', '#d1fae5', '#065f46');
-        bwRow('âš ï¸ Peggior Induct', minI.settimana, minI.pctInd+'%', '#fecdd6', '#9f1239');
-        bwRow('ðŸ† Miglior Finger', maxF.settimana, maxF.pctFing+'%', '#d1fae5', '#065f46');
-        bwRow('âš ï¸ Peggior Finger', minF.settimana, minF.pctFing+'%', '#fecdd6', '#9f1239');
+        bwRow('Miglior Induct', maxI.settimana, maxI.pctInd+'%', '#d1fae5', '#065f46');
+        bwRow('Peggior Induct', minI.settimana, minI.pctInd+'%', '#fecdd6', '#9f1239');
+        bwRow('Miglior Finger', maxF.settimana, maxF.pctFing+'%', '#d1fae5', '#065f46');
+        bwRow('Peggior Finger', minF.settimana, minF.pctFing+'%', '#fecdd6', '#9f1239');
         H.push('<tr><td colspan="7" style="height:10px;border:none;background:#ffffff"></td></tr>');
       }
       
@@ -2859,7 +2859,7 @@
             var rank = idx+1;
             var rankBg = rank===1?'#fef3c7':(rank===2?'#e5e7eb':(rank===3?'#fed7aa':'#f8fafc'));
             var rankFg = rank===1?'#92400e':(rank===2?'#374151':(rank===3?'#9a3412':'#64748b'));
-            var medal = rank===1?'ðŸ¥‡':(rank===2?'ðŸ¥ˆ':(rank===3?'ðŸ¥‰':'#'+rank));
+            var medal = '#'+rank;
             H.push('<tr>');
             H.push('<td colspan="1" style="background:'+rankBg+';color:'+rankFg+';font-weight:bold;text-align:center;padding:6px">'+medal+'</td>');
             H.push('<td colspan="4" style="background:'+(idx%2===0?'#ffffff':'#f8fafc')+';padding:6px 10px;font-weight:bold">'+esc(t[0])+'</td>');
