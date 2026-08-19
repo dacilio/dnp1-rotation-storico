@@ -2955,6 +2955,40 @@
       }, 1100);
     });
   })();
+
+  // MO_HIDE_WEEKLYPS_V1 - Rimuove sezione "Problem Solve - questa settimana" dal Recap settimana
+  (function(){
+    function hideWeeklyPS(){
+      var results = document.getElementById('results');
+      if(!results) return;
+      var sections = results.querySelectorAll('.section');
+      sections.forEach(function(sec){
+        var title = sec.querySelector('.sh-title');
+        if(!title) return;
+        var t = (title.textContent||'').toLowerCase();
+        // Match: contiene "problem solve" e "questa settimana"
+        if(t.indexOf('problem solve') >= 0 && t.indexOf('questa settimana') >= 0){
+          sec.remove();
+        }
+      });
+    }
+    
+    window.addEventListener('load', function(){
+      setTimeout(function(){
+        if(typeof window.renderRecap === 'function'){
+          var orig = window.renderRecap;
+          window.renderRecap = function(){
+            var r = orig.apply(this, arguments);
+            setTimeout(hideWeeklyPS, 100);
+            setTimeout(hideWeeklyPS, 500);
+            return r;
+          };
+        }
+        // Applica anche subito se siamo gia sulla tab
+        setTimeout(hideWeeklyPS, 1500);
+      }, 1200);
+    });
+  })();
   // init badge profilo attivo
   updateProfBadge();
 </script>
