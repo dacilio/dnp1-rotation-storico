@@ -478,6 +478,18 @@
     </div>
   </div>
 
+
+  <!-- MO_SEARCH_V1 -->
+  <div id="globalSearchWrap" style="display:none;margin:0 0 14px">
+    <div style="position:relative">
+      <span style="position:absolute;left:14px;top:50%;transform:translateY(-50%);color:#c7d2fe;font-size:16px;pointer-events:none">&#128269;</span>
+      <input id="globalSearch" type="text" placeholder="Cerca persona in tutte le viste..." oninput="window._moSearch(this.value)" autocomplete="off"
+        style="width:100%;font-size:15px;padding:11px 44px 11px 42px;border:1.5px solid rgba(255,255,255,.25);border-radius:12px;background:rgba(255,255,255,.08);color:#fff;box-sizing:border-box">
+      <button id="globalSearchClear" onclick="document.getElementById('globalSearch').value='';window._moSearch('')" 
+        style="display:none;position:absolute;right:12px;top:50%;transform:translateY(-50%);background:rgba(255,255,255,.2);color:#fff;border:none;border-radius:50%;width:24px;height:24px;font-size:14px;cursor:pointer;line-height:1">&times;</button>
+    </div>
+    <div id="globalSearchInfo" style="display:none;font-size:12px;color:#c7d2fe;margin-top:6px;padding-left:4px"></div>
+  </div>
   <!-- Controls -->
   <div class="controls" id="controls">
     <span class="lbl">Ultimo giorno compilato</span>
@@ -2148,6 +2160,86 @@
     });
   })();
 
+
+  // MO_SEARCH_V1 - Point 4: ricerca globale
+  (function(){
+    var searchVal='';
+    var observerAttached=false;
+    
+    // Selector: card visibili in tutte le tab
+    // .card = Rotazione Induct/Finger, Recap, absRotated, notTomorrow
+    // .persona-block = Storico Persone/Ruoli (persone view)
+    // .ps-card = Semaforo PS mensile (in Andamento mensile)
+    // #results .grid > .card = fallback grid cards
+    var SEL = '.card, .persona-block, .ps-card';
+    
+    function applySearch(){
+      var els = document.querySelectorAll(SEL);
+      var shown = 0, total = 0;
+      els.forEach(function(el){
+        total++;
+        if(!searchVal){
+          el.style.display='';
+          shown++;
+          return;
+        }
+        var txt = (el.textContent||'').toLowerCase();
+        if(txt.indexOf(searchVal) >= 0){
+          el.style.display='';
+          shown++;
+        } else {
+          el.style.display='none';
+        }
+      });
+      // Aggiorna info
+      var info = document.getElementById('globalSearchInfo');
+      if(info){
+        if(searchVal){
+          info.style.display='block';
+          info.textContent = shown + ' risultati su ' + total + ' visibili';
+        } else {
+          info.style.display='none';
+        }
+      }
+    }
+    
+    window._moSearch = function(v){
+      searchVal = (v||'').toLowerCase().trim();
+      var clr = document.getElementById('globalSearchClear');
+      if(clr) clr.style.display = searchVal ? 'block' : 'none';
+      applySearch();
+    };
+    
+    function showSearchBar(){
+      var w = document.getElementById('globalSearchWrap');
+      if(w) w.style.display = 'block';
+    }
+    
+    function attachObserver(){
+      if(observerAttached) return;
+      var results = document.getElementById('results');
+      if(!results) return;
+      var mo = new MutationObserver(function(){
+        if(searchVal){
+          // Riapplica il filtro quando cambia il contenuto
+          setTimeout(applySearch, 30);
+        }
+      });
+      mo.observe(results, {childList:true, subtree:true});
+      observerAttached = true;
+    }
+    
+    window.addEventListener('load', function(){
+      // Mostra la barra dopo il primo render (quando c'e' contenuto)
+      setTimeout(function(){
+        showSearchBar();
+        attachObserver();
+      }, 2000);
+      // Re-check periodicamente
+      setTimeout(showSearchBar, 5000);
+      setTimeout(attachObserver, 5000);
+    });
+  })();
   // init badge profilo attivo
   updateProfBadge();
 </script>
