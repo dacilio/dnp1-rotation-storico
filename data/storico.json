@@ -8,7 +8,7 @@
       "indKo": 15,
       "pctFing": 79,
       "fingKo": 20,
-      "data": "2026-08-18"
+      "data": "2026-08-19"
     },
     {
       "settimana": "W31",
@@ -18,7 +18,7 @@
       "indKo": 7,
       "pctFing": 85,
       "fingKo": 14,
-      "data": "2026-08-18"
+      "data": "2026-08-19"
     },
     {
       "settimana": "W32",
@@ -28,17 +28,17 @@
       "indKo": 14,
       "pctFing": 74,
       "fingKo": 22,
-      "data": "2026-08-18"
+      "data": "2026-08-19"
     },
     {
       "settimana": "W34",
       "ds": "DNP1",
-      "tot": 57,
-      "pctInd": 72,
-      "indKo": 16,
-      "pctFing": 35,
-      "fingKo": 37,
-      "data": "2026-08-18"
+      "tot": 59,
+      "pctInd": 78,
+      "indKo": 13,
+      "pctFing": 46,
+      "fingKo": 32,
+      "data": "2026-08-19"
     },
     {
       "settimana": "W33",
@@ -48,7 +48,7 @@
       "indKo": 15,
       "pctFing": 63,
       "fingKo": 28,
-      "data": "2026-08-18"
+      "data": "2026-08-19"
     }
   ],
   "psmonth": {
@@ -575,5 +575,5 @@
       "shiftSheet": "Timetable"
     }
   },
-  "updated": "2026-08-18T11:05:54.843Z"
+  "updated": "2026-08-19T09:42:30.385Z"
 }
