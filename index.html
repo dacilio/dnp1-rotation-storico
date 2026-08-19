@@ -2361,6 +2361,89 @@
       }, 500);
     });
   })();
+
+  // MO_REORDER_V1 - Riordina Andamento mensile/Problem in 2 gruppi chiari
+  (function(){
+    var HEADER_COMPLIANCE_ID = 'mo-group-compliance';
+    var HEADER_PS_ID = 'mo-group-ps';
+    
+    function makeHeader(id, icon, title, subtitle, color){
+      var h = document.createElement('div');
+      h.id = id;
+      h.style.cssText = 'margin:24px 0 12px 0;padding:14px 18px;border-radius:12px;background:linear-gradient(135deg,'+color.bg1+','+color.bg2+');border-left:5px solid '+color.border+';display:flex;align-items:center;gap:12px';
+      h.innerHTML = 
+        '<div style="font-size:26px">'+icon+'</div>'+
+        '<div>'+
+          '<div style="font-size:15px;font-weight:800;color:'+color.title+';letter-spacing:.02em;text-transform:uppercase">'+title+'</div>'+
+          '<div style="font-size:12px;color:'+color.sub+';font-weight:600;margin-top:2px">'+subtitle+'</div>'+
+        '</div>';
+      return h;
+    }
+    
+    function reorderMonth(){
+      var results = document.getElementById('results');
+      if(!results) return;
+      
+      // Rimuovi eventuali header vecchi
+      var oldC = document.getElementById(HEADER_COMPLIANCE_ID); if(oldC) oldC.remove();
+      var oldP = document.getElementById(HEADER_PS_ID); if(oldP) oldP.remove();
+      
+      // Trova la prima sezione compliance (Andamento compliance chart)
+      var complianceStart = null;
+      var sections = results.querySelectorAll('.section');
+      for(var i=0; i<sections.length; i++){
+        var titleEl = sections[i].querySelector('.sh-title');
+        if(!titleEl) continue;
+        var t = (titleEl.textContent||'').toLowerCase();
+        if(t.indexOf('andamento compliance') >= 0){
+          complianceStart = sections[i];
+          break;
+        }
+      }
+      
+      // Trova elemento PS (ps-kpi-block o ps-sema-wrap)
+      var psStart = document.getElementById('ps-kpi-block') || document.getElementById('ps-sema-wrap');
+      
+      // Inserisci header COMPLIANCE prima della prima sezione compliance
+      if(complianceStart){
+        var hc = makeHeader(
+          HEADER_COMPLIANCE_ID,
+          '&#128200;',
+          'Compliance Induct &amp; Finger',
+          'Andamento settimanale, confronti e dettaglio storico',
+          {bg1:'#eff6ff', bg2:'#dbeafe', border:'#3b82f6', title:'#1d4ed8', sub:'#3b82f6'}
+        );
+        results.insertBefore(hc, complianceStart);
+      }
+      
+      // Inserisci header PROBLEM SOLVER prima del blocco PS
+      if(psStart){
+        var hp = makeHeader(
+          HEADER_PS_ID,
+          '&#128276;',
+          'Problem Solver Mensile',
+          'KPI del mese e semaforo di rotazione per persona',
+          {bg1:'#fffbeb', bg2:'#fef3c7', border:'#f59e0b', title:'#b45309', sub:'#d97706'}
+        );
+        results.insertBefore(hp, psStart);
+      }
+    }
+    
+    window.addEventListener('load', function(){
+      setTimeout(function(){
+        if(typeof window.renderMonth === 'function'){
+          var orig = window.renderMonth;
+          window.renderMonth = function(){
+            var r = orig.apply(this, arguments);
+            // Aspetta dopo tutti gli altri wrap (renderRecapPS async + KPI PS injection)
+            setTimeout(reorderMonth, 300);
+            setTimeout(reorderMonth, 800);
+            return r;
+          };
+        }
+      }, 800);
+    });
+  })();
   // init badge profilo attivo
   updateProfBadge();
 </script>
