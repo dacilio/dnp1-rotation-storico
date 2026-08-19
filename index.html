@@ -2427,6 +2427,14 @@
         );
         results.insertBefore(hp, psStart);
       }
+      
+      // MO_REORDER_V2: sposta mo-analytics (Best/Worst + Confronto A vs B) prima di HEADER-PS
+      // cosi resta nel gruppo Compliance Induct/Finger
+      var mo = document.getElementById('mo-analytics');
+      var hp2 = document.getElementById(HEADER_PS_ID);
+      if(mo && hp2){
+        results.insertBefore(mo, hp2);
+      }
     }
     
     window.addEventListener('load', function(){
