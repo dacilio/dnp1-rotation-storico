@@ -2989,6 +2989,218 @@
       }, 1200);
     });
   })();
+
+  // MO_RECAP_EXPORT_V1 - Export Excel + Stampa per Recap settimana
+  (function(){
+    function esc(s){
+      s = String(s==null?'':s);
+      return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    }
+    function isPS_r(role){ return typeof isProblemSolve==='function' ? isProblemSolve(role) : /problem.solve/i.test(role||''); }
+    function isInd_r(role){ return typeof isInduct==='function' ? isInduct(role) : false; }
+    function isFng_r(role){ return typeof isFinger==='function' ? isFinger(role) : false; }
+    function normN(s){ return typeof normName==='function' ? normName(s) : String(s||'').toLowerCase().trim(); }
+    
+    window._recapExportExcel = function(){
+      // Ricalcola i dati come renderRecap
+      if(!PEOPLE || !PEOPLE.length){ alert('Nessun dato disponibile. Carica un Manning prima.'); return; }
+      var GOAL = { FT: CFG().goalFT, PT: CFG().goalPT };
+      var DAYSarr = DAYS || ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+      var ABSENT = (typeof ABSENT_WORDS !== 'undefined') ? ABSENT_WORDS : ['off','ferie','sick'];
+      var tot=0, indOk=0, indKo=0, fingOk=0, fingKo=0, psWeek=0;
+      var noInduct=[], noFinger=[];
+      
+      PEOPLE.forEach(function(p){
+        if(typeof EXCLUDED_SHIFT !== 'undefined' && EXCLUDED_SHIFT && EXCLUDED_SHIFT.has(normN(p.name))) return;
+        var wdays = DAYSarr.filter(function(d){ return p.week[d]; });
+        if(wdays.length === 0) return;
+        tot++;
+        if(wdays.some(function(d){ return isPS_r(p.week[d]); })){ psWeek++; }
+        var type = (p.ftpt||'').toString().toUpperCase()==='FT' ? 'FT' : 'PT';
+        var giustificato = (typeof getNote === 'function') && !!getNote(p.name);
+        
+        // Induct
+        var doneInd = wdays.filter(function(d){ return isInd_r(p.week[d]); }).length;
+        var absC = 0;
+        if(typeof ABSENCES !== 'undefined' && ABSENCES && ABSENCES[normN(p.name)]){
+          var ab = ABSENCES[normN(p.name)];
+          absC = DAYSarr.filter(function(d){ return ab[d] && ABSENT.indexOf(ab[d])>=0; }).length;
+        }
+        var creditedInd = doneInd + absC;
+        var goalInd = GOAL[type];
+        if(creditedInd >= goalInd || giustificato){ indOk++; }
+        else { indKo++; noInduct.push({name:p.name, type:type, done:doneInd, abs:absC, goal:goalInd, week:p.week}); }
+        
+        // Finger
+        var doneFing = wdays.filter(function(d){ return isFng_r(p.week[d]); }).length;
+        if(doneFing >= 1 || absC >= 1 || giustificato){ fingOk++; }
+        else { fingKo++; noFinger.push({name:p.name, type:type, done:doneFing, abs:absC, week:p.week}); }
+      });
+      
+      var pctI = tot ? Math.round(indOk/tot*100) : 0;
+      var pctF = tot ? Math.round(fingOk/tot*100) : 0;
+      var wk = (typeof DETECTED_WEEK !== 'undefined' && DETECTED_WEEK) ? DETECTED_WEEK : 'Wk';
+      var ds = (typeof ACTIVE !== 'undefined') ? ACTIVE : 'DNP1';
+      
+      // Ordina non conformi
+      noInduct.sort(function(a,b){ return (a.done+a.abs)-(b.done+b.abs) || a.name.localeCompare(b.name); });
+      noFinger.sort(function(a,b){ return a.name.localeCompare(b.name); });
+      
+      // Costruisce HTML .xls
+      var H = [];
+      H.push('<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40">');
+      H.push('<head><meta http-equiv="content-type" content="application/vnd.ms-excel; charset=UTF-8">');
+      H.push('<!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>Recap Settimana</x:Name></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]-->');
+      H.push('<style>td{font-family:Segoe UI,Arial,sans-serif;font-size:12px;vertical-align:middle}</style>');
+      H.push('</head><body>');
+      H.push('<table border="1" cellspacing="0" cellpadding="6" style="border-collapse:collapse;border:1px solid #cbd5e1">');
+      H.push('<colgroup><col style="width:220pt"><col style="width:70pt"><col style="width:80pt"><col style="width:80pt"><col style="width:80pt"><col style="width:340pt"></colgroup>');
+      
+      // Titolo
+      H.push('<tr><td colspan="6" style="background:#0f1729;color:#ffffff;font-size:18px;font-weight:bold;text-align:center;padding:14px;letter-spacing:1px">DNP1 ROTATION PLANNER &mdash; RECAP SETTIMANALE</td></tr>');
+      H.push('<tr><td colspan="6" style="background:#eff6ff;color:#1e293b;padding:10px 14px;font-size:12px"><b>Settimana:</b> '+esc(wk)+' &nbsp;|&nbsp; <b>DS:</b> '+esc(ds)+' &nbsp;|&nbsp; <b>Data export:</b> '+esc(new Date().toLocaleString('it-IT'))+' &nbsp;|&nbsp; <b>Associates valutati:</b> '+tot+'</td></tr>');
+      H.push('<tr><td colspan="6" style="height:10px;border:none;background:#ffffff"></td></tr>');
+      
+      // KPI Compliance
+      H.push('<tr><td colspan="6" style="background:#3b82f6;color:#ffffff;font-size:14px;font-weight:bold;padding:10px 14px">KPI COMPLIANCE SETTIMANALE</td></tr>');
+      var indBg = pctI>=90?'#d1fae5':(pctI>=80?'#fef3c7':'#fecdd6');
+      var indFg = pctI>=90?'#065f46':(pctI>=80?'#92400e':'#9f1239');
+      var fngBg = pctF>=90?'#d1fae5':(pctF>=80?'#fef3c7':'#fecdd6');
+      var fngFg = pctF>=90?'#065f46':(pctF>=80?'#92400e':'#9f1239');
+      H.push('<tr>');
+      H.push('<td colspan="2" style="background:'+indBg+';color:'+indFg+';text-align:center;padding:14px"><div style="font-size:28px;font-weight:bold">'+pctI+'%</div><div style="font-size:10px;font-weight:bold;text-transform:uppercase">Compliance Induct ('+indOk+'/'+tot+')</div></td>');
+      H.push('<td colspan="2" style="background:'+fngBg+';color:'+fngFg+';text-align:center;padding:14px"><div style="font-size:28px;font-weight:bold">'+pctF+'%</div><div style="font-size:10px;font-weight:bold;text-transform:uppercase">Compliance Finger ('+fingOk+'/'+tot+')</div></td>');
+      H.push('<td colspan="2" style="background:#e0e7ff;color:#3730a3;text-align:center;padding:14px"><div style="font-size:28px;font-weight:bold">'+psWeek+'</div><div style="font-size:10px;font-weight:bold;text-transform:uppercase">Problem Solver settimana</div></td>');
+      H.push('</tr>');
+      H.push('<tr>');
+      H.push('<td colspan="2" style="background:#fecdd6;color:#9f1239;text-align:center;padding:10px"><div style="font-size:22px;font-weight:bold">'+indKo+'</div><div style="font-size:10px;font-weight:bold;text-transform:uppercase">Non conformi Induct</div></td>');
+      H.push('<td colspan="2" style="background:#fed7aa;color:#9a3412;text-align:center;padding:10px"><div style="font-size:22px;font-weight:bold">'+fingKo+'</div><div style="font-size:10px;font-weight:bold;text-transform:uppercase">Non conformi Finger</div></td>');
+      H.push('<td colspan="2" style="background:#f1f5f9;color:#0f172a;text-align:center;padding:10px"><div style="font-size:22px;font-weight:bold">'+tot+'</div><div style="font-size:10px;font-weight:bold;text-transform:uppercase">Totale associates</div></td>');
+      H.push('</tr>');
+      H.push('<tr><td colspan="6" style="height:10px;border:none;background:#ffffff"></td></tr>');
+      
+      // Non conformi Induct
+      if(noInduct.length){
+        H.push('<tr><td colspan="6" style="background:#dc2626;color:#ffffff;font-size:14px;font-weight:bold;padding:10px 14px">NON CONFORMI INDUCT &mdash; '+noInduct.length+' persone da sistemare</td></tr>');
+        H.push('<tr>');
+        ['Persona','FT/PT','Induct fatti','Assenze','Obiettivo','Giorni lavorati'].forEach(function(hd){
+          H.push('<td style="background:#1e293b;color:#ffffff;font-weight:bold;text-align:center;padding:8px 6px">'+hd+'</td>');
+        });
+        H.push('</tr>');
+        noInduct.forEach(function(p, i){
+          var stripe = (i % 2 === 0) ? '#ffffff' : '#fef2f2';
+          var ftBg = p.type==='FT' ? '#dbeafe' : '#ede9fe';
+          var ftFg = p.type==='FT' ? '#1d4ed8' : '#6d28d9';
+          var daysStr = Object.entries(p.week||{}).map(function(e){return e[0]+': '+e[1];}).join('  |  ');
+          var doneBg = (p.done < p.goal) ? '#fecdd6' : '#d1fae5';
+          var doneFg = (p.done < p.goal) ? '#9f1239' : '#065f46';
+          H.push('<tr>');
+          H.push('<td style="background:'+stripe+';padding:6px 10px;font-weight:bold">'+esc(p.name)+'</td>');
+          H.push('<td style="background:'+ftBg+';color:'+ftFg+';font-weight:bold;text-align:center">'+esc(p.type)+'</td>');
+          H.push('<td style="background:'+doneBg+';color:'+doneFg+';font-weight:bold;text-align:center">'+p.done+'</td>');
+          H.push('<td style="background:'+stripe+';text-align:center">'+p.abs+'</td>');
+          H.push('<td style="background:'+stripe+';text-align:center;font-weight:bold">'+p.goal+'</td>');
+          H.push('<td style="background:'+stripe+';font-size:10px;padding:5px 8px">'+esc(daysStr)+'</td>');
+          H.push('</tr>');
+        });
+        H.push('<tr><td colspan="6" style="height:10px;border:none;background:#ffffff"></td></tr>');
+      }
+      
+      // Non conformi Finger
+      if(noFinger.length){
+        H.push('<tr><td colspan="6" style="background:#ea580c;color:#ffffff;font-size:14px;font-weight:bold;padding:10px 14px">NON CONFORMI FINGER &mdash; '+noFinger.length+' persone sempre in Induct</td></tr>');
+        H.push('<tr>');
+        ['Persona','FT/PT','Finger fatti','Assenze','Giorni lavorati'].forEach(function(hd, i){
+          var col = i===0 ? '2' : (i===4 ? '1' : '1');
+          if(i===4){ H.push('<td colspan="1" style="background:#1e293b;color:#ffffff;font-weight:bold;text-align:center;padding:8px 6px">'+hd+'</td>'); }
+          else { H.push('<td colspan="'+col+'" style="background:#1e293b;color:#ffffff;font-weight:bold;text-align:center;padding:8px 6px">'+hd+'</td>'); }
+        });
+        H.push('</tr>');
+        noFinger.forEach(function(p, i){
+          var stripe = (i % 2 === 0) ? '#ffffff' : '#fff7ed';
+          var ftBg = p.type==='FT' ? '#dbeafe' : '#ede9fe';
+          var ftFg = p.type==='FT' ? '#1d4ed8' : '#6d28d9';
+          var daysStr = Object.entries(p.week||{}).map(function(e){return e[0]+': '+e[1];}).join('  |  ');
+          H.push('<tr>');
+          H.push('<td colspan="2" style="background:'+stripe+';padding:6px 10px;font-weight:bold">'+esc(p.name)+'</td>');
+          H.push('<td colspan="1" style="background:'+ftBg+';color:'+ftFg+';font-weight:bold;text-align:center">'+esc(p.type)+'</td>');
+          H.push('<td colspan="1" style="background:#fecdd6;color:#9f1239;font-weight:bold;text-align:center">'+p.done+'</td>');
+          H.push('<td colspan="1" style="background:'+stripe+';text-align:center">'+p.abs+'</td>');
+          H.push('<td colspan="1" style="background:'+stripe+';font-size:10px;padding:5px 8px">'+esc(daysStr)+'</td>');
+          H.push('</tr>');
+        });
+        H.push('<tr><td colspan="6" style="height:10px;border:none;background:#ffffff"></td></tr>');
+      }
+      
+      if(noInduct.length===0 && noFinger.length===0){
+        H.push('<tr><td colspan="6" style="background:#d1fae5;color:#065f46;font-size:14px;font-weight:bold;text-align:center;padding:20px">OTTIMO LAVORO! Nessuna non conformita\u0027 questa settimana.</td></tr>');
+      }
+      
+      // Footer
+      H.push('<tr><td colspan="6" style="height:10px;border:none;background:#ffffff"></td></tr>');
+      H.push('<tr><td colspan="6" style="background:#f1f5f9;color:#64748b;font-size:10px;text-align:center;padding:8px;font-style:italic">Generato da DNP1 Rotation Planner &mdash; https://dacilio.github.io/dnp1-rotation-storico/</td></tr>');
+      
+      H.push('</table></body></html>');
+      
+      var blob = new Blob(['\uFEFF' + H.join('')], {type:'application/vnd.ms-excel;charset=utf-8'});
+      var a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'Recap_Settimana_' + esc(wk) + '_' + esc(ds) + '.xls';
+      document.body.appendChild(a);
+      a.click();
+      setTimeout(function(){ document.body.removeChild(a); URL.revokeObjectURL(a.href); }, 100);
+    };
+    
+    // Reuse window._moPrint from P6 se disponibile, altrimenti fallback
+    window._recapPrint = function(){
+      if(typeof window._moPrint === 'function'){ window._moPrint(); return; }
+      window.print();
+    };
+    
+    // Print style aggiuntivo per nascondere il nostro row durante la stampa
+    function ensureRecapPrintStyle(){
+      if(document.getElementById('mo-recap-print-style')) return;
+      var s = document.createElement('style');
+      s.id = 'mo-recap-print-style';
+      s.textContent = '@media print { #recap-export-row { display:none !important; } }';
+      document.head.appendChild(s);
+    }
+    
+    function injectRecapButtons(){
+      var results = document.getElementById('results');
+      if(!results) return;
+      var old = document.getElementById('recap-export-row'); if(old) old.remove();
+      
+      var row = document.createElement('div');
+      row.id = 'recap-export-row';
+      row.style.cssText = 'margin:24px 0 12px 0;display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end;padding:12px 16px;background:linear-gradient(135deg,#f8fafc,#eff6ff);border-radius:12px;border:1px solid var(--border-light)';
+      row.innerHTML = 
+        '<div style="flex:1;min-width:180px;font-size:12.5px;color:var(--muted);font-weight:600;align-self:center">&#128190; Esporta il recap settimanale (Excel o PDF):</div>'+
+        '<button onclick="window._recapExportExcel()" title="Scarica Excel colorato del recap settimana" style="font-family:inherit;font-size:13px;font-weight:700;padding:10px 18px;border:none;border-radius:10px;cursor:pointer;color:#fff;background:linear-gradient(135deg,#059669,#10b981);box-shadow:0 3px 12px rgba(16,185,129,.35);display:inline-flex;align-items:center;gap:6px">'+
+          '&#128202; Esporta Excel colorato'+
+        '</button>'+
+        '<button onclick="window._recapPrint()" title="Stampa o salva come PDF" style="font-family:inherit;font-size:13px;font-weight:700;padding:10px 18px;border:none;border-radius:10px;cursor:pointer;color:#fff;background:linear-gradient(135deg,#6366f1,#3b82f6);box-shadow:0 3px 12px rgba(99,102,241,.35);display:inline-flex;align-items:center;gap:6px">'+
+          '&#128424; Stampa / Salva PDF'+
+        '</button>';
+      results.appendChild(row);
+    }
+    
+    ensureRecapPrintStyle();
+    
+    window.addEventListener('load', function(){
+      setTimeout(function(){
+        if(typeof window.renderRecap === 'function'){
+          var orig = window.renderRecap;
+          window.renderRecap = function(){
+            var r = orig.apply(this, arguments);
+            setTimeout(injectRecapButtons, 400);
+            setTimeout(injectRecapButtons, 900);
+            return r;
+          };
+        }
+      }, 1200);
+    });
+  })();
   // init badge profilo attivo
   updateProfBadge();
 </script>
