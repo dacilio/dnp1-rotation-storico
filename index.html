@@ -3201,6 +3201,62 @@
       }, 1200);
     });
   })();
+
+  // MO_LAYOUT_V1 - Header row compatto: ricerca sinistra, file status destra
+  (function(){
+    function ensureLayoutCSS(){
+      if(document.getElementById('mo-layout-style')) return;
+      var s = document.createElement('style');
+      s.id = 'mo-layout-style';
+      s.textContent = 
+        '#header-row-wrap{display:flex;gap:12px;align-items:stretch;margin-bottom:14px;flex-wrap:wrap}'+
+        '#header-row-wrap #globalSearchWrap{flex:1 1 280px;margin:0 !important;min-width:220px}'+
+        '#header-row-wrap #globalSearchWrap>.gs-wrap,#header-row-wrap #globalSearchWrap div{margin:0}'+
+        '#header-row-wrap #controls.show{flex:0 1 auto;margin:0 !important;padding:10px 14px !important;min-width:180px;max-width:100%}'+
+        '#header-row-wrap #controls.show .filemeta{font-size:12px;margin-left:8px}'+
+        '#header-row-wrap #controls.show .reset{font-size:11.5px;padding:6px 10px}'+
+        '@media (max-width:720px){'+
+          '#header-row-wrap{flex-direction:column}'+
+          '#header-row-wrap #globalSearchWrap,#header-row-wrap #controls.show{width:100%;flex:1 1 100%}'+
+        '}';
+      document.head.appendChild(s);
+    }
+    
+    function wrapLayout(){
+      var search = document.getElementById('globalSearchWrap');
+      var controls = document.getElementById('controls');
+      if(!search || !controls) return false;
+      if(document.getElementById('header-row-wrap')) return true;
+      
+      // Verifica che entrambi siano nello stesso parent (di solito .wrap)
+      if(search.parentNode !== controls.parentNode){
+        // Se sono in parent diversi (edge case), rinuncio all'aggancio
+        return false;
+      }
+      
+      var wrap = document.createElement('div');
+      wrap.id = 'header-row-wrap';
+      
+      // Inserisci wrap prima del search
+      search.parentNode.insertBefore(wrap, search);
+      
+      // Sposta search e controls dentro wrap (nell'ordine desiderato)
+      wrap.appendChild(search);
+      wrap.appendChild(controls);
+      
+      return true;
+    }
+    
+    ensureLayoutCSS();
+    
+    window.addEventListener('load', function(){
+      // Prova piÃ¹ volte per essere sicuri (search bar viene mostrata con delay)
+      setTimeout(function(){ ensureLayoutCSS(); wrapLayout(); }, 800);
+      setTimeout(wrapLayout, 2000);
+      setTimeout(wrapLayout, 4000);
+      setTimeout(wrapLayout, 8000);
+    });
+  })();
   // init badge profilo attivo
   updateProfBadge();
 </script>
