@@ -568,7 +568,8 @@
     }
   },
   "notes": {
-    "DNP1||buonafede,carla": "Esente per ragioni personali"
+    "DNP1||buonafede,carla": "Esente per ragioni personali",
+    "DNP1||bifolco,cristian": "Esente per ragioni personali"
   },
   "profiles": {
     "DNP1": {
@@ -605,5 +606,5 @@
       "shiftSheet": "Timetable"
     }
   },
-  "updated": "2026-08-19T11:44:01.153Z"
+  "updated": "2026-08-19T11:56:00.789Z"
 }
