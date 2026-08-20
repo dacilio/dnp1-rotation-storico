@@ -3310,6 +3310,9 @@
         else { _othS.push(sec); }
       });
       _othS.forEach(function(s){ _finS.push(s); });
+      // Forza colore titolo coerente con la classificazione (verde=Induct, grigio=Finger)
+      _indS.forEach(function(sec){ var el=sec.querySelector('.sh-title'); if(el){ el.style.color='#047857'; } });
+      _finS.forEach(function(sec){ var el=sec.querySelector('.sh-title'); if(el){ el.style.color='#475569'; } });
       _indS.sort(_byT); _finS.sort(_byT);
       Array.prototype.slice.call(results.querySelectorAll('.postazioni-group-header')).forEach(function(h){ h.remove(); });
       if(_indS.length > 0){
