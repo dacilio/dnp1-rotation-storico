@@ -3298,15 +3298,18 @@
         var tb = ((b.querySelector('.sh-title')||{}).textContent||'').trim();
         return ta.localeCompare(tb);
       });
+      // MO_POSTAZIONI_ORDER_V2: classificazione esplicita Induct/Finger per DNP1
+      var _INDUCT_LIST = ['DOCK MARSHALL','PROBLEM SOLVER','PUSHER','RECEIVER','WATERSPIDER','UNLOADER'];
+      var _FINGER_LIST = ['DIVERTER','STOWER','PICKER','AMBASSADOR'];
       var _byT = function(a,b){ var ta=((a.querySelector('.sh-title')||{}).textContent||'').trim(); var tb=((b.querySelector('.sh-title')||{}).textContent||'').trim(); return ta.localeCompare(tb); };
-      var _indS = [], _finS = [];
+      var _indS = [], _finS = [], _othS = [];
       allSecs.forEach(function(sec){
         var t = ((sec.querySelector('.sh-title')||{}).textContent||'').trim().toUpperCase();
-        var isInd = false;
-        try { if(typeof isInduct === 'function' && isInduct(t)) isInd = true; } catch(e){}
-        if(t === 'PROBLEM SOLVER') isInd = true;
-        if(isInd) _indS.push(sec); else _finS.push(sec);
+        if(_INDUCT_LIST.indexOf(t) >= 0){ _indS.push(sec); }
+        else if(_FINGER_LIST.indexOf(t) >= 0){ _finS.push(sec); }
+        else { _othS.push(sec); }
       });
+      _othS.forEach(function(s){ _finS.push(s); });
       _indS.sort(_byT); _finS.sort(_byT);
       Array.prototype.slice.call(results.querySelectorAll('.postazioni-group-header')).forEach(function(h){ h.remove(); });
       if(_indS.length > 0){
