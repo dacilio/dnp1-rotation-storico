@@ -3201,6 +3201,139 @@
       }, 1200);
     });
   })();
+
+  // MO_POSTAZIONI_GROUP_V1 - Point 1: raggruppa ruoli simili nel Storico "per postazione"
+  (function(){
+    function normalizeRole(role){
+      var r = String(role||'').trim();
+      // 1. Rimuovi coppia X/Y finale (A/B, C/D, ecc.)
+      r = r.replace(/\s+[A-Z]+\/[A-Z]+$/i, '');
+      // 2. Rimuovi 1-3 lettere maiuscole finali (AB, C) se prima c'Ã¨ una parola di 4+ char
+      var m2 = r.match(/^(.+?)\s+[A-Z]{1,3}$/);
+      if(m2 && m2[1].replace(/\s+/g,'').length >= 4) r = m2[1];
+      // 3. Rimuovi numeri finali
+      r = r.replace(/\s+\d+$/, '');
+      return r.trim();
+    }
+    
+    function mergeRolesInPostazioni(){
+      var results = document.getElementById('results');
+      if(!results) return;
+      var sections = Array.prototype.slice.call(results.querySelectorAll('.section'));
+      if(sections.length < 1) return;
+      
+      // Raggruppa sezioni per nome normalizzato
+      var groups = {};
+      var order = [];
+      sections.forEach(function(sec){
+        var t = sec.querySelector('.sh-title');
+        if(!t) return;
+        var raw = (t.textContent||'').trim();
+        var norm = normalizeRole(raw);
+        if(!groups[norm]){ groups[norm] = []; order.push(norm); }
+        groups[norm].push(sec);
+      });
+      
+      // Merge ogni gruppo
+      order.forEach(function(normName){
+        var secs = groups[normName];
+        if(secs.length === 0) return;
+        
+        var target = secs[0];
+        var perPerson = {};
+        
+        // Raccogli conteggi da tutte le sezioni del gruppo
+        secs.forEach(function(sec){
+          var cards = sec.querySelectorAll('.card');
+          cards.forEach(function(card){
+            var nameEl = card.querySelector('.name');
+            var metaEl = card.querySelector('.meta');
+            if(!nameEl) return;
+            var name = (nameEl.textContent||'').trim();
+            var mm = metaEl ? (metaEl.textContent||'').match(/(\d+)/) : null;
+            var cnt = mm ? parseInt(mm[1],10) : 1;
+            perPerson[name] = (perPerson[name]||0) + cnt;
+          });
+        });
+        
+        // Ricostruisci la grid del target
+        var targetGrid = target.querySelector('.grid');
+        var sorted = Object.keys(perPerson).map(function(k){return [k, perPerson[k]];})
+          .sort(function(a,b){ return b[1]-a[1] || a[0].localeCompare(b[0]); });
+        
+        if(targetGrid){
+          var newHtml = sorted.map(function(e){
+            var vs = e[1]===1 ? 'volta' : 'volte';
+            return '<div class="card n" style="padding:8px 12px"><div class="name" style="font-size:13px">'+e[0]+'</div><div class="meta">'+e[1]+' '+vs+'</div></div>';
+          }).join('');
+          targetGrid.innerHTML = newHtml;
+        }
+        
+        // Aggiorna titolo e sub del target
+        var tEl = target.querySelector('.sh-title');
+        var sEl = target.querySelector('.sh-sub');
+        if(tEl) tEl.textContent = normName;
+        if(sEl){
+          var variantiCount = secs.length;
+          sEl.textContent = sorted.length + ' pers.' + (variantiCount > 1 ? ' - ' + variantiCount + ' varianti unite' : '');
+        }
+        
+        // Rimuovi le altre sezioni del gruppo
+        for(var i=1; i<secs.length; i++){ secs[i].remove(); }
+      });
+      
+      // Riordina tutte le sezioni alfabeticamente
+      var allSecs = Array.prototype.slice.call(results.querySelectorAll('.section'));
+      allSecs.sort(function(a,b){
+        var ta = ((a.querySelector('.sh-title')||{}).textContent||'').trim();
+        var tb = ((b.querySelector('.sh-title')||{}).textContent||'').trim();
+        return ta.localeCompare(tb);
+      });
+      allSecs.forEach(function(sec){ results.appendChild(sec); });
+    }
+    
+    function checkAndMerge(){
+      var results = document.getElementById('results');
+      if(!results) return;
+      // Verifica: siamo nella vista "Per Postazione"?
+      var tabs = results.querySelectorAll('.storico-tab');
+      if(!tabs || tabs.length===0) return;
+      var isPost = false;
+      for(var i=0; i<tabs.length; i++){
+        if(tabs[i].classList.contains('active') && (tabs[i].textContent||'').toLowerCase().indexOf('postazione') >= 0){
+          isPost = true; break;
+        }
+      }
+      if(!isPost) return;
+      mergeRolesInPostazioni();
+    }
+    
+    window.addEventListener('load', function(){
+      setTimeout(function(){
+        // Hook _rst (click sui tab del sotto-menu storico)
+        if(typeof window._rst === 'function'){
+          var origRst = window._rst;
+          window._rst = function(t){
+            var r = origRst.apply(this, arguments);
+            setTimeout(checkAndMerge, 120);
+            return r;
+          };
+        }
+        // Hook setMode (rientro nella tab Storico da altre tab)
+        if(typeof window.setMode === 'function'){
+          var origSm = window.setMode;
+          window.setMode = function(m){
+            var r = origSm.apply(this, arguments);
+            if(m === 'storico'){
+              setTimeout(checkAndMerge, 220);
+              setTimeout(checkAndMerge, 800);
+            }
+            return r;
+          };
+        }
+      }, 1500);
+    });
+  })();
   // init badge profilo attivo
   updateProfBadge();
 </script>
