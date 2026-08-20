@@ -3206,7 +3206,7 @@
   (function(){
     function normalizeRole(role){
       var r = String(role||'').trim();
-      // MO_POSTAZIONI_GROUP_V2 - DNP1 explicit keyword rules
+      // MO_POSTAZIONI_GROUP_V3 - DNP1 explicit keyword rules (server-side normalization)
       var _l2 = r.toLowerCase();
       if(_l2.indexOf('waterspider') >= 0) return 'WATERSPIDER';
       if(_l2.indexOf('abassador') >= 0 || _l2.indexOf('ambassador') >= 0) return 'AMBASSADOR';
