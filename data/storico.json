@@ -322,9 +322,10 @@
       "name": "Varriale,Oriana",
       "weeks": [
         "W31",
-        "W30"
+        "W30",
+        "W34"
       ],
-      "last": "W31"
+      "last": "W34"
     },
     "volpe,elina": {
       "name": "Volpe,Elina",
@@ -420,9 +421,10 @@
     "nespolino,antonio": {
       "name": "Nespolino,Antonio",
       "weeks": [
-        "W30"
+        "W30",
+        "W34"
       ],
-      "last": "W30"
+      "last": "W34"
     },
     "palladino,antonio": {
       "name": "Palladino,Antonio",
@@ -565,6 +567,20 @@
         "W34"
       ],
       "last": "W34"
+    },
+    "armano,raffaele": {
+      "name": "Armano,Raffaele",
+      "weeks": [
+        "W34"
+      ],
+      "last": "W34"
+    },
+    "pengue,paolo": {
+      "name": "Pengue,Paolo",
+      "weeks": [
+        "W34"
+      ],
+      "last": "W34"
     }
   },
   "notes": {
@@ -605,5 +621,5 @@
       "shiftSheet": "Timetable"
     }
   },
-  "updated": "2026-08-20T10:18:54.671Z"
+  "updated": "2026-08-20T10:19:01.527Z"
 }
