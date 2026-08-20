@@ -3310,17 +3310,26 @@
         else { _othS.push(sec); }
       });
       _othS.forEach(function(s){ _finS.push(s); });
-      // Forza colore titolo con !important (batte le classi s-orange/s-red del semaforo)
-      _indS.forEach(function(sec){
-        sec.classList.remove('s-orange','s-red','s-gray');
-        sec.classList.add('s-green');
-        var el=sec.querySelector('.sh-title');
-        if(el){ el.style.setProperty('color','#047857','important'); }
-      });
-      _finS.forEach(function(sec){
-        var el=sec.querySelector('.sh-title');
-        if(el){ el.style.setProperty('color','#475569','important'); }
-      });
+      // Forza aspetto Induct/Finger: rimuove semaforo, applica verde/grigio, con !important su tutto
+      var _forceStyle = function(){
+        _indS.forEach(function(sec){
+          sec.classList.remove('s-orange','s-red','s-gray');
+          sec.classList.add('s-green');
+          sec.style.setProperty('border-left-color','#22c55e','important');
+          var t=sec.querySelector('.sh-title'); if(t){ t.style.setProperty('color','#047857','important'); }
+          var i=sec.querySelector('.sh-icon'); if(i){ i.style.setProperty('background','#dcfce7','important'); i.style.setProperty('color','#047857','important'); }
+        });
+        _finS.forEach(function(sec){
+          sec.classList.remove('s-orange','s-red','s-green');
+          sec.classList.add('s-gray');
+          sec.style.setProperty('border-left-color','#94a3b8','important');
+          var t=sec.querySelector('.sh-title'); if(t){ t.style.setProperty('color','#475569','important'); }
+          var i=sec.querySelector('.sh-icon'); if(i){ i.style.setProperty('background','#f1f5f9','important'); i.style.setProperty('color','#475569','important'); }
+        });
+      };
+      _forceStyle();
+      setTimeout(_forceStyle, 100);
+      setTimeout(_forceStyle, 500);
       _indS.sort(_byT); _finS.sort(_byT);
       Array.prototype.slice.call(results.querySelectorAll('.postazioni-group-header')).forEach(function(h){ h.remove(); });
       if(_indS.length > 0){
