@@ -3291,14 +3291,40 @@
         for(var i=1; i<secs.length; i++){ secs[i].remove(); }
       });
       
-      // Riordina tutte le sezioni alfabeticamente
+      // MO_POSTAZIONI_ORDER_V1: raggruppa in INDUCT + FINGER (PS conta come Induct)
       var allSecs = Array.prototype.slice.call(results.querySelectorAll('.section'));
       allSecs.sort(function(a,b){
         var ta = ((a.querySelector('.sh-title')||{}).textContent||'').trim();
         var tb = ((b.querySelector('.sh-title')||{}).textContent||'').trim();
         return ta.localeCompare(tb);
       });
-      allSecs.forEach(function(sec){ results.appendChild(sec); });
+      var _byT = function(a,b){ var ta=((a.querySelector('.sh-title')||{}).textContent||'').trim(); var tb=((b.querySelector('.sh-title')||{}).textContent||'').trim(); return ta.localeCompare(tb); };
+      var _indS = [], _finS = [];
+      allSecs.forEach(function(sec){
+        var t = ((sec.querySelector('.sh-title')||{}).textContent||'').trim().toUpperCase();
+        var isInd = false;
+        try { if(typeof isInduct === 'function' && isInduct(t)) isInd = true; } catch(e){}
+        if(t === 'PROBLEM SOLVER') isInd = true;
+        if(isInd) _indS.push(sec); else _finS.push(sec);
+      });
+      _indS.sort(_byT); _finS.sort(_byT);
+      Array.prototype.slice.call(results.querySelectorAll('.postazioni-group-header')).forEach(function(h){ h.remove(); });
+      if(_indS.length > 0){
+        var _indH = document.createElement('div');
+        _indH.className = 'postazioni-group-header';
+        _indH.style.cssText = 'font-weight:700;font-size:13px;color:#22c55e;margin:14px 4px 6px 4px;letter-spacing:1.5px;text-transform:uppercase;border-left:4px solid #22c55e;padding:4px 0 4px 10px;';
+        _indH.textContent = 'RUOLI INDUCT';
+        results.appendChild(_indH);
+        _indS.forEach(function(sec){ results.appendChild(sec); });
+      }
+      if(_finS.length > 0){
+        var _finH = document.createElement('div');
+        _finH.className = 'postazioni-group-header';
+        _finH.style.cssText = 'font-weight:700;font-size:13px;color:#94a3b8;margin:20px 4px 6px 4px;letter-spacing:1.5px;text-transform:uppercase;border-left:4px solid #94a3b8;padding:4px 0 4px 10px;';
+        _finH.textContent = 'RUOLI FINGER';
+        results.appendChild(_finH);
+        _finS.forEach(function(sec){ results.appendChild(sec); });
+      }
     }
     
     function checkAndMerge(){
