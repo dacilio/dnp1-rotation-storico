@@ -56,7 +56,7 @@
         "Tue": "RECEIVER 5",
         "Wed": "WATERSPIDER 3",
         "Thu": "STOWER",
-        "Fri": "STOWER"
+        "Fri": "RECEIVER 2"
       }
     }
   },
@@ -108,7 +108,7 @@
         "Tue": "RECEIVER 3",
         "Wed": "WATERSPIDER 4",
         "Thu": "RECEIVER 3",
-        "Fri": "PROBLEM SOLVER Cycle"
+        "Fri": "PROBLEM SOLVER 2"
       },
       "W33": {
         "Sun": "UNLOADER 3",
@@ -248,7 +248,7 @@
       "W34": {
         "Sun": "PICKER",
         "Mon": "STOWER",
-        "Fri": "RECEIVER 2"
+        "Fri": "STOWER"
       },
       "W33": {
         "Sun": "PICKER",
@@ -280,7 +280,7 @@
       },
       "W34": {
         "Thu": "DOCK MARSHALL",
-        "Fri": "PUSHER 3"
+        "Fri": "RECEIVER 5"
       },
       "W33": {
         "Sun": "PROBLEM SOLVER 1",
@@ -311,8 +311,7 @@
       "W34": {
         "Tue": "PICKER",
         "Wed": "PROBLEM SOLVER AB",
-        "Thu": "STOWER",
-        "Fri": "PICKER"
+        "Thu": "STOWER"
       }
     }
   },
@@ -368,7 +367,7 @@
         "Fri": "UNLOADER 3"
       },
       "W34": {
-        "Fri": "UNLOADER 3"
+        "Fri": "WATERSPIDER 5"
       },
       "W33": {
         "Sun": "PUSHER 3",
@@ -417,7 +416,7 @@
         "Fri": "PROBLEM SOLVER 3"
       },
       "W34": {
-        "Fri": "STOWER"
+        "Fri": "PUSHER 4"
       },
       "W33": {
         "Sun": "RECEIVER 3",
@@ -701,7 +700,7 @@
         "Tue": "DOCK MARSHALL",
         "Wed": "PROBLEM SOLVER Cycle",
         "Thu": "UNLOADER 5",
-        "Fri": "STOWER"
+        "Fri": "PROBLEM SOLVER Cycle"
       }
     }
   },
@@ -887,7 +886,8 @@
       },
       "W34": {
         "Sun": "PUSHER 4",
-        "Tue": "PUSHER 3"
+        "Tue": "PUSHER 3",
+        "Fri": "PICKER"
       },
       "W33": {
         "Sun": "PICKER",
@@ -1055,7 +1055,8 @@
       },
       "W34": {
         "Sun": "PROBLEM SOLVER 4",
-        "Mon": "WATERSPIDER 5"
+        "Mon": "WATERSPIDER 5",
+        "Fri": "PROBLEM SOLVER AM"
       }
     }
   },
@@ -1378,6 +1379,9 @@
         "Wed": "STOWER",
         "Thu": "RECEIVER 5",
         "Fri": "WATERSPIDER 4"
+      },
+      "W34": {
+        "Fri": "WATERSPIDER 3"
       }
     }
   },
@@ -1433,7 +1437,7 @@
       "W34": {
         "Wed": "STOWER",
         "Thu": "WATERSPIDER 3",
-        "Fri": "WATERSPIDER 3"
+        "Fri": "STOWER"
       }
     }
   },
@@ -1582,7 +1586,7 @@
       },
       "W34": {
         "Thu": "RECEIVER 6",
-        "Fri": "PROBLEM SOLVER 2"
+        "Fri": "PROBLEM SOLVER AB"
       }
     }
   },
@@ -1695,7 +1699,7 @@
         "Tue": "PROBLEM SOLVER AB",
         "Wed": "WATERSPIDER 5",
         "Thu": "STOWER",
-        "Fri": "PUSHER 5"
+        "Fri": "STOWER"
       }
     }
   },
@@ -1750,7 +1754,7 @@
         "Tue": "UNLOADER 3",
         "Wed": "STOWER",
         "Thu": "PUSHER 6",
-        "Fri": "PROBLEM SOLVER AB"
+        "Fri": "PICKER"
       }
     }
   },
@@ -1811,7 +1815,7 @@
         "Tue": "WATERSPIDER 2+3",
         "Wed": "PICKER",
         "Thu": "PROBLEM SOLVER 2",
-        "Fri": "UNLOADER 4"
+        "Fri": "PICKER"
       }
     }
   },
@@ -1967,7 +1971,7 @@
         "Sun": "PICKER",
         "Mon": "PROBLEM SOLVER 1",
         "Thu": "PUSHER 5",
-        "Fri": "DOCK MARSHALL"
+        "Fri": "UNLOADER 5"
       },
       "W33": {
         "Sun": "DOCK MARSHALL",
@@ -2502,7 +2506,7 @@
         "Tue": "RECEIVER 7",
         "Wed": "DOCK MARSHALL",
         "Thu": "PROBLEM SOLVER 1",
-        "Fri": "PUSHER 4"
+        "Fri": "PUSHER 5"
       }
     }
   },
@@ -2626,7 +2630,7 @@
         "Tue": "PROBLEM SOLVER 1",
         "Wed": "PUSHER 5",
         "Thu": "RECEIVER 5",
-        "Fri": "STOWER"
+        "Fri": "WATERSPIDER 2"
       }
     }
   },
@@ -2675,7 +2679,7 @@
         "Tue": "STOWER",
         "Wed": "PROBLEM SOLVER 1",
         "Thu": "PUSHER 4",
-        "Fri": "WATERSPIDER 2"
+        "Fri": "UNLOADER 4"
       }
     }
   },
@@ -2761,7 +2765,8 @@
         "Tue": "DOCK MARSHALL"
       },
       "W34": {
-        "Thu": "PROBLEM SOLVER CD"
+        "Thu": "PROBLEM SOLVER CD",
+        "Fri": "PROBLEM SOLVER AM"
       }
     }
   },
@@ -2776,7 +2781,8 @@
         "Mon": "DOCK MARSHALL",
         "Tue": "WATERSPIDER 7",
         "Wed": "PICKER",
-        "Thu": "PICKER"
+        "Thu": "PICKER",
+        "Fri": "PUSHER 2"
       }
     }
   },
@@ -2786,7 +2792,7 @@
     "settimane": {
       "W34": {
         "Thu": "WATERSPIDER 5",
-        "Fri": "UNLOADER 5"
+        "Fri": "DOCK MARSHALL"
       }
     }
   }
