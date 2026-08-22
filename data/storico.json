@@ -142,9 +142,10 @@
       "weeks": [
         "W32",
         "W31",
-        "W34"
+        "W34",
+        "W35"
       ],
-      "last": "W34"
+      "last": "W35"
     },
     "santoro,leandro": {
       "name": "Santoro,Leandro",
@@ -581,6 +582,13 @@
         "W34"
       ],
       "last": "W34"
+    },
+    "starita,salvatore": {
+      "name": "Starita,Salvatore",
+      "weeks": [
+        "W35"
+      ],
+      "last": "W35"
     }
   },
   "notes": {
@@ -621,5 +629,5 @@
       "shiftSheet": "Timetable"
     }
   },
-  "updated": "2026-08-22T23:51:25.017Z"
+  "updated": "2026-08-22T23:56:38.993Z"
 }
