@@ -491,6 +491,7 @@
     <div class="toggle toggle-recap">
       <button id="mode-recap" onclick="setMode('recap')">📊 Recap settimana</button>
       <button id="mode-psrota" onclick="setMode('psrota')">&#127919; Rotazione Problem Solver</button>
+      <button id="mode-dmrota" onclick="setMode('dmrota')">&#128667; Rotazione Dock Marshall</button>
       <button id="mode-month" onclick="setMode('month')">📈 Andamento mensile</button>
     </div>
     <div class="toggle toggle-recap">
@@ -1257,6 +1258,54 @@
       html += `</div></div>`;
     })();
 
+    /* MO_DM_V2: Suggeritore Dock Marshall (solo FT, 1 candidato, priorità mensile) */
+    if(MODE==='missing') (function(){
+      var _dmPool = PEOPLE.filter(function(p){
+        if(EXCLUDED_SHIFT && EXCLUDED_SHIFT.has(normName(p.name))) return false;
+        if((p.ftpt||'').toUpperCase()!=='FT') return false; /* solo FT */
+        if(SHIFT_TURN && preparingDay){
+          var t = SHIFT_TURN[normName(p.name)];
+          if(t) return t[preparingDay]===true;
+        }
+        return true;
+      });
+      if(_dmPool.length===0) return;
+      var _dmMaxWk=null; Object.values(DM_MONTH).forEach(function(r){ var n=wkNum(r.last); if(n!==null&&(_dmMaxWk===null||n>_dmMaxWk)) _dmMaxWk=n; });
+      var _dmT=new Date(); var _dmAn=_dmT.getFullYear(); var _dmMs=_dmT.getMonth()+1;
+      var _dmInM=function(wk){ var n=parseInt(String(wk||'').replace(/\D/g,''))||0; if(!n) return false; var j1=new Date(_dmAn,0,1); var d=new Date(j1.getTime()+((n-1)*7*86400000)); var dw=d.getDay()||7; d.setDate(d.getDate()+(1-dw)); var th=new Date(d); th.setDate(th.getDate()+3); return th.getFullYear()===_dmAn&&(th.getMonth()+1)===_dmMs; };
+      function _dmScore(p){
+        var rec = DM_MONTH[normName(p.name)];
+        if(rec && rec.weeks && rec.weeks.some(_dmInM)) return -1;
+        if(!rec) return 100000;
+        var last = wkNum(rec.last);
+        if(last===null || _dmMaxWk===null) return 50000;
+        return 50000 + (_dmMaxWk-last);
+      }
+      _dmPool.forEach(function(p){ p._dmScore = _dmScore(p); });
+      _dmPool.sort(function(a,b){ return b._dmScore-a._dmScore || a.name.localeCompare(b.name); });
+      var _dmPick = _dmPool[0];
+      if(!_dmPick) return;
+      function _dmReason(p){
+        var rec = DM_MONTH[normName(p.name)];
+        if(!rec) return 'mai fatto DM';
+        if(rec.weeks && rec.weeks.some(_dmInM)) return 'già fatto DM questo mese';
+        var last = wkNum(rec.last);
+        if(last===null||_dmMaxWk===null) return 'non ancora questo mese';
+        var ago=_dmMaxWk-last;
+        return 'non ancora questo mese ('+ago+' sett. fa)';
+      }
+      var _dmDayLbl = preparingDay ? (DAYS_IT[preparingDay]||preparingDay) : 'domani';
+      html += `<div class="section s-orange open"><div class="section-head"><div class="sh-icon">&#128667;</div>
+        <div class="sh-text"><span class="sh-title">Suggerito per Dock Marshall \u2014 ${_dmDayLbl}</span><span class="sh-sub">1 FT prioritario (chi non fa DM questo mese o da più tempo)</span></div></div>
+        <div class="section-body"><div class="grid">
+          <div class="card g"><div class="name">${_dmPick.name}<span class="tag ft">FT</span></div>
+            <div class="meta">Ultima DM: ${_dmReason(_dmPick)}</div>
+          </div>
+        </div>
+        <div class="actions"><button class="copy" style="background:linear-gradient(135deg,#d97706,#f59e0b)" onclick="navigator.clipboard.writeText(\`${_dmPick.name}\`);this.innerHTML='V Copiato';">&#128203; Copia suggerito</button></div>
+      </div></div>`;
+    })();
+
     if(shown){
       const names = [...critical,...toplan].map(p=>p.name).join('\n');
       html += `<div class="actions"><button class="copy" onclick="navigator.clipboard.writeText(\`${names}\`);this.innerHTML='✓ Copiato negli appunti';">📋 Copia lista nomi (${shown})</button></div>`;
@@ -1804,7 +1853,7 @@
             try{document.getElementById('preparinghint').style.display='none';}catch(e){}
             try{document.getElementById('kpis').classList.remove('show');}catch(e){}
             try{document.getElementById('banner').classList.remove('show');}catch(e){}
-            renderSto();try{document.getElementById('controls').classList.remove('show');}catch(e){} /* MO_HIDECTRLBAR_V1 */ return;} if(m==='psrota'){var pb=document.getElementById('mode-psrota'); if(pb) pb.classList.add('active');try{document.getElementById('dayeval').style.display='none';}catch(e){}try{document.getElementById('preparinghint').style.display='none';}catch(e){}try{document.getElementById('kpis').classList.remove('show');}catch(e){}try{document.getElementById('banner').classList.remove('show');}catch(e){}try{document.getElementById('controls').classList.remove('show');}catch(e){} /* MO_HIDECTRLBAR_V1 */ window._mode='psrota';if(typeof window._renderPsRota==='function') window._renderPsRota();return;} if(false){
+            renderSto();try{document.getElementById('controls').classList.remove('show');}catch(e){} /* MO_HIDECTRLBAR_V1 */ return;} if(m==='psrota'){var pb=document.getElementById('mode-psrota'); if(pb) pb.classList.add('active');try{document.getElementById('dayeval').style.display='none';}catch(e){}try{document.getElementById('preparinghint').style.display='none';}catch(e){}try{document.getElementById('kpis').classList.remove('show');}catch(e){}try{document.getElementById('banner').classList.remove('show');}catch(e){}try{document.getElementById('controls').classList.remove('show');}catch(e){} /* MO_HIDECTRLBAR_V1 */ window._mode='psrota';if(typeof window._renderPsRota==='function') window._renderPsRota();return;} if(m==='dmrota'){var db=document.getElementById('mode-dmrota'); if(db) db.classList.add('active');try{document.getElementById('dayeval').style.display='none';}catch(e){}try{document.getElementById('preparinghint').style.display='none';}catch(e){}try{document.getElementById('kpis').classList.remove('show');}catch(e){}try{document.getElementById('banner').classList.remove('show');}catch(e){}try{document.getElementById('controls').classList.remove('show');}catch(e){}window._mode='dmrota';if(typeof window._renderDmRota==='function') window._renderDmRota();return;} if(false){
           }
           window._mode=m; try{var _cb=document.getElementById('controls'); if(_cb){ if((m==='missing'||m==='stuck') && PEOPLE && PEOPLE.length){ _cb.classList.add('show'); } else { _cb.classList.remove('show'); } }}catch(e){} /* MO_HIDECTRLBAR_V2: controls visibile SOLO in Induct/Finger */ oSM(m);
         };
@@ -2502,6 +2551,134 @@
       }
     }
     window._renderPsRota = renderPsRota;
+  })();
+
+  // MO_DM_V3: tab Rotazione Dock Marshall (gemella di PS)
+  (function(){
+    var _dmBusy = false;
+    function injectDMKPI(){
+      var results = document.getElementById('results'); if(!results) return;
+      if(typeof window.SP==='undefined' || !window.SP) return;
+      var old = document.getElementById('dm-kpi-block'); if(old) old.remove();
+      var oggi=new Date(), anno=oggi.getFullYear(), mese=oggi.getMonth()+1;
+      var fine=new Date(anno,mese,0); var gg=fine.getDate()-oggi.getDate();
+      var mesiLabel=['Gennaio','Febbraio','Marzo','Aprile','Maggio','Giugno','Luglio','Agosto','Settembre','Ottobre','Novembre','Dicembre'];
+      function wkInMonth(wkStr,anno,mese){var n=parseInt((wkStr||'').replace(/\D/g,''))||0; if(!n) return false; var j1=new Date(anno,0,1); var d=new Date(j1.getTime()+((n-1)*7*86400000)); var dw=d.getDay()||7; d.setDate(d.getDate()+(1-dw)); var th=new Date(d); th.setDate(th.getDate()+3); return th.getFullYear()===anno&&(th.getMonth()+1)===mese;}
+      var pers=Object.values(window.SP); var fatto=0, urgenti=0; var perPersona={}; var wksMese={};
+      pers.forEach(function(p){
+        var conto=0;
+        Object.entries(p.settimane||{}).forEach(function(e){
+          var wk=e[0], days=e[1];
+          if(!wkInMonth(wk,anno,mese)) return;
+          wksMese[wk]=true;
+          Object.values(days).forEach(function(r){ if(isDockMarshall(r)) conto++; });
+        });
+        if(conto>0){ fatto++; perPersona[p.name]=conto; } else { urgenti++; }
+      });
+      var nWks=Math.max(1, Object.keys(wksMese).length);
+      var mediaWk=(fatto/nWks).toFixed(1);
+      var top=Object.entries(perPersona).sort(function(a,b){return b[1]-a[1];}).slice(0,5);
+      var topHtml=top.length ? top.map(function(t){return '<b>'+t[0]+'</b> ('+t[1]+')';}).join(' &middot; ') : '&mdash;';
+      var urgColor = urgenti>0 ? (gg<=7?'#e11d48':(gg<=15?'#d97706':'#0f1729')) : '#0f1729';
+      var block=document.createElement('div'); block.id='dm-kpi-block';
+      block.style.cssText='background:linear-gradient(135deg,#fffbeb,#fff);border:1.5px solid #fde68a;border-radius:14px;padding:16px 18px;margin:14px 0';
+      block.innerHTML =
+        '<div style="font-size:15px;font-weight:800;color:#92400e;margin-bottom:12px;display:flex;align-items:center;gap:8px">&#128667; KPI Dock Marshall &mdash; '+mesiLabel[mese-1]+' '+anno+'</div>'+
+        '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px">'+
+          '<div style="background:#fff;border:1px solid #fde68a;border-radius:10px;padding:12px 14px">'+
+            '<div style="font-size:26px;font-weight:800;color:#059669;font-family:SF Mono,monospace;line-height:1">'+fatto+'</div>'+
+            '<div style="font-size:11px;font-weight:650;color:#64748b;margin-top:4px;text-transform:uppercase;letter-spacing:.03em">&#10003; Hanno fatto DM</div>'+
+          '</div>'+
+          '<div style="background:#fff;border:1px solid #fde68a;border-radius:10px;padding:12px 14px">'+
+            '<div style="font-size:26px;font-weight:800;color:'+urgColor+';font-family:SF Mono,monospace;line-height:1">'+urgenti+'</div>'+
+            '<div style="font-size:11px;font-weight:650;color:#64748b;margin-top:4px;text-transform:uppercase;letter-spacing:.03em">&#128680; Non ancora fatto</div>'+
+          '</div>'+
+          '<div style="background:#fff;border:1px solid #fde68a;border-radius:10px;padding:12px 14px">'+
+            '<div style="font-size:26px;font-weight:800;color:#0f1729;font-family:SF Mono,monospace;line-height:1">'+mediaWk+'</div>'+
+            '<div style="font-size:11px;font-weight:650;color:#64748b;margin-top:4px;text-transform:uppercase;letter-spacing:.03em">&#128200; Media DM/sett.</div>'+
+          '</div>'+
+          '<div style="background:#fff;border:1px solid #fde68a;border-radius:10px;padding:12px 14px">'+
+            '<div style="font-size:26px;font-weight:800;color:#0f1729;font-family:SF Mono,monospace;line-height:1">'+gg+'</div>'+
+            '<div style="font-size:11px;font-weight:650;color:#64748b;margin-top:4px;text-transform:uppercase;letter-spacing:.03em">&#128197; Giorni rimasti</div>'+
+          '</div>'+
+        '</div>'+
+        (top.length ? '<div style="margin-top:12px;font-size:12.5px;color:#78350f"><b>Top 5:</b> '+topHtml+'</div>' : '');
+      results.appendChild(block);
+    }
+    function renderDmSemaforo(container){
+      var mesiLabel={'01':'Gennaio','02':'Febbraio','03':'Marzo','04':'Aprile','05':'Maggio','06':'Giugno','07':'Luglio','08':'Agosto','09':'Settembre','10':'Ottobre','11':'Novembre','12':'Dicembre'};
+      var oggi=new Date(); var annoCur=oggi.getFullYear(); var meseCur=oggi.getMonth()+1;
+      var fineM=new Date(annoCur,meseCur,0); var ggRim=fineM.getDate()-oggi.getDate();
+      var meseStr=String(meseCur).padStart(2,'0');
+      var meseLabel=(mesiLabel[meseStr]||meseStr)+' '+annoCur;
+      function wkInMonth(wkStr,anno,mese){var n=parseInt((wkStr||'').replace(/\D/g,''))||0; if(!n) return false; var j1=new Date(anno,0,1); var d=new Date(j1.getTime()+((n-1)*7*86400000)); var dw=d.getDay()||7; d.setDate(d.getDate()+(1-dw)); var th=new Date(d); th.setDate(th.getDate()+3); return th.getFullYear()===anno&&(th.getMonth()+1)===mese;}
+      var div=document.createElement('div');
+      var persone=Object.values(typeof window.SP!=='undefined'?window.SP:{});
+      if(!persone.length){ div.innerHTML='<div class="ps-sema-title">&#128667; Rotazione Dock Marshall - '+meseLabel+'</div><div class="no-data-msg">Nessun dato storico. Carica un Manning per popolare lo storico condiviso.</div>'; container.appendChild(div); return; }
+      var cards=persone.map(function(p){
+        var dmWksMese=[]; var dmLastN=0; var dmLastWk=null;
+        Object.entries(p.settimane||{}).forEach(function(e){
+          var wk=e[0], giorni=e[1];
+          var haDM=Object.values(giorni).some(function(r){ return isDockMarshall(r); });
+          if(!haDM) return;
+          var n=parseInt((wk||'').replace(/\D/g,''))||0;
+          if(n>dmLastN){ dmLastN=n; dmLastWk=wk; }
+          if(wkInMonth(wk,annoCur,meseCur)) dmWksMese.push(wk);
+        });
+        var volte=dmWksMese.length;
+        var fatto=volte>0;
+        var colore=fatto?'verde':(ggRim<=7?'rosso':'giallo');
+        var statoTxt=fatto ? ('V Fatto '+volte+(volte===1?' volta':' volte')+' questo mese')
+          : (ggRim<=7?'?? Urgente! Solo '+ggRim+' giorni':'?? Non ancora questo mese');
+        var subTxt=dmLastWk?('Ultima volta: '+dmLastWk):'Mai fatto DM';
+        return {p:p,colore:colore,statoTxt:statoTxt,subTxt:subTxt,volte:volte};
+      });
+      cards.sort(function(a,b){ var o={rosso:0,giallo:1,verde:2}; return (o[a.colore]-o[b.colore])||a.p.name.localeCompare(b.p.name); });
+      var nV=cards.filter(function(x){return x.colore==='verde';}).length;
+      var nG=cards.filter(function(x){return x.colore==='giallo';}).length;
+      var nR=cards.filter(function(x){return x.colore==='rosso';}).length;
+      div.innerHTML='<div class="ps-sema-title">&#128667; Rotazione Dock Marshall - '+meseLabel
+        +'<span style="font-size:12px;font-weight:500;color:#64748b;margin-left:8px">'+ggRim+' giorni rimasti nel mese</span></div>'
+        +'<div class="ps-legenda">'
+        +'<span style="color:#15803d">? Fatto</span>'
+        +'<span style="color:#92400e">? Non ancora (c\'e tempo)</span>'
+        +'<span style="color:#b91c1c">? Urgente</span></div>'
+        +'<div style="display:flex;gap:10px;margin-bottom:12px;flex-wrap:wrap">'
+        +'<div style="background:#f0fdf4;border:1.5px solid #86efac;border-radius:10px;padding:8px 14px;font-size:13px;font-weight:700;color:#15803d">? '+nV+' completati</div>'
+        +'<div style="background:#fffbeb;border:1.5px solid #fde68a;border-radius:10px;padding:8px 14px;font-size:13px;font-weight:700;color:#92400e">? '+nG+' da pianificare</div>'
+        +(nR>0?'<div style="background:#fff1f2;border:1.5px solid #fecaca;border-radius:10px;padding:8px 14px;font-size:13px;font-weight:700;color:#b91c1c">?? '+nR+' urgenti</div>':'')
+        +'</div>';
+      var grid=document.createElement('div'); grid.className='ps-mensile-grid';
+      cards.forEach(function(item){
+        var card=document.createElement('div'); card.className='ps-card '+item.colore;
+        var isFT=(item.p.ftpt||'').toString().trim().toUpperCase()==='FT';
+        card.innerHTML='<div class="ps-card-nome">'+item.p.name
+          +' <span class="tag '+(isFT?'ft':'pt')+'">'+(item.p.ftpt||'?')+'</span></div>'
+          +'<div class="ps-card-stato">'+item.statoTxt+'</div>'
+          +'<div class="ps-card-sub">'+item.subTxt+'</div>';
+        grid.appendChild(card);
+      });
+      div.appendChild(grid); container.appendChild(div);
+    }
+    function renderDmRota(){
+      var results = document.getElementById('results'); if(!results) return;
+      if(_dmBusy) return; _dmBusy=true; setTimeout(function(){_dmBusy=false;}, 400);
+      results.innerHTML='';
+      var _o1=document.getElementById('dm-kpi-block'); if(_o1) _o1.remove();
+      var _o2=document.getElementById('dm-sema-wrap'); if(_o2) _o2.remove();
+      var _o3=document.getElementById('dmrota-header'); if(_o3) _o3.remove();
+      var hp=document.createElement('div'); hp.id='dmrota-header';
+      hp.style.cssText='margin:8px 0 12px 0;padding:14px 18px;border-radius:12px;background:linear-gradient(135deg,#fffbeb,#fef3c7);border-left:5px solid #f59e0b;display:flex;align-items:center;gap:12px';
+      hp.innerHTML='<div style="font-size:26px">&#128667;</div><div>'
+        +'<div style="font-size:15px;font-weight:800;color:#b45309;letter-spacing:.02em;text-transform:uppercase">Dock Marshall Mensile</div>'
+        +'<div style="font-size:12px;color:#d97706;font-weight:600;margin-top:2px">KPI del mese e semaforo di rotazione per persona</div></div>';
+      results.appendChild(hp);
+      try { injectDMKPI(); } catch(e){ console.warn('injectDMKPI failed', e); }
+      var wrap=document.createElement('div'); wrap.id='dm-sema-wrap';
+      results.appendChild(wrap); wrap.innerHTML='';
+      try { renderDmSemaforo(wrap); } catch(e){ console.warn('renderDmSemaforo failed', e); }
+    }
+    window._renderDmRota = renderDmRota;
   })();
 
   // MO_EXPORT_V1 - Point 6: Export CSV + Stampa/PDF per Andamento mensile
