@@ -34,10 +34,10 @@
       "settimana": "W34",
       "ds": "DNP1",
       "tot": 67,
-      "pctInd": 82,
-      "indKo": 12,
-      "pctFing": 57,
-      "fingKo": 29,
+      "pctInd": 90,
+      "indKo": 7,
+      "pctFing": 76,
+      "fingKo": 16,
       "data": "2026-08-23"
     },
     {
@@ -639,5 +639,5 @@
       "shiftSheet": "Timetable"
     }
   },
-  "updated": "2026-08-23T00:29:06.318Z"
+  "updated": "2026-08-23T01:00:47.879Z"
 }
