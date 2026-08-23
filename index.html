@@ -3242,6 +3242,7 @@
         var t = sec.querySelector('.sh-title');
         if(!t) return;
         var raw = (t.textContent||'').trim();
+        if(!raw || /^ABS_/i.test(raw) || /^\d+$/.test(raw)){ sec.style.display='none'; return; } /* MO_POSTAZIONI_HIDEABS_V1 */
         var norm = normalizeRole(raw);
         if(!groups[norm]){ groups[norm] = []; order.push(norm); }
         groups[norm].push(sec);
