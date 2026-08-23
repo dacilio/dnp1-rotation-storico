@@ -671,6 +671,21 @@
       "shiftSheet": "Timetable"
     }
   },
-  "updated": "2026-08-23T06:32:09.332Z",
-  "dmmonth": {}
+  "updated": "2026-08-23T06:32:14.095Z",
+  "dmmonth": {
+    "forestiero,raffaele2": {
+      "name": "Forestiero,Raffaele2",
+      "weeks": [
+        "W35"
+      ],
+      "last": "W35"
+    },
+    "marra,pasquale lino": {
+      "name": "Marra,Pasquale Lino",
+      "weeks": [
+        "W35"
+      ],
+      "last": "W35"
+    }
+  }
 }
