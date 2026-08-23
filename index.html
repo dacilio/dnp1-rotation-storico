@@ -1983,7 +1983,7 @@
       Object.values(window.SP).forEach(function(p){
         var type=((p.ftpt||'').toUpperCase()==='FT')?'FT':'PT';
         Object.entries(p.settimane||{}).forEach(function(e){
-          var wk=e[0], days=e[1]||{};
+          var wk=e[0], days=e[1]||{}; if(days._excl){ return; } /* MO_EXCLFIX_V1 */
           if(!byWk[wk]) byWk[wk]={settimana:wk,ds:ds,tot:0,indOk:0,fingOk:0};
           /* moved below after nWork check */
           var nInd=0,nFing=0,nAbs=0,nWork=0;
