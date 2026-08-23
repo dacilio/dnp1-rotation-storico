@@ -2116,55 +2116,8 @@
     });
   })();
 
-  // MO_BADGE_V1 - Point 7: badge urgenti PS su bottone Andamento Mensile
-  (function(){
-    var STYLE = document.createElement('style');
-    STYLE.textContent = '.urg-badge{display:inline-block;color:#fff;font-size:10px;font-weight:800;padding:2px 6px;border-radius:100px;margin-left:6px}.urg-badge.red{background:#e11d48;box-shadow:0 0 0 0 rgba(225,29,72,.6);animation:urgPulse 1.6s ease-in-out infinite}.urg-badge.orange{background:#f59e0b}@keyframes urgPulse{0%,100%{box-shadow:0 0 0 0 rgba(225,29,72,.6)}50%{box-shadow:0 0 0 6px rgba(225,29,72,0)}}';
-    document.head.appendChild(STYLE);
-    function isPS(role){ return typeof isProblemSolve==='function' ? isProblemSolve(role) : /problem.solve/i.test(role||''); }
-    function calcNotDone(){
-      if(typeof window.SP==='undefined' || !window.SP) return 0;
-      var oggi=new Date(), anno=oggi.getFullYear(), mese=oggi.getMonth()+1;
-      var notDone=0;
-      Object.values(window.SP).forEach(function(p){
-        var fatto=false;
-        Object.entries(p.settimane||{}).forEach(function(e){
-          var wk=e[0], days=e[1];
-          var n=parseInt((wk||'').replace(/\D/g,''))||0; if(!n) return;
-          var jan1=new Date(anno,0,1);
-          var d=new Date(jan1.getTime()+((n-1)*7*86400000));
-          var dow=d.getDay()||7; d.setDate(d.getDate()+(1-dow));
-          var thu=new Date(d); thu.setDate(thu.getDate()+3);
-          if(thu.getFullYear()!==anno || (thu.getMonth()+1)!==mese) return;
-          if(Object.values(days).some(function(r){return isPS(r);})) fatto=true;
-        });
-        if(!fatto) notDone++;
-      });
-      return notDone;
-    }
-    function updateBadge(){
-      var btn=document.getElementById('mode-month'); if(!btn) return;
-      var old=btn.querySelector('.urg-badge'); if(old) old.remove();
-      var oggi=new Date();
-      var fine=new Date(oggi.getFullYear(),oggi.getMonth()+1,0);
-      var gg=fine.getDate()-oggi.getDate();
-      if(gg>15) return; // troppo presto: no badge
-      var n=calcNotDone();
-      if(n<=0) return;
-      var b=document.createElement('span');
-      b.className='urg-badge '+(gg<=7 ? 'red' : 'orange');
-      b.textContent=n;
-      b.title=n+' persone non hanno ancora fatto Problem Solver questo mese ('+gg+' giorni rimasti)';
-      btn.appendChild(b);
-    }
-    window.addEventListener('load',function(){
-      setTimeout(updateBadge,3000);
-      setTimeout(updateBadge,10000);
-      setTimeout(updateBadge,30000);
-      setInterval(updateBadge,120000);
-    });
-  })();
-
+  // MO_BADGE_V1 DISABLED (splittato in tab PS separata) - noop + rimuove badge esistente
+  (function(){ try{ document.querySelectorAll('.urg-badge').forEach(function(b){b.remove();}); }catch(e){} window.addEventListener('load',function(){ setTimeout(function(){ try{ document.querySelectorAll('.urg-badge').forEach(function(b){b.remove();}); }catch(e){} },500); }); })();
 
   // MO_SEARCH_V1 - Point 4: ricerca globale
   (function(){
