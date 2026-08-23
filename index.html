@@ -1783,7 +1783,7 @@
             try{document.getElementById('banner').classList.remove('show');}catch(e){}
             renderSto();try{document.getElementById('controls').classList.remove('show');}catch(e){} /* MO_HIDECTRLBAR_V1 */ return;} if(m==='psrota'){var pb=document.getElementById('mode-psrota'); if(pb) pb.classList.add('active');try{document.getElementById('dayeval').style.display='none';}catch(e){}try{document.getElementById('preparinghint').style.display='none';}catch(e){}try{document.getElementById('kpis').classList.remove('show');}catch(e){}try{document.getElementById('banner').classList.remove('show');}catch(e){}try{document.getElementById('controls').classList.remove('show');}catch(e){} /* MO_HIDECTRLBAR_V1 */ window._mode='psrota';if(typeof window._renderPsRota==='function') window._renderPsRota();return;} if(false){
           }
-          window._mode=m; try{if(PEOPLE && PEOPLE.length){document.getElementById('controls').classList.add('show');}}catch(e){} /* MO_HIDECTRLBAR_V1: ripristina controls in modes che lo usano */ oSM(m);
+          window._mode=m; try{var _cb=document.getElementById('controls'); if(_cb){ if((m==='missing'||m==='stuck') && PEOPLE && PEOPLE.length){ _cb.classList.add('show'); } else { _cb.classList.remove('show'); } }}catch(e){} /* MO_HIDECTRLBAR_V2: controls visibile SOLO in Induct/Finger */ oSM(m);
         };
       }
       if(typeof window.renderMonth==='function'){
