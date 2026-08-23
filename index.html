@@ -2036,8 +2036,8 @@
       var fatto=volte>0;
       var colore=fatto?'verde':(ggRim<=7?'rosso':'giallo');
       var statoTxt=fatto
-        ?('✓ Fatto '+volte+(volte===1?' volta':' volte')+' questo mese')
-        :(ggRim<=7?'🔴 Urgente! Solo '+ggRim+' giorni':'🟡 Non ancora questo mese');
+        ?('<span style="display:inline-block;width:9px;height:9px;border-radius:50%;background:currentColor;margin-right:6px;vertical-align:middle"></span>Fatto '+volte+(volte===1?' volta':' volte')+' questo mese')
+        :(ggRim<=7?'<span style="display:inline-block;width:9px;height:9px;border-radius:50%;background:currentColor;margin-right:6px;vertical-align:middle"></span>Urgente! Solo '+ggRim+' giorni':'<span style="display:inline-block;width:9px;height:9px;border-radius:50%;background:currentColor;margin-right:6px;vertical-align:middle"></span>Non ancora questo mese');
       var subTxt=psLastWk?('Ultima volta: '+psLastWk):'Mai fatto PS';
       return {p:p,colore:colore,statoTxt:statoTxt,subTxt:subTxt,volte:volte};
     });
