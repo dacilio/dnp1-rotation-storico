@@ -1732,7 +1732,7 @@
                 var k=p.name.toLowerCase().trim();
                 if(!SP[k])SP[k]={name:p.name,ftpt:p.ftpt,settimane:{}};
                 SP[k].ftpt=p.ftpt;SP[k].name=p.name;SP[k].settimane[wk]={};
-                days.forEach(function(d){if(p.week&&p.week[d])SP[k].settimane[wk][d]=p.week[d];});
+                var _moNN=function(s){return String(s||'').toLowerCase().replace(/\s*,\s*/g,',').replace(/\s+/g,' ').trim();};var _moABS=(typeof ABSENCES==='object'&&ABSENCES)?(ABSENCES[_moNN(p.name)]||{}):{};days.forEach(function(d){if(p.week&&p.week[d]){SP[k].settimane[wk][d]=p.week[d];}else if(_moABS[d]){SP[k].settimane[wk][d]='ABS_'+String(_moABS[d]).toUpperCase();}});
               });
               localStorage.setItem('dnp1_sp',JSON.stringify(SP)); window.SP=SP;
               pushPersone();
@@ -1985,13 +1985,15 @@
         Object.entries(p.settimane||{}).forEach(function(e){
           var wk=e[0], days=e[1]||{};
           if(!byWk[wk]) byWk[wk]={settimana:wk,ds:ds,tot:0,indOk:0,fingOk:0};
-          byWk[wk].tot++;
-          var nInd=0,nFing=0;
+          /* moved below after nWork check */
+          var nInd=0,nFing=0,nAbs=0,nWork=0;
           Object.values(days).forEach(function(r){
-            try{ if(isInduct(r)) nInd++; else if(isFinger(r)) nFing++; }catch(e){}
+            var rr=String(r||'').toUpperCase(); if(rr.indexOf('ABS_')===0){ nAbs++; return; } nWork++; try{ if(isInduct(r)) nInd++; else if(isFinger(r)) nFing++; }catch(e){}
           });
-          if(nInd>=GOAL[type]) byWk[wk].indOk++;
-          if(nFing>=1) byWk[wk].fingOk++;
+          if(nWork===0) return; /* MO_ABSFIX_V1: solo assenze -> skip come renderRecap */
+          byWk[wk].tot++;
+          if((nInd+nAbs)>=GOAL[type]) byWk[wk].indOk++;
+          if((nFing+nAbs)>=1) byWk[wk].fingOk++;
         });
       });
       return Object.values(byWk).map(function(w){
