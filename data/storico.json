@@ -11,16 +11,6 @@
       "data": "2026-08-23"
     },
     {
-      "settimana": "W31",
-      "ds": "DNP1",
-      "tot": 91,
-      "pctInd": 92,
-      "indKo": 7,
-      "pctFing": 85,
-      "fingKo": 14,
-      "data": "2026-08-23"
-    },
-    {
       "settimana": "W35",
       "ds": "DNP1",
       "tot": 20,
@@ -58,6 +48,16 @@
       "indKo": 0,
       "pctFing": 86,
       "fingKo": 12,
+      "data": "2026-08-23"
+    },
+    {
+      "settimana": "W31",
+      "ds": "DNP1",
+      "tot": 88,
+      "pctInd": 98,
+      "indKo": 2,
+      "pctFing": 93,
+      "fingKo": 6,
       "data": "2026-08-23"
     }
   ],
@@ -656,5 +656,5 @@
       "shiftSheet": "Timetable"
     }
   },
-  "updated": "2026-08-23T01:23:23.844Z"
+  "updated": "2026-08-23T01:23:24.659Z"
 }
