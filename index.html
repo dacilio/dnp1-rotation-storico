@@ -729,7 +729,7 @@
   // Problem Solve: categoria a se', scorporata da Induct e Finger.
   function isProblemSolve(role){
     if(!role) return false;
-    return String(role).trim().toUpperCase().startsWith('PROBLEM SOLVER');
+    var _rps=String(role).trim().toUpperCase(); if(_rps.indexOf('ABS_')===0) return false; return _rps.indexOf('PROBLEM')>=0; /* MO_PSDETECT_FIX_V1: matcha PROBLEM AM/CD/2/Cycle ecc — coerente con V3.1 normalizeRole */
   }
   function isInduct(role){
     if(!role) return false;
