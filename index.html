@@ -2312,7 +2312,7 @@
           var orig = window.renderMonth;
           window.renderMonth = function(){
             var r = orig.apply(this, arguments);
-            setTimeout(function(){ if(window._mode==='psrota') injectPSKPI(); }, 150);
+            /* MO_PSROTA_DEDUP_V1: nessuna injection auto — PS viene renderizzato SOLO da _renderPsRota (tab dedicata) */
             window.injectPSKPI = injectPSKPI;
             return r;
           };
@@ -2414,10 +2414,18 @@
 
   // MO_PSROTA_V1 - Tab dedicata Rotazione Problem Solver (separata da Andamento mensile)
   (function(){
+    var _psRotaBusy = false;
     function renderPsRota(){
       var results = document.getElementById('results');
       if(!results) return;
+      if(_psRotaBusy) return; /* MO_PSROTA_DEDUP_V1: evita chiamate concorrenti */
+      _psRotaBusy = true;
       results.innerHTML = '';
+      /* pulisci qualsiasi residuo eventuale da render precedenti */
+      var _old1=document.getElementById('ps-kpi-block'); if(_old1) _old1.remove();
+      var _old2=document.getElementById('ps-sema-wrap'); if(_old2) _old2.remove();
+      var _old3=document.getElementById('psrota-header'); if(_old3) _old3.remove();
+      setTimeout(function(){ _psRotaBusy=false; }, 400);
       // Header sezione (stessa forma di MO_REORDER_V1 gruppo PS)
       var hp = document.createElement('div');
       hp.id = 'psrota-header';
@@ -2438,6 +2446,7 @@
         var wrap = document.createElement('div');
         wrap.id = 'ps-sema-wrap';
         results.appendChild(wrap);
+        wrap.innerHTML = ''; /* MO_PSROTA_DEDUP_V1: assicura wrap vuoto */
         try { renderRecapPS(wrap); } catch(e){ console.warn('renderRecapPS failed', e); }
       }
     }
