@@ -378,9 +378,10 @@
     "caputo,pasquale": {
       "name": "Caputo,Pasquale",
       "weeks": [
-        "W30"
+        "W30",
+        "W35"
       ],
-      "last": "W30"
+      "last": "W35"
     },
     "d'amore,luigi": {
       "name": "D'Amore,Luigi",
@@ -616,6 +617,20 @@
         "W32"
       ],
       "last": "W32"
+    },
+    "castiello,domenico": {
+      "name": "Castiello,Domenico",
+      "weeks": [
+        "W35"
+      ],
+      "last": "W35"
+    },
+    "sicignano,pasquale": {
+      "name": "Sicignano,Pasquale",
+      "weeks": [
+        "W35"
+      ],
+      "last": "W35"
     }
   },
   "notes": {
@@ -656,5 +671,5 @@
       "shiftSheet": "Timetable"
     }
   },
-  "updated": "2026-08-23T03:14:04.262Z"
+  "updated": "2026-08-23T03:14:07.047Z"
 }
