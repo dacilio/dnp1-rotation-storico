@@ -440,6 +440,17 @@
 
   <div class="err" id="err"></div>
 
+  <!-- MO_UPLOAD_ICON_V1: pulsante floating che riapre l'upload panel dopo Genera -->
+  <style>
+    #upload-fab{position:fixed;top:32px;left:14px;z-index:9998;width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#6366f1,#3b82f6);color:#fff;border:none;cursor:pointer;display:none;align-items:center;justify-content:center;font-size:18px;box-shadow:0 3px 10px rgba(0,0,0,.25);transition:transform .15s,box-shadow .15s}
+    #upload-fab.show{display:flex}
+    #upload-fab:hover{transform:scale(1.08);box-shadow:0 4px 14px rgba(99,102,241,.55)}
+    #upload-fab:active{transform:scale(.95)}
+    #upload-fab .tt{position:absolute;left:44px;top:50%;transform:translateY(-50%);background:#0f1729;color:#fff;font-size:11px;font-weight:700;padding:5px 10px;border-radius:6px;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .18s}
+    #upload-fab:hover .tt{opacity:1}
+  </style>
+  <button id="upload-fab" title="Carica nuovo Manning" onclick="(function(){var u=document.getElementById('uploadpanel'); if(u){u.style.display='block'; u.scrollIntoView({behavior:'smooth',block:'start'});} document.getElementById('upload-fab').classList.remove('show');})()">&#128194;<span class="tt">Carica altro file</span></button>
+
   <!-- Upload panel -->
   <div class="panel" id="uploadpanel">
     <div class="drop-grid">
