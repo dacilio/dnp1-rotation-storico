@@ -114,7 +114,11 @@
       },
       "W33": {
         "Sun": "UNLOADER 3",
-        "Mon": "UNLOADER 1"
+        "Mon": "UNLOADER 1",
+        "Wed": "ABS_FERIE",
+        "Thu": "ABS_FERIE",
+        "Fri": "ABS_FERIE",
+        "Sat": "ABS_FERIE"
       },
       "W35": {
         "Sun": "UNLOADER 4"
@@ -174,6 +178,7 @@
         "Thu": "PROBLEM SOLVER CD"
       },
       "W33": {
+        "_excl": 1,
         "Mon": "PROBLEM AM",
         "Tue": "PROBLEM SOLVER AM",
         "Fri": "PROBLEM SOLVER AM"
@@ -226,7 +231,10 @@
         "Sun": "RECEIVER 4"
       },
       "W33": {
-        "Sun": "RECEIVER 4"
+        "Sun": "RECEIVER 4",
+        "Thu": "ABS_FERIE",
+        "Fri": "ABS_FERIE",
+        "Sat": "ABS_FERIE"
       }
     }
   },
@@ -294,7 +302,8 @@
       "W33": {
         "Sun": "PROBLEM SOLVER 1",
         "Mon": "PROBLEM SOLVER 1",
-        "Tue": "PROBLEM SOLVER AB"
+        "Tue": "PROBLEM SOLVER AB",
+        "Fri": "ABS_FERIE"
       },
       "W35": {
         "Sun": "PUSHER 5"
@@ -317,6 +326,7 @@
       },
       "W33": {
         "Tue": "2 ALTO C/D",
+        "Wed": "ABS_SICK",
         "Thu": "PICKER",
         "Fri": "PICKER"
       },
@@ -390,7 +400,8 @@
       },
       "W33": {
         "Sun": "PUSHER 3",
-        "Mon": "PUSHER 5"
+        "Mon": "PUSHER 5",
+        "Fri": "ABS_FERIE"
       },
       "W35": {
         "Sun": "RECEIVER 5"
@@ -447,7 +458,8 @@
       },
       "W33": {
         "Sun": "RECEIVER 3",
-        "Mon": "RECEIVER 2"
+        "Mon": "RECEIVER 2",
+        "Fri": "ABS_FERIE"
       },
       "W35": {
         "Sun": "PUSHER 3"
@@ -480,6 +492,7 @@
         "Sat": "1 ALTO A/B"
       },
       "W33": {
+        "Mon": "ABS_FERIE",
         "Thu": "PICKER"
       }
     }
@@ -543,7 +556,8 @@
       "W33": {
         "Sun": "PICKER",
         "Mon": "WATERSPIDER 5",
-        "Tue": "PROBLEM SOLVER Cycle"
+        "Tue": "PROBLEM SOLVER Cycle",
+        "Fri": "ABS_FERIE"
       },
       "W35": {
         "Sun": "PICKER"
@@ -570,6 +584,7 @@
         "Fri": "WATERSPIDER 9"
       },
       "W33": {
+        "_excl": 1,
         "Thu": "PROBLEM AM"
       }
     }
@@ -801,6 +816,7 @@
       },
       "W33": {
         "Mon": "RECEIVER 3",
+        "Tue": "ABS_FERIE",
         "Wed": "RECEIVER 4",
         "Thu": "UNLOADER 3"
       },
@@ -834,6 +850,7 @@
         "Sat": "RECEIVER 2"
       },
       "W33": {
+        "Mon": "ABS_FERIE",
         "Tue": "RECEIVER 3",
         "Wed": "PUSHER 3",
         "Thu": "UNLOADER 1"
@@ -874,6 +891,7 @@
         "Fri": "PICKER"
       },
       "W33": {
+        "Tue": "ABS_FERIE",
         "Wed": "WATERSPIDER 4",
         "Thu": "STOWER",
         "Fri": "PUSHER 1"
@@ -900,6 +918,7 @@
         "Fri": "PICKER"
       },
       "W33": {
+        "Tue": "ABS_SICK",
         "Wed": "RECEIVER 6",
         "Thu": "PICKER",
         "Fri": "PICKER"
@@ -971,7 +990,9 @@
         "Mon": "STOWER",
         "Tue": "BASSO B",
         "Wed": "STOWER",
-        "Thu": "PICKER"
+        "Thu": "PICKER",
+        "Fri": "ABS_FERIE",
+        "Sat": "ABS_FERIE"
       }
     }
   },
@@ -1021,6 +1042,7 @@
         "Sat": "RECEIVER 7"
       },
       "W33": {
+        "Sun": "ABS_SICK",
         "Tue": "STOWER",
         "Wed": "PUSHER 5",
         "Thu": "PUSHER 5"
@@ -1076,7 +1098,12 @@
       },
       "W33": {
         "Sun": "BASSO D",
-        "Mon": "PICKER"
+        "Mon": "PICKER",
+        "Tue": "ABS_FERIE",
+        "Wed": "ABS_FERIE",
+        "Thu": "ABS_FERIE",
+        "Fri": "ABS_FERIE",
+        "Sat": "ABS_FERIE"
       }
     }
   },
@@ -1099,6 +1126,10 @@
         "Sat": "DOCK MARSHALL"
       },
       "W33": {
+        "_excl": 1,
+        "Sun": "ABS_FERIE",
+        "Mon": "ABS_FERIE",
+        "Tue": "ABS_FERIE",
         "Wed": "WATERSPIDER 1",
         "Thu": "PROBLEM SOLVER AM"
       },
@@ -1139,7 +1170,9 @@
       },
       "W33": {
         "Sun": "RECEIVER 2",
-        "Mon": "RECEIVER 1"
+        "Mon": "RECEIVER 1",
+        "Fri": "ABS_FERIE",
+        "Sat": "ABS_FERIE"
       },
       "W35": {
         "Sun": "WATERSPIDER 4"
@@ -1168,7 +1201,9 @@
         "Sat": "PICKER"
       },
       "W33": {
-        "Tue": "PROBLEM SOLVER AM"
+        "_excl": 1,
+        "Tue": "PROBLEM SOLVER AM",
+        "Fri": "ABS_OFF"
       }
     }
   },
@@ -1229,7 +1264,8 @@
       },
       "W33": {
         "Sun": "UNLOADER 5",
-        "Mon": "PICKER"
+        "Mon": "PICKER",
+        "Tue": "ABS_SICK"
       }
     }
   },
@@ -1344,6 +1380,7 @@
         "Sat": "PUSHER 2"
       },
       "W33": {
+        "_excl": 1,
         "Mon": "AMBASSADOR AM",
         "Tue": "ABASSADOR",
         "Wed": "PROBLEM SOLVER AM",
@@ -1495,7 +1532,8 @@
       "W33": {
         "Sun": "WATERSPIDER 5",
         "Mon": "WATERSPIDER 4",
-        "Tue": "RECEIVER 2"
+        "Tue": "RECEIVER 2",
+        "Fri": "ABS_FERIE"
       },
       "W35": {
         "Sun": "PICKER"
@@ -1550,7 +1588,9 @@
         "Sun": "STOWER"
       },
       "W33": {
-        "Sun": "STOWER"
+        "Sun": "STOWER",
+        "Thu": "ABS_FERIE",
+        "Fri": "ABS_FERIE"
       }
     }
   },
@@ -1585,6 +1625,7 @@
       "W33": {
         "Sun": "STOWER",
         "Wed": "PICKER",
+        "Thu": "ABS_OFF",
         "Fri": "PROBLEM SOLVER 1"
       }
     }
@@ -1615,7 +1656,9 @@
       },
       "W33": {
         "Sun": "PUSHER 4",
-        "Mon": "PICKER"
+        "Mon": "PICKER",
+        "Fri": "ABS_FERIE",
+        "Sat": "ABS_FERIE"
       }
     }
   },
@@ -1902,6 +1945,7 @@
       },
       "W33": {
         "Tue": "RECEIVER 1",
+        "Wed": "ABS_OFF",
         "Thu": "PROBLEM SOLVER Cycle",
         "Fri": "PROBLEM SOLVER 2"
       },
@@ -2073,6 +2117,7 @@
       "W33": {
         "Sun": "DOCK MARSHALL",
         "Mon": "WATERSPIDER 3",
+        "Tue": "ABS_FERIE",
         "Fri": "PICKER"
       },
       "W35": {
@@ -2105,7 +2150,10 @@
         "Sun": "WATERSPIDER 4"
       },
       "W33": {
-        "Sun": "WATERSPIDER 4"
+        "Sun": "WATERSPIDER 4",
+        "Tue": "ABS_FERIE",
+        "Fri": "ABS_FERIE",
+        "Sat": "ABS_FERIE"
       }
     }
   },
@@ -2133,7 +2181,11 @@
         "Sun": "PUSHER 5"
       },
       "W33": {
-        "Sun": "PUSHER 5"
+        "Sun": "PUSHER 5",
+        "Tue": "ABS_FERIE",
+        "Wed": "ABS_FERIE",
+        "Thu": "ABS_FERIE",
+        "Fri": "ABS_FERIE"
       }
     }
   },
@@ -2161,7 +2213,11 @@
         "Sun": "PUSHER 2"
       },
       "W33": {
-        "Sun": "PUSHER 2"
+        "_excl": 1,
+        "Sun": "PUSHER 2",
+        "Thu": "ABS_FERIE",
+        "Fri": "ABS_FERIE",
+        "Sat": "ABS_FERIE"
       }
     }
   },
@@ -2400,7 +2456,9 @@
         "Sun": "WATERSPIDER 3",
         "Mon": "UNLOADER 3",
         "Tue": "PUSHER 2",
-        "Wed": "PICKER"
+        "Wed": "PICKER",
+        "Fri": "ABS_FERIE",
+        "Sat": "ABS_FERIE"
       }
     }
   },
@@ -2429,7 +2487,8 @@
       },
       "W33": {
         "Sun": "STOWER",
-        "Mon": "STOWER"
+        "Mon": "STOWER",
+        "Fri": "ABS_FERIE"
       }
     }
   },
@@ -2456,6 +2515,7 @@
         "Sat": "PICKER"
       },
       "W33": {
+        "Mon": "ABS_OFF",
         "Tue": "PICKER",
         "Wed": "DOCK MARSHALL",
         "Thu": "PICKER",
@@ -2558,7 +2618,9 @@
       },
       "W33": {
         "Sun": "UNLOADER 2",
-        "Mon": "PUSHER 2"
+        "Mon": "PUSHER 2",
+        "Fri": "ABS_FERIE",
+        "Sat": "ABS_FERIE"
       }
     }
   },
@@ -2647,7 +2709,9 @@
         "Mon": "PUSHER 4",
         "Tue": "UNLOADER 3",
         "Wed": "STOWER",
-        "Thu": "PUSHER 2"
+        "Thu": "PUSHER 2",
+        "Fri": "ABS_FERIE",
+        "Sat": "ABS_FERIE"
       }
     }
   },
@@ -2675,7 +2739,8 @@
       "W33": {
         "Tue": "STOWER",
         "Wed": "RECEIVER 5",
-        "Thu": "PICKER"
+        "Thu": "PICKER",
+        "Fri": "ABS_FERIE"
       },
       "W34": {
         "Tue": "PROBLEM SOLVER 2",
@@ -2701,7 +2766,10 @@
       },
       "W33": {
         "Mon": "AMBASSADOR",
-        "Tue": "PROBLEM SOLVER 1"
+        "Tue": "PROBLEM SOLVER 1",
+        "Thu": "ABS_FERIE",
+        "Fri": "ABS_FERIE",
+        "Sat": "ABS_FERIE"
       }
     }
   },
@@ -2889,7 +2957,10 @@
         "Sat": "PICKER"
       },
       "W33": {
-        "Tue": "DOCK MARSHALL"
+        "Tue": "DOCK MARSHALL",
+        "Wed": "ABS_SICK",
+        "Thu": "ABS_SICK",
+        "Fri": "ABS_SICK"
       },
       "W34": {
         "_excl": 1,
@@ -2903,6 +2974,7 @@
     "ftpt": "FT",
     "settimane": {
       "W33": {
+        "_excl": 1,
         "Wed": "PROBLEM SOLVER AM"
       },
       "W34": {
