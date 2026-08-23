@@ -519,14 +519,16 @@
       "name": "Saviano,Assunta",
       "weeks": [
         "W34",
-        "W33"
+        "W33",
+        "W32"
       ],
       "last": "W34"
     },
     "russo,roberta": {
       "name": "Russo,Roberta",
       "weeks": [
-        "W34"
+        "W34",
+        "W32"
       ],
       "last": "W34"
     },
@@ -582,7 +584,8 @@
     "armano,raffaele": {
       "name": "Armano,Raffaele",
       "weeks": [
-        "W34"
+        "W34",
+        "W32"
       ],
       "last": "W34"
     },
@@ -599,6 +602,20 @@
         "W35"
       ],
       "last": "W35"
+    },
+    "barbato,luca": {
+      "name": "Barbato,Luca",
+      "weeks": [
+        "W32"
+      ],
+      "last": "W32"
+    },
+    "staiano,francesco": {
+      "name": "Staiano,Francesco",
+      "weeks": [
+        "W32"
+      ],
+      "last": "W32"
     }
   },
   "notes": {
@@ -639,5 +656,5 @@
       "shiftSheet": "Timetable"
     }
   },
-  "updated": "2026-08-23T01:22:22.034Z"
+  "updated": "2026-08-23T01:22:44.479Z"
 }
