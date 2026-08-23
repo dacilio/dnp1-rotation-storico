@@ -2005,7 +2005,7 @@
       }).sort(function(a,b){return (parseInt(a.settimana.replace(/\D/g,''))||0)-(parseInt(b.settimana.replace(/\D/g,''))||0);});
     }
 
-    function injectAnalytics(){
+    function injectAnalytics(){ if(window._mode && window._mode!=='month') return; /* MO_PSROTA_DEDUP_V2 */
       var res=document.getElementById('results'); if(!res) return;
       var old=document.getElementById('mo-analytics'); if(old) old.remove();
       if(!MONTH_ROWS || MONTH_ROWS.length<2) return;
@@ -2339,7 +2339,7 @@
       return h;
     }
     
-    function reorderMonth(){
+    function reorderMonth(){ if(window._mode && window._mode!=='month') return; /* MO_PSROTA_DEDUP_V2 */
       var results = document.getElementById('results');
       if(!results) return;
       
@@ -2655,7 +2655,7 @@
       }, 200);
     };
     
-    function injectExportButtons(){
+    function injectExportButtons(){ if(window._mode && window._mode!=='month') return; /* MO_PSROTA_DEDUP_V2 */
       var results = document.getElementById('results');
       if(!results) return;
       var old = document.getElementById(CONTAINER_ID); if(old) old.remove();
@@ -3166,7 +3166,7 @@
       document.head.appendChild(s);
     }
     
-    function injectRecapButtons(){
+    function injectRecapButtons(){ if(window._mode && window._mode!=='recap') return; /* MO_PSROTA_DEDUP_V2 */
       var results = document.getElementById('results');
       if(!results) return;
       var old = document.getElementById('recap-export-row'); if(old) old.remove();
