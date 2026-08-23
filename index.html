@@ -1447,7 +1447,8 @@
         <div class="sh-text"><span class="sh-title">Dettaglio settimane</span></div></div><div class="section-body">
         <table class="mtab"><thead><tr><th>Settimana</th><th>DS</th><th>Associates</th><th>% Induct</th><th>WoW Induct</th><th>% Finger</th><th>WoW Finger</th></tr></thead><tbody>`;
       // helper: cella WoW (variazione in punti percentuali vs settimana precedente)
-      function wowCell(cur, prev){
+      function wowCell(cur, prev, curTot, prevTot){ /* MO_WOWFLAG_V1: flag popolazione >30% */ if(prev===null || prev===undefined) return '<td style="color:#94a3b8">\u2014</td>'; const d = cur - prev; var _popShift=0; if(prevTot && prevTot>0 && curTot!=null){ _popShift=Math.round(Math.abs(curTot-prevTot)/prevTot*100); } if(_popShift>30){ var _arr=d>0?'\u25b2':(d<0?'\u25bc':'\u2192'); var _sign=d>0?'+':''; var _tip='Confronto non significativo: popolazione variata del '+_popShift+'% ('+prevTot+' \u2192 '+curTot+' associates)'; return '<td style="color:#94a3b8;font-style:italic;cursor:help" title="'+_tip+'">'+_arr+' '+_sign+d+'pp \u26a0</td>'; } if(d===0) return '<td style="color:#64748b">\u2192 0</td>'; const up = d>0; const col = up ? '#059669' : '#e11d48'; const arr = up ? '\u25b2' : '\u25bc'; return `<td style="color:${col};font-weight:700">${arr} ${up?'+':''}${d}pp</td>`; }
+      function _wowCellUnused(cur, prev){
         if(prev===null || prev===undefined) return '<td style="color:#94a3b8">\u2014</td>';
         const d = cur - prev;
         if(d===0) return '<td style="color:#64748b">\u2192 0</td>';
@@ -1459,8 +1460,8 @@
       rows.forEach((r,idx)=>{
         const prev = idx>0 ? rows[idx-1] : null;
         html += `<tr><td>${r.settimana}</td><td>${r.ds}</td><td>${r.tot}</td>`+
-                `<td>${r.pctInd}%</td>${wowCell(r.pctInd, prev?prev.pctInd:null)}`+
-                `<td>${r.pctFing}%</td>${wowCell(r.pctFing, prev?prev.pctFing:null)}</tr>`;
+                `<td>${r.pctInd}%</td>${wowCell(r.pctInd, prev?prev.pctInd:null, r.tot, prev?prev.tot:null)}`+
+                `<td>${r.pctFing}%</td>${wowCell(r.pctFing, prev?prev.pctFing:null, r.tot, prev?prev.tot:null)}</tr>`;
       });
       html += `</tbody></table></div></div>`;
     }
