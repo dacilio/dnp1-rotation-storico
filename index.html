@@ -731,6 +731,12 @@
     if(!role) return false;
     var _rps=String(role).trim().toUpperCase(); if(_rps.indexOf('ABS_')===0) return false; return _rps.indexOf('PROBLEM')>=0; /* MO_PSDETECT_FIX_V1: matcha PROBLEM AM/CD/2/Cycle ecc — coerente con V3.1 normalizeRole */
   }
+  function isDockMarshall(role){ /* MO_DM_V1: matcha DOCK MARSHALL con eventuali suffissi */
+    if(!role) return false;
+    var _rdm=String(role).trim().toUpperCase();
+    if(_rdm.indexOf('ABS_')===0) return false;
+    return _rdm.indexOf('DOCK MARSHALL')>=0;
+  }
   function isInduct(role){
     if(!role) return false;
     // NB: Problem Solver conta ANCHE come Induct (rientra nella compliance Induct),
@@ -1276,6 +1282,8 @@
       tot++;
       // --- Problem Solve (settimana): chi ha fatto almeno 1 PS ---
       if(wdays.some(d => isProblemSolve(p.week[d]))){ psWeek++; psNames.push(p.name); recordPS(p.name, DETECTED_WEEK||''); }
+      /* MO_DM_V1: registra chi ha fatto Dock Marshall questa settimana */
+      if(wdays.some(d => isDockMarshall(p.week[d]))){ recordDM(p.name, DETECTED_WEEK||''); }
       const type = (p.ftpt||'').toUpperCase()==='FT' ? 'FT' : 'PT';
       // se la persona ha una NOTA/giustificazione, è considerata "ruotata" in entrambe le direzioni
       const giustificato = !!getNote(p.name);
@@ -1405,6 +1413,19 @@
   const LS_PSMONTH = 'dnp1_jrw_psmonth';
   function loadPS(){ try{ return JSON.parse(lsGet(LS_PSMONTH))||{}; }catch(e){ return {}; } }
   function savePS(){ lsSet(LS_PSMONTH, JSON.stringify(PS_MONTH)); }
+  /* MO_DM_V1: gemello di PS_MONTH per Dock Marshall */
+  const LS_DMMONTH = 'dnp1_jrw_dmmonth';
+  function loadDM(){ try{ return JSON.parse(lsGet(LS_DMMONTH))||{}; }catch(e){ return {}; } }
+  function saveDM(){ lsSet(LS_DMMONTH, JSON.stringify(DM_MONTH)); }
+  let DM_MONTH = loadDM();
+  function recordDM(name, week){
+    const key = normName(name); if(!key) return;
+    if(!DM_MONTH[key]) DM_MONTH[key] = {name:name, weeks:[], last:null};
+    const rec = DM_MONTH[key];
+    if(week && rec.weeks.indexOf(week)<0) rec.weeks.push(week);
+    let mx=null; rec.weeks.forEach(w=>{ const n=wkNum(w); if(n!==null && (mx===null||n>mx)) mx=n; });
+    rec.last = mx!==null ? ('W'+mx) : (week||rec.last);
+  }
   // struttura: { normName: {name:'Cognome,Nome', weeks:['W28','W30'], last:'W30'} }
   let PS_MONTH = loadPS();
   // numero settimana come intero (per calcolare 'da quante settimane')
@@ -1719,6 +1740,7 @@
         if(s){
           if(Array.isArray(s.history)){localStorage.setItem('dnp1_jrw_history',JSON.stringify(s.history));try{MONTH_ROWS=s.history;}catch(e){}}
           if(s.psmonth){localStorage.setItem('dnp1_jrw_psmonth',JSON.stringify(s.psmonth));try{PS_MONTH=s.psmonth;}catch(e){}}
+          if(s.dmmonth){localStorage.setItem('dnp1_jrw_dmmonth',JSON.stringify(s.dmmonth));try{DM_MONTH=s.dmmonth;}catch(e){}} /* MO_DM_V1 */
           if(s.notes){localStorage.setItem('dnp1_jrw_notes',JSON.stringify(s.notes));try{NOTES=s.notes;}catch(e){}}
           if(s.profiles&&Object.keys(s.profiles).length){localStorage.setItem('dnp1_jrw_profiles',JSON.stringify(s.profiles));try{PROFILES=s.profiles;if(!PROFILES[ACTIVE])ACTIVE=Object.keys(PROFILES)[0];}catch(e){}}
         }
@@ -1737,6 +1759,7 @@
         var d={history:[],psmonth:{},notes:{},profiles:{},updated:new Date().toISOString()};
         try{d.history=MONTH_ROWS;}catch(e){}
         try{d.psmonth=PS_MONTH;}catch(e){}
+        try{d.dmmonth=DM_MONTH;}catch(e){} /* MO_DM_V1 */
         try{d.notes=NOTES;}catch(e){}
         try{d.profiles=PROFILES;}catch(e){}
         await apiPut(FILES.storico,d);
@@ -1746,7 +1769,7 @@
     async function pushPersone(){try{await apiPut(FILES.persone,SP);}catch(e){}}
 
     window.addEventListener('load',function(){
-      ['saveHist','savePS','saveNotes','saveProfiles'].forEach(function(fn){
+      ['saveHist','savePS','saveDM','saveNotes','saveProfiles'].forEach /* MO_DM_V1: saveDM triggera pushStorico */(function(fn){
         if(typeof window[fn]==='function'){var o=window[fn];window[fn]=function(){o.apply(this,arguments);pushStorico();};}
       });
       if(typeof window.generate==='function'){
