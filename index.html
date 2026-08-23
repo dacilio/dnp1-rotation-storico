@@ -905,7 +905,7 @@
         const count = Object.values(ABSENCES).reduce((a,d)=>a+Object.values(d).filter(v=>ABSENT_WORDS.includes(v)).length,0);
         $('dstatus-shift').innerHTML = '✓ '+PENDING_SHIFT.name+' — '+count+' assenze rilevate';
       }
-      $('uploadpanel').style.display='none';
+      $('uploadpanel').style.display='none'; try{document.getElementById('upload-fab').classList.add('show');}catch(e){} /* MO_UPLOAD_ICON_V1 */
       $('modebar').classList.add('show');
       $('controls').classList.add('show');
       render();
