@@ -415,6 +415,7 @@
         "Sat": "PROBLEM SOLVER 1"
       },
       "W34": {
+        "_excl": 1,
         "Mon": "PROBLEM SOLVER Cycle",
         "Sat": "PROBLEM SOLVER AM"
       }
@@ -1102,6 +1103,7 @@
         "Thu": "PROBLEM SOLVER AM"
       },
       "W34": {
+        "_excl": 1,
         "Sun": "PROBLEM SOLVER 4",
         "Mon": "WATERSPIDER 5",
         "Fri": "PROBLEM SOLVER AM"
@@ -1348,6 +1350,7 @@
         "Fri": "PROBLEM SOLVER AM"
       },
       "W34": {
+        "_excl": 1,
         "Sun": "ABS_FERIE",
         "Tue": "PROBLEM AM",
         "Thu": "PROBLEM SOLVER AM"
@@ -2810,6 +2813,7 @@
         "Thu": "STOWER"
       },
       "W34": {
+        "_excl": 1,
         "Tue": "PROBLEM AM"
       }
     }
@@ -2861,6 +2865,7 @@
         "Fri": "DOCK MARSHALL"
       },
       "W34": {
+        "_excl": 1,
         "Mon": "PROBLEM SOLVER CD",
         "Sat": "PROBLEM SOLVER AM"
       },
@@ -2887,6 +2892,7 @@
         "Tue": "DOCK MARSHALL"
       },
       "W34": {
+        "_excl": 1,
         "Thu": "PROBLEM SOLVER CD",
         "Fri": "PROBLEM SOLVER AM"
       }
