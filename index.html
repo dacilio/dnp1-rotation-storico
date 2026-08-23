@@ -440,9 +440,17 @@
 
   <div class="err" id="err"></div>
 
-  <!-- MO_UPLOAD_ICON_V1: pulsante floating che riapre l'upload panel dopo Genera -->
+  <!-- MO_UPLOAD_ICON_V1 + MO_GHBAR_ICON_V1: pulsante upload + gh-bar compatto -->
   <style>
-    #upload-fab{position:fixed;top:32px;left:14px;z-index:9998;width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#6366f1,#3b82f6);color:#fff;border:none;cursor:pointer;display:none;align-items:center;justify-content:center;font-size:18px;box-shadow:0 3px 10px rgba(0,0,0,.25);transition:transform .15s,box-shadow .15s}
+    /* Override gh-bar: da barra full-width a pill piccola in alto a destra */
+    #gh-bar{position:fixed !important;top:14px !important;right:14px !important;left:auto !important;width:auto !important;max-width:none;padding:5px 12px !important;border-radius:100px !important;font-size:11px !important;box-shadow:0 3px 10px rgba(0,0,0,.25);gap:6px !important;transition:all .3s;cursor:pointer}
+    #gh-bar #gh-txt{max-width:110px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    #gh-bar #gh-upd{display:none !important}
+    #gh-bar:hover{padding:5px 14px !important}
+    #gh-bar:hover #gh-upd{display:inline !important;margin-left:6px}
+    #gh-bar:hover #gh-txt{max-width:200px}
+    body{padding-top:0 !important}
+    #upload-fab{position:fixed;top:14px;left:14px;z-index:9998;width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#6366f1,#3b82f6);color:#fff;border:none;cursor:pointer;display:none;align-items:center;justify-content:center;font-size:18px;box-shadow:0 3px 10px rgba(0,0,0,.25);transition:transform .15s,box-shadow .15s}
     #upload-fab.show{display:flex}
     #upload-fab:hover{transform:scale(1.08);box-shadow:0 4px 14px rgba(99,102,241,.55)}
     #upload-fab:active{transform:scale(.95)}
