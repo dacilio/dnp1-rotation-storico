@@ -56,8 +56,8 @@
       "tot": 31,
       "pctInd": 58,
       "indKo": 13,
-      "pctFing": 61,
-      "fingKo": 12,
+      "pctFing": 58,
+      "fingKo": 13,
       "data": "2026-08-23"
     }
   ],
@@ -671,7 +671,7 @@
       "shiftSheet": "Timetable"
     }
   },
-  "updated": "2026-08-23T06:32:17.063Z",
+  "updated": "2026-08-23T21:56:04.176Z",
   "dmmonth": {
     "forestiero,raffaele2": {
       "name": "Forestiero,Raffaele2",
