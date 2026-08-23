@@ -1734,7 +1734,7 @@
                 SP[k].ftpt=p.ftpt;SP[k].name=p.name;SP[k].settimane[wk]={};if(typeof EXCLUDED_SHIFT!=='undefined'&&EXCLUDED_SHIFT&&EXCLUDED_SHIFT.has(p.name.toLowerCase().replace(/\s*,\s*/g,',').replace(/\s+/g,' ').trim())){SP[k].settimane[wk]._excl=1;}
                 var _moNN=function(s){return String(s||'').toLowerCase().replace(/\s*,\s*/g,',').replace(/\s+/g,' ').trim();};var _moABS=(typeof ABSENCES==='object'&&ABSENCES)?(ABSENCES[_moNN(p.name)]||{}):{};days.forEach(function(d){if(p.week&&p.week[d]){SP[k].settimane[wk][d]=p.week[d];}else if(_moABS[d]){SP[k].settimane[wk][d]='ABS_'+String(_moABS[d]).toUpperCase();}});
               });
-              localStorage.setItem('dnp1_sp',JSON.stringify(SP)); window.SP=SP;
+              localStorage.setItem('dnp1_sp',JSON.stringify(SP)); window.SP=SP; /* MO_RECAPMATCH_V1: calcola compliance settimana come renderRecap e salvala in MONTH_ROWS */ try{ var _mrGoal={FT:2,PT:1}; try{ if(typeof CFG==='function'){_mrGoal.FT=CFG().goalFT;_mrGoal.PT=CFG().goalPT;} }catch(e){} var _mrTot=0,_mrIndOk=0,_mrFingOk=0; var _mrNN=function(s){return String(s||'').toLowerCase().replace(/\s*,\s*/g,',').replace(/\s+/g,' ').trim();}; var _mrABSWORDS=(typeof ABSENT_WORDS!=='undefined')?ABSENT_WORDS:['off','ferie','sick']; PEOPLE.forEach(function(pp){ if(typeof EXCLUDED_SHIFT!=='undefined' && EXCLUDED_SHIFT && EXCLUDED_SHIFT.has(_mrNN(pp.name))) return; var _wd=days.filter(function(d){return pp.week && pp.week[d];}); if(_wd.length===0) return; _mrTot++; var _tp=(pp.ftpt||'').toUpperCase()==='FT'?'FT':'PT'; var _giust=false; try{ _giust = (typeof getNote==='function' && !!getNote(pp.name)); }catch(e){} var _dInd=_wd.filter(function(d){try{return isInduct(pp.week[d]);}catch(e){return false;}}).length; var _abs=0; if(typeof ABSENCES!=='undefined' && ABSENCES && ABSENCES[_mrNN(pp.name)]){ var _ab=ABSENCES[_mrNN(pp.name)]; _abs=days.filter(function(d){return _ab[d] && _mrABSWORDS.indexOf(_ab[d])>=0;}).length; } if((_dInd+_abs)>=_mrGoal[_tp] || _giust) _mrIndOk++; var _dFing=_wd.filter(function(d){try{return isFinger(pp.week[d]);}catch(e){return false;}}).length; if(_dFing>=1 || _abs>=1 || _giust) _mrFingOk++; }); var _pct=function(n){return _mrTot?Math.round(n/_mrTot*100):0;}; var _ds=(typeof ACTIVE!=='undefined'?ACTIVE:'DNP1'); var _rec={settimana:wk, ds:_ds, tot:_mrTot, pctInd:_pct(_mrIndOk), indKo:_mrTot-_mrIndOk, pctFing:_pct(_mrFingOk), fingKo:_mrTot-_mrFingOk, data:new Date().toISOString().slice(0,10)}; if(typeof MONTH_ROWS!=='undefined'){ var _key=_rec.settimana+'|'+_rec.ds; MONTH_ROWS=MONTH_ROWS.filter(function(x){return (x.settimana+'|'+x.ds)!==_key;}); MONTH_ROWS.push(_rec); if(typeof saveHist==='function') saveHist(); } console.log('MO_RECAPMATCH_V1 saved:',_rec); }catch(err){ console.warn('MO_RECAPMATCH_V1 error:',err); }
               pushPersone();
               bar(true,'GitHub: '+wk+' salvato ('+PEOPLE.length+' persone)',new Date().toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'}));
             }catch(e){console.warn('save week:',e);}
@@ -2101,7 +2101,7 @@
             if(computed.length){
               var by={};
               (MONTH_ROWS||[]).forEach(function(r){by[r.settimana+'|'+r.ds]=r;});
-              computed.forEach(function(r){by[r.settimana+'|'+r.ds]=r;});
+              computed.forEach(function(r){ var _k=r.settimana+'|'+r.ds; if(!by[_k]) by[_k]=r; }); /* MO_RECAPMATCH_V1: MONTH_ROWS (Recap) wins */
               MONTH_ROWS=Object.values(by);
               if(typeof saveHist==='function') saveHist();
             }
