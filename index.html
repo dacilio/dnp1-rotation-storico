@@ -2057,9 +2057,9 @@
       +'<span style="color:#92400e">● Non ancora (c\'e tempo)</span>'
       +'<span style="color:#b91c1c">● Urgente</span></div>'
       +'<div style="display:flex;gap:10px;margin-bottom:12px;flex-wrap:wrap">'
-      +'<div style="background:#f0fdf4;border:1.5px solid #86efac;border-radius:10px;padding:8px 14px;font-size:13px;font-weight:700;color:#15803d">✅ '+nV+' completati</div>'
-      +'<div style="background:#fffbeb;border:1.5px solid #fde68a;border-radius:10px;padding:8px 14px;font-size:13px;font-weight:700;color:#92400e">⏳ '+nG+' da pianificare</div>'
-      +(nR>0?'<div style="background:#fff1f2;border:1.5px solid #fecaca;border-radius:10px;padding:8px 14px;font-size:13px;font-weight:700;color:#b91c1c">🚨 '+nR+' urgenti</div>':'')
+      +'<div style="background:#f0fdf4;border:1.5px solid #86efac;border-radius:10px;padding:8px 14px;font-size:13px;font-weight:700;color:#15803d"<span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:currentColor;margin-right:6px;vertical-align:middle"></span>'+nV+' completati</div>'
+      +'<div style="background:#fffbeb;border:1.5px solid #fde68a;border-radius:10px;padding:8px 14px;font-size:13px;font-weight:700;color:#92400e"<span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:currentColor;margin-right:6px;vertical-align:middle"></span>'+nG+' da pianificare</div>'
+      +(nR>0?'<div style="background:#fff1f2;border:1.5px solid #fecaca;border-radius:10px;padding:8px 14px;font-size:13px;font-weight:700;color:#b91c1c"<span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:currentColor;margin-right:6px;vertical-align:middle"></span>'+nR+' urgenti</div>':'')
       +'</div>';
     var grid=document.createElement('div'); grid.className='ps-mensile-grid';
     cards.forEach(function(item){
@@ -2646,9 +2646,9 @@
         +'<span style="color:#92400e;font-weight:700"><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#f59e0b;box-shadow:0 0 0 2px #fef3c7;vertical-align:middle;margin-right:5px"></span>Non ancora (c\'e tempo)</span>'
         +'<span style="color:#b91c1c;font-weight:700"><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#ef4444;box-shadow:0 0 0 2px #fee2e2;vertical-align:middle;margin-right:5px"></span>Urgente</span></div>'
         +'<div style="display:flex;gap:10px;margin-bottom:12px;flex-wrap:wrap">'
-        +'<div style="background:#f0fdf4;border:1.5px solid #86efac;border-radius:10px;padding:8px 14px;font-size:13px;font-weight:700;color:#15803d">? '+nV+' completati</div>'
-        +'<div style="background:#fffbeb;border:1.5px solid #fde68a;border-radius:10px;padding:8px 14px;font-size:13px;font-weight:700;color:#92400e">? '+nG+' da pianificare</div>'
-        +(nR>0?'<div style="background:#fff1f2;border:1.5px solid #fecaca;border-radius:10px;padding:8px 14px;font-size:13px;font-weight:700;color:#b91c1c">?? '+nR+' urgenti</div>':'')
+        +'<div style="background:#f0fdf4;border:1.5px solid #86efac;border-radius:10px;padding:8px 14px;font-size:13px;font-weight:700;color:#15803d"<span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:currentColor;margin-right:6px;vertical-align:middle"></span>'+nV+' completati</div>'
+        +'<div style="background:#fffbeb;border:1.5px solid #fde68a;border-radius:10px;padding:8px 14px;font-size:13px;font-weight:700;color:#92400e"<span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:currentColor;margin-right:6px;vertical-align:middle"></span>'+nG+' da pianificare</div>'
+        +(nR>0?'<div style="background:#fff1f2;border:1.5px solid #fecaca;border-radius:10px;padding:8px 14px;font-size:13px;font-weight:700;color:#b91c1c"<span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:currentColor;margin-right:6px;vertical-align:middle"></span>'+nR+' urgenti</div>':'')
         +'</div>';
       var grid=document.createElement('div'); grid.className='ps-mensile-grid';
       cards.forEach(function(item){
