@@ -53,12 +53,12 @@
     {
       "settimana": "W35",
       "ds": "DNP1",
-      "tot": 31,
-      "pctInd": 58,
-      "indKo": 13,
-      "pctFing": 58,
-      "fingKo": 13,
-      "data": "2026-08-23"
+      "tot": 30,
+      "pctInd": 60,
+      "indKo": 12,
+      "pctFing": 60,
+      "fingKo": 12,
+      "data": "2026-08-24"
     }
   ],
   "psmonth": {
@@ -671,7 +671,7 @@
       "shiftSheet": "Timetable"
     }
   },
-  "updated": "2026-08-24T01:29:56.925Z",
+  "updated": "2026-08-24T01:45:47.859Z",
   "dmmonth": {
     "forestiero,raffaele2": {
       "name": "Forestiero,Raffaele2",
