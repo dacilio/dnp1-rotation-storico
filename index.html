@@ -2405,6 +2405,8 @@
       }
     }
     
+    /* MO_KPI_EXPOSE_V1: esponi injectPSKPI SUBITO (non aspettare renderMonth) */
+    try { window.injectPSKPI = injectPSKPI; } catch(e){}
     // Hook renderMonth per iniettare il blocco KPI dopo ogni render
     window.addEventListener('load', function(){
       setTimeout(function(){
@@ -2413,7 +2415,7 @@
           window.renderMonth = function(){
             var r = orig.apply(this, arguments);
             /* MO_PSROTA_DEDUP_V1: nessuna injection auto — PS viene renderizzato SOLO da _renderPsRota (tab dedicata) */
-            window.injectPSKPI = injectPSKPI;
+            window.injectPSKPI = injectPSKPI; /* wrapper renderMonth */
             return r;
           };
         }
@@ -2679,6 +2681,8 @@
       try { renderDmSemaforo(wrap); } catch(e){ console.warn('renderDmSemaforo failed', e); }
     }
     window._renderDmRota = renderDmRota;
+    /* MO_KPI_EXPOSE_V1: espongo anche injectDMKPI e renderDmSemaforo per debug/fallback */
+    try { window.injectDMKPI = injectDMKPI; window.renderDmSemaforo = renderDmSemaforo; } catch(e){}
   })();
 
   // MO_EXPORT_V1 - Point 6: Export CSV + Stampa/PDF per Andamento mensile
