@@ -65,18 +65,20 @@
     "altamura,angela": {
       "name": "Altamura,Angela",
       "weeks": [
-        "W32"
+        "W32",
+        "W35"
       ],
-      "last": "W32"
+      "last": "W35"
     },
     "bonanni,italo": {
       "name": "Bonanni,Italo",
       "weeks": [
         "W32",
         "W34",
-        "W33"
+        "W33",
+        "W35"
       ],
-      "last": "W34"
+      "last": "W35"
     },
     "chianese,katia": {
       "name": "Chianese,Katia",
@@ -84,9 +86,10 @@
         "W32",
         "W31",
         "W34",
-        "W33"
+        "W33",
+        "W35"
       ],
-      "last": "W34"
+      "last": "W35"
     },
     "conte,antonio": {
       "name": "Conte,Antonio",
@@ -294,9 +297,10 @@
       "name": "Rea,Giovanna",
       "weeks": [
         "W31",
-        "W30"
+        "W30",
+        "W35"
       ],
-      "last": "W31"
+      "last": "W35"
     },
     "riccardo,antonio": {
       "name": "Riccardo,Antonio",
@@ -426,9 +430,10 @@
       "weeks": [
         "W30",
         "W34",
-        "W33"
+        "W33",
+        "W35"
       ],
-      "last": "W34"
+      "last": "W35"
     },
     "nespolino,antonio": {
       "name": "Nespolino,Antonio",
@@ -451,9 +456,10 @@
       "weeks": [
         "W30",
         "W34",
-        "W33"
+        "W33",
+        "W35"
       ],
-      "last": "W34"
+      "last": "W35"
     },
     "tramontano,vincenzo": {
       "name": "Tramontano,Vincenzo",
@@ -521,9 +527,10 @@
       "weeks": [
         "W34",
         "W33",
-        "W32"
+        "W32",
+        "W35"
       ],
-      "last": "W34"
+      "last": "W35"
     },
     "russo,roberta": {
       "name": "Russo,Roberta",
@@ -550,9 +557,10 @@
     "d'ausilio,giuseppe": {
       "name": "D'ausilio,Giuseppe",
       "weeks": [
-        "W34"
+        "W34",
+        "W35"
       ],
-      "last": "W34"
+      "last": "W35"
     },
     "buonafede,carla": {
       "name": "Buonafede,Carla",
@@ -631,6 +639,34 @@
         "W35"
       ],
       "last": "W35"
+    },
+    "galdieri,aniello": {
+      "name": "Galdieri,Aniello",
+      "weeks": [
+        "W35"
+      ],
+      "last": "W35"
+    },
+    "gaudiero,vincenzo": {
+      "name": "Gaudiero,Vincenzo",
+      "weeks": [
+        "W35"
+      ],
+      "last": "W35"
+    },
+    "limongelli,mario": {
+      "name": "Limongelli,Mario",
+      "weeks": [
+        "W35"
+      ],
+      "last": "W35"
+    },
+    "orefice,anna": {
+      "name": "Orefice,Anna",
+      "weeks": [
+        "W35"
+      ],
+      "last": "W35"
     }
   },
   "notes": {
@@ -672,7 +708,7 @@
       "shiftSheet": "Timetable"
     }
   },
-  "updated": "2026-08-27T22:11:49.107Z",
+  "updated": "2026-08-27T22:12:51.899Z",
   "dmmonth": {
     "forestiero,raffaele2": {
       "name": "Forestiero,Raffaele2",
@@ -683,6 +719,34 @@
     },
     "marra,pasquale lino": {
       "name": "Marra,Pasquale Lino",
+      "weeks": [
+        "W35"
+      ],
+      "last": "W35"
+    },
+    "d'amore,luigi": {
+      "name": "D'Amore,Luigi",
+      "weeks": [
+        "W35"
+      ],
+      "last": "W35"
+    },
+    "gaudiero,vincenzo": {
+      "name": "Gaudiero,Vincenzo",
+      "weeks": [
+        "W35"
+      ],
+      "last": "W35"
+    },
+    "matrone,christian": {
+      "name": "Matrone,Christian",
+      "weeks": [
+        "W35"
+      ],
+      "last": "W35"
+    },
+    "santaniello,gaetano": {
+      "name": "Santaniello,Gaetano",
       "weeks": [
         "W35"
       ],
