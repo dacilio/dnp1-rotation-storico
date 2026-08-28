@@ -416,17 +416,70 @@
       💡 Come funziona <span class="chev">▾</span>
     </div>
     <div class="note-body">
+    <div style="font-size:15px;font-weight:800;color:#0f1729;margin-bottom:10px">Come funziona l'app</div>
+
+    <div style="font-weight:700;color:#4338ca;margin:12px 0 6px">Rotazione Induct &amp; Rotazione Finger</div>
     Due controlli in uno, scegli in alto:<br>
-    📥 <b>Rotazione Induct</b> — chi lavora sempre sui Finger e non ha mai fatto Induct → va messo in Induct.<br>
-    🔁 <b>Rotazione Finger</b> — chi sta sempre in Induct e non tocca mai i Finger → va spostato sui Finger (rotation inversa).<br><br>
-    Seleziona <b>l'ultimo giorno già compilato</b>: l'app confronta le volte che ciascuno ha fatto Induct con l'obiettivo settimanale e i giorni ancora disponibili.
-    Sono considerati <b>Induct</b>: Waterspider, Unloader, Receiver, Pusher, Dock Marshall, Problem Solver. Tutto il resto (Stower, Picker, Basso/Alto...) è <b>Finger</b>.
+    <b>Rotazione Induct</b> &mdash; chi lavora sempre sui Finger e non ha mai fatto Induct va messo in Induct.<br>
+    <b>Rotazione Finger</b> &mdash; chi sta sempre in Induct e non tocca mai i Finger va spostato sui Finger (rotation inversa).<br><br>
+    Seleziona <b>l'ultimo giorno gi&agrave; compilato</b>: l'app confronta le volte che ciascuno ha fatto Induct/Finger con l'obiettivo settimanale e i giorni ancora disponibili.
+    Sono considerati <b>Induct</b>: Waterspider, Unloader, Receiver, Pusher, Dock Marshall, Problem Solver. Tutto il resto (Stower, Picker, Basso/Alto...) &egrave; <b>Finger</b>.
     <br><br>
-    <b>📌 Obiettivo Induct settimanale (la differenza chiave):</b>
+    <b>Obiettivo Induct settimanale:</b>
     <div class="thr">
-      <div class="box ft"><div class="t">👤 FULL-TIME (FT) — 5 giorni</div>Deve fare Induct <b>almeno 2 volte</b> a settimana</div>
-      <div class="box pt"><div class="t">👤 PART-TIME (PT) — 4 giorni</div>Deve fare Induct <b>almeno 1 volta</b> a settimana</div>
+      <div class="box ft"><div class="t">FULL-TIME (FT) &mdash; 5 giorni</div>Deve fare Induct <b>almeno 2 volte</b> a settimana</div>
+      <div class="box pt"><div class="t">PART-TIME (PT) &mdash; 4 giorni</div>Deve fare Induct <b>almeno 1 volta</b> a settimana</div>
     </div>
+    <b>CRITICO</b> = i giorni rimasti non bastano a raggiungere l'obiettivo &rarr; va messo in Induct <b>domani</b>.<br>
+    <b>DA PIANIFICARE</b> = ancora sotto obiettivo ma con giorni sufficienti davanti &rarr; mettilo presto.<br>
+    Chi ha gi&agrave; raggiunto l'obiettivo non compare in lista.
+    <br><br>
+    <b>Rotation inversa</b> (chi &egrave; sempre in Induct): critico/da pianificare in base ai giorni consecutivi senza mai un Finger (PT dal 2&deg;/3&deg;, FT dal 3&deg;/4&deg;).
+
+    <div style="font-weight:700;color:#4338ca;margin:18px 0 6px">Recap settimana</div>
+    Il resoconto della settimana appena caricata: KPI compliance Induct/Finger, chi ha ruotato <b>grazie all'assenza</b> (OFF/FERIE/SICK contano come rotazione) e chi non ha ruotato. Utile per condividere il resoconto settimanale.
+
+    <div style="font-weight:700;color:#4338ca;margin:18px 0 6px">Rotazione Problem Solver</div>
+    Ogni Associate deve fare Problem Solver <b>almeno 1 volta al mese solare</b>.
+    <ul style="margin:6px 0 0 20px;padding:0">
+      <li><b>Card KPI mensile</b>: fatto/non ancora, media PS a settimana, top 5 performer, giorni rimasti nel mese.</li>
+      <li><b>Semaforo per persona</b>:
+        <span style="display:inline-flex;align-items:center;gap:5px;margin-left:4px"><span style="width:8px;height:8px;border-radius:50%;background:#22c55e;display:inline-block"></span> Fatto</span> &middot;
+        <span style="display:inline-flex;align-items:center;gap:5px"><span style="width:8px;height:8px;border-radius:50%;background:#f59e0b;display:inline-block"></span> Non ancora (c'&egrave; tempo)</span> &middot;
+        <span style="display:inline-flex;align-items:center;gap:5px"><span style="width:8px;height:8px;border-radius:50%;background:#ef4444;display:inline-block"></span> Urgente (&le;7 giorni)</span>
+      </li>
+      <li>Nella tab <b>Rotazione Induct</b> trovi il <b>suggeritore giornaliero</b>: 4 candidati per il giorno che stai preparando (priorit&agrave; mensile, sempre almeno 1 FT).</li>
+    </ul>
+
+    <div style="font-weight:700;color:#4338ca;margin:18px 0 6px">Rotazione Dock Marshall</div>
+    Stessa logica del Problem Solver: obiettivo <b>1 DM al mese solare</b> per persona.
+    <ul style="margin:6px 0 0 20px;padding:0">
+      <li>Card KPI mensile e semaforo con stessa scala colori.</li>
+      <li>Nella tab <b>Rotazione Induct</b> trovi il <b>suggeritore giornaliero DM</b>: 1 solo candidato FT prioritario per il giorno che stai preparando.</li>
+    </ul>
+
+    <div style="font-weight:700;color:#4338ca;margin:18px 0 6px">Andamento mensile</div>
+    Trend compliance settimana per settimana:
+    <ul style="margin:6px 0 0 20px;padding:0">
+      <li>KPI medie del mese + grafico compliance e Week-over-Week.</li>
+      <li>Tabella dettaglio con flag <span style="color:#94a3b8">grigio &#9888;</span> quando la popolazione varia oltre il 30% tra due settimane (confronto non affidabile).</li>
+      <li>La settimana in corso &egrave; mostrata con badge <span style="background:#f59e0b;color:#fff;padding:1px 6px;border-radius:4px;font-size:10px;font-weight:800">IN CORSO</span> ma <b>esclusa</b> da KPI/grafici per non falsare le medie.</li>
+    </ul>
+
+    <div style="font-weight:700;color:#4338ca;margin:18px 0 6px">Storico Persone/Ruoli</div>
+    Consultazione dello storico condiviso su GitHub, aggiornato automaticamente ad ogni Genera:
+    <ul style="margin:6px 0 0 20px;padding:0">
+      <li><b>Per Persona</b> &mdash; tutte le settimane storiche di ogni Associate.</li>
+      <li><b>Per Settimana</b> &mdash; chi c'era in quella settimana e cosa ha fatto.</li>
+      <li><b>Per Postazione</b> &mdash; ruolo per ruolo, chi lo ha coperto quante volte (Induct in verde, Finger in grigio).</li>
+    </ul>
+    Click su ciascuna intestazione per aprire/chiudere il dettaglio.
+
+    <div style="margin-top:14px;padding:10px 12px;background:#f0f9ff;border-left:3px solid #3b82f6;border-radius:6px;font-size:12.5px;color:#0c4a6e">
+      <b>Suggerimento:</b> tieni sempre <b>Manning + SA Shift Pattern</b> allineati alla stessa settimana per il calcolo pi&ugrave; preciso di assenze e turni diurni esclusi.
+    </div>
+    </div>
+  </div>
     Il FT ha un obiettivo più alto (2 invece di 1) perché lavora un giorno in più: l'app quindi lo considera "a posto" solo dopo <b>2</b> turni in Induct, mentre al PT ne basta <b>1</b>.
     🚨 <b>CRITICO</b> = i giorni rimasti non bastano a raggiungere l'obiettivo → va messo in Induct <b>domani</b>.<br>
     🗓️ <b>DA PIANIFICARE</b> = ancora sotto obiettivo ma con giorni sufficienti davanti → mettilo presto.<br>
