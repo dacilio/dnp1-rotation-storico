@@ -2049,7 +2049,10 @@
 
     cards.sort(function(a,b){
       var o={rosso:0,giallo:1,verde:2};
-      return (o[a.colore]-o[b.colore])||a.p.name.localeCompare(b.p.name);
+      /* MO_FTPT_SORT_V1: dopo colore, ordina FT prima di PT, poi nome */
+      var _fa=((a.p.ftpt||'').toUpperCase()==='FT')?0:1;
+      var _fb=((b.p.ftpt||'').toUpperCase()==='FT')?0:1;
+      return (o[a.colore]-o[b.colore])||(_fa-_fb)||a.p.name.localeCompare(b.p.name);
     });
     var nV=cards.filter(function(x){return x.colore==='verde';}).length;
     var nG=cards.filter(function(x){return x.colore==='giallo';}).length;
@@ -2640,7 +2643,7 @@
         var subTxt=dmLastWk?('Ultima volta: '+dmLastWk):'Mai fatto DM';
         return {p:p,colore:colore,statoTxt:statoTxt,subTxt:subTxt,volte:volte};
       });
-      cards.sort(function(a,b){ var o={rosso:0,giallo:1,verde:2}; return (o[a.colore]-o[b.colore])||a.p.name.localeCompare(b.p.name); });
+      cards.sort(function(a,b){ var o={rosso:0,giallo:1,verde:2}; /* MO_FTPT_SORT_V1: FT prima di PT dentro stesso colore */ var _fa=((a.p.ftpt||'').toUpperCase()==='FT')?0:1; var _fb=((b.p.ftpt||'').toUpperCase()==='FT')?0:1; return (o[a.colore]-o[b.colore])||(_fa-_fb)||a.p.name.localeCompare(b.p.name); });
       var nV=cards.filter(function(x){return x.colore==='verde';}).length;
       var nG=cards.filter(function(x){return x.colore==='giallo';}).length;
       var nR=cards.filter(function(x){return x.colore==='rosso';}).length;
