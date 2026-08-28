@@ -56,8 +56,8 @@
       "tot": 52,
       "pctInd": 100,
       "indKo": 0,
-      "pctFing": 92,
-      "fingKo": 4,
+      "pctFing": 94,
+      "fingKo": 3,
       "data": "2026-08-28"
     }
   ],
@@ -127,9 +127,10 @@
     "matrone,christian": {
       "name": "Matrone,Christian",
       "weeks": [
-        "W32"
+        "W32",
+        "W35"
       ],
-      "last": "W32"
+      "last": "W35"
     },
     "musella,arianna": {
       "name": "Musella,Arianna",
@@ -146,9 +147,10 @@
       "name": "Piscopo,Angela",
       "weeks": [
         "W32",
-        "W34"
+        "W34",
+        "W35"
       ],
-      "last": "W34"
+      "last": "W35"
     },
     "santaniello,gaetano": {
       "name": "Santaniello,Gaetano",
@@ -375,9 +377,10 @@
     "mosca,andrea": {
       "name": "Mosca,Andrea",
       "weeks": [
-        "W32"
+        "W32",
+        "W35"
       ],
-      "last": "W32"
+      "last": "W35"
     },
     "caputo,pasquale": {
       "name": "Caputo,Pasquale",
@@ -708,7 +711,7 @@
       "shiftSheet": "Timetable"
     }
   },
-  "updated": "2026-08-28T05:04:12.516Z",
+  "updated": "2026-08-28T22:17:46.190Z",
   "dmmonth": {
     "forestiero,raffaele2": {
       "name": "Forestiero,Raffaele2",
@@ -747,6 +750,13 @@
     },
     "santaniello,gaetano": {
       "name": "Santaniello,Gaetano",
+      "weeks": [
+        "W35"
+      ],
+      "last": "W35"
+    },
+    "sicignano,pasquale": {
+      "name": "Sicignano,Pasquale",
       "weeks": [
         "W35"
       ],
