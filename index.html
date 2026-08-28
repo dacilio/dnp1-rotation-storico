@@ -1950,7 +1950,7 @@
         if(!allW.length){html+='<div class="no-data-msg">Nessuna settimana.</div>';}
         else allW.forEach(function(wk){
           var pw=pers.filter(function(p){return p.settimane&&p.settimane[wk];});
-          html+='<div class="section s-green open"><div class="section-head" onclick="this.parentElement.classList.toggle(\'open\')"><div class="sh-icon">📅</div><div class="sh-text"><span class="sh-title">'+wk+'</span><span class="sh-sub">'+pw.length+' persone</span></div><span class="sec-chev">▾</span></div><div class="section-body"><div class="grid">';
+          html+='<div class="section s-green"><div class="section-head" onclick="this.parentElement.classList.toggle(\'open\')"><div class="sh-icon">📅</div><div class="sh-text"><span class="sh-title">'+wk+'</span><span class="sh-sub">'+pw.length+' persone</span></div><span class="sec-chev">▾</span></div><div class="section-body"><div class="grid">';
           pw.sort(function(a,b){return a.name.localeCompare(b.name);}).forEach(function(p){
             var chips=days.filter(function(d){return(p.settimane[wk]||{})[d];}).map(function(d){
               var r=p.settimane[wk][d],cls='absent';
@@ -1971,7 +1971,7 @@
         else roles.forEach(function(role){
           var sorted=Object.entries(rm[role]).sort(function(a,b){return b[1]-a[1];});
           var cls='s-gray';try{if(isInduct(role))cls='s-green';}catch(e){}try{if(isProblemSolve(role))cls='s-orange';}catch(e){}
-          html+='<div class="section '+cls+' open"><div class="section-head" onclick="this.parentElement.classList.toggle(\'open\')"><div class="sh-icon">📋</div><div class="sh-text"><span class="sh-title">'+role+'</span><span class="sh-sub">'+sorted.length+' pers.</span></div><span class="sec-chev">▾</span></div><div class="section-body"><div class="grid">';
+          html+='<div class="section '+cls+'"><div class="section-head" onclick="this.parentElement.classList.toggle(\'open\')"><div class="sh-icon">📋</div><div class="sh-text"><span class="sh-title">'+role+'</span><span class="sh-sub">'+sorted.length+' pers.</span></div><span class="sec-chev">▾</span></div><div class="section-body"><div class="grid">';
           sorted.forEach(function(e){html+='<div class="card n" style="padding:8px 12px"><div class="name" style="font-size:13px">'+e[0]+'</div><div class="meta">'+e[1]+' volt'+(e[1]===1?'a':'e')+'</div></div>';});
           html+='</div></div></div>';
         });
