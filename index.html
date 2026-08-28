@@ -1527,7 +1527,7 @@
       <div class="kpi neutral"><div class="khead"><div class="kico">🗓️</div><div class="n">${rows.length}</div></div><div class="l">Settimane caricate</div></div>
       <div class="kpi bad"><div class="khead"><div class="kico">👥</div><div class="n">${rows.length?rows[rows.length-1].tot:0}</div></div><div class="l">Associates (ultima sett.)</div></div>`;
     $('kpis').classList.add('show');
-    $('note').style.display='none';
+    /* MO_HELP_ALWAYS_V1: bottone Come funziona sempre visibile */
     $('banner').classList.remove('show');
 
     let html = '';
@@ -1852,6 +1852,7 @@
         var oSM=window.setMode;
         window.setMode=function(m){
           document.querySelectorAll('.modebar button').forEach(function(b){b.classList.remove('active');});
+          try{document.getElementById('note').style.display='block';}catch(e){} /* MO_HELP_ALWAYS_V2: bottone Come funziona sempre visibile in ogni tab */
           if(m==='storico'){
             var sb=document.getElementById('mode-storico');if(sb)sb.classList.add('active');
             try{document.getElementById('dayeval').style.display='none';}catch(e){}
