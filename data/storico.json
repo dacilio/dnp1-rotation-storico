@@ -168,9 +168,10 @@
         "W32",
         "W31",
         "W34",
-        "W35"
+        "W35",
+        "W36"
       ],
-      "last": "W35"
+      "last": "W36"
     },
     "santoro,leandro": {
       "name": "Santoro,Leandro",
@@ -388,9 +389,10 @@
       "name": "Mosca,Andrea",
       "weeks": [
         "W32",
-        "W35"
+        "W35",
+        "W36"
       ],
-      "last": "W35"
+      "last": "W36"
     },
     "caputo,pasquale": {
       "name": "Caputo,Pasquale",
@@ -689,6 +691,13 @@
         "W36"
       ],
       "last": "W36"
+    },
+    "crispino,salvatore": {
+      "name": "Crispino,salvatore",
+      "weeks": [
+        "W36"
+      ],
+      "last": "W36"
     }
   },
   "notes": {
@@ -730,7 +739,7 @@
       "shiftSheet": "Timetable"
     }
   },
-  "updated": "2026-08-30T23:43:48.594Z",
+  "updated": "2026-08-30T23:44:33.170Z",
   "dmmonth": {
     "forestiero,raffaele2": {
       "name": "Forestiero,Raffaele2",
@@ -781,6 +790,13 @@
         "W35"
       ],
       "last": "W35"
+    },
+    "affinito,domenico": {
+      "name": "Affinito,Domenico",
+      "weeks": [
+        "W36"
+      ],
+      "last": "W36"
     }
   }
 }
