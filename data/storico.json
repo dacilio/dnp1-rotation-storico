@@ -470,9 +470,10 @@
         "W30",
         "W34",
         "W33",
-        "W35"
+        "W35",
+        "W36"
       ],
-      "last": "W35"
+      "last": "W36"
     },
     "tramontano,vincenzo": {
       "name": "Tramontano,Vincenzo",
@@ -507,9 +508,10 @@
       "name": "Forestiero,Raffaele2",
       "weeks": [
         "W34",
-        "W33"
+        "W33",
+        "W36"
       ],
-      "last": "W34"
+      "last": "W36"
     },
     "imbriani,christian": {
       "name": "Imbriani,Christian",
@@ -680,6 +682,13 @@
         "W35"
       ],
       "last": "W35"
+    },
+    "morelli,alberico": {
+      "name": "Morelli,Alberico",
+      "weeks": [
+        "W36"
+      ],
+      "last": "W36"
     }
   },
   "notes": {
@@ -721,7 +730,7 @@
       "shiftSheet": "Timetable"
     }
   },
-  "updated": "2026-08-30T04:36:07.773Z",
+  "updated": "2026-08-30T04:36:51.967Z",
   "dmmonth": {
     "forestiero,raffaele2": {
       "name": "Forestiero,Raffaele2",
@@ -740,9 +749,10 @@
     "d'amore,luigi": {
       "name": "D'Amore,Luigi",
       "weeks": [
-        "W35"
+        "W35",
+        "W36"
       ],
-      "last": "W35"
+      "last": "W36"
     },
     "gaudiero,vincenzo": {
       "name": "Gaudiero,Vincenzo",
