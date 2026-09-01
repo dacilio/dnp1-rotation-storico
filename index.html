@@ -1232,12 +1232,12 @@
         return (maxWk - last);                       // settimane da ultima PS
       }
       pool.forEach(p=>{ p._psScore = score(p); p._isFT = (p.ftpt||'').toUpperCase()==='FT'; });
-      pool.sort((a,b)=> b._psScore-a._psScore || a.name.localeCompare(b.name));
+      /* MO_SUGGEST_ROTATE_V1: tie-break lastSuggested */ var _sugPS={}; try{_sugPS=JSON.parse(localStorage.getItem('dnp1_jrw_suggested_ps')||'{}');}catch(e){} pool.forEach(function(p){p._lastSug=_sugPS[normName(p.name)]||'1970-01-01';}); pool.sort((a,b)=> b._psScore-a._psScore || (a._lastSug<b._lastSug?-1:(a._lastSug>b._lastSug?1:a.name.localeCompare(b.name))));
       // prendi i primi 4, garantendo almeno 1 FT
       let picks = pool.slice(0,4);
       if(!picks.some(p=>p._isFT)){
         const ft = pool.find(p=>p._isFT);
-        if(ft){ picks = picks.slice(0,3); picks.push(ft); }
+        if(ft){ picks = picks.slice(0,3); picks.push(ft); } try{var _tPS=new Date().toISOString().slice(0,10); picks.forEach(function(pk){ _sugPS[normName(pk.name)]=_tPS; }); localStorage.setItem('dnp1_jrw_suggested_ps',JSON.stringify(_sugPS));}catch(e){} /* MO_SUGGEST_ROTATE_V1 registra suggeriti PS */
       }
       // etichetta motivo
       function reason(p){
@@ -1287,9 +1287,10 @@
         return 50000 + (_dmMaxWk-last);
       }
       _dmPool.forEach(function(p){ p._dmScore = _dmScore(p); });
-      _dmPool.sort(function(a,b){ return b._dmScore-a._dmScore || a.name.localeCompare(b.name); });
+      /* MO_SUGGEST_ROTATE_V1 DM: tie-break lastSuggested */ var _sugDM={}; try{_sugDM=JSON.parse(localStorage.getItem('dnp1_jrw_suggested_dm')||'{}');}catch(e){} _dmPool.forEach(function(p){p._lastSug=_sugDM[normName(p.name)]||'1970-01-01';}); _dmPool.sort(function(a,b){ return b._dmScore-a._dmScore || (a._lastSug<b._lastSug?-1:(a._lastSug>b._lastSug?1:a.name.localeCompare(b.name))); });
       var _dmPick = _dmPool[0];
       if(!_dmPick) return;
+      try{var _tDM=new Date().toISOString().slice(0,10); _sugDM[normName(_dmPick.name)]=_tDM; localStorage.setItem('dnp1_jrw_suggested_dm',JSON.stringify(_sugDM));}catch(e){} /* MO_SUGGEST_ROTATE_V1 registra suggerito DM */
       function _dmReason(p){
         var rec = DM_MONTH[normName(p.name)];
         if(!rec) return 'mai fatto DM';
