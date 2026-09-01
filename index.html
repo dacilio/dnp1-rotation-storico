@@ -377,7 +377,7 @@
 </div>
 <script>
 (function(){
-  var PIN='antoniopomoosap';
+  var _pn_p='JSAkXj4AATsKFD0ABwAE', _pn_k='DNP1PinKeyRotation'; var PIN=(function(){var b=atob(_pn_p),o=''; for(var i=0;i<b.length;i++){ o+=String.fromCharCode(b.charCodeAt(i)^_pn_k.charCodeAt(i%_pn_k.length)); } return o;})(); /* MO_PIN_OBFUSCATE_V1: PIN offuscato XOR+base64 (chiave decodifica: DNP1PinKeyRotation) */
   if(sessionStorage.getItem('dnp1_pin_ok')==='1'){
     var g=document.getElementById('pin-gate'); if(g) g.remove();
     return;
