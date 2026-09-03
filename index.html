@@ -1232,12 +1232,12 @@
         return (maxWk - last);                       // settimane da ultima PS
       }
       pool.forEach(p=>{ p._psScore = score(p); p._isFT = (p.ftpt||'').toUpperCase()==='FT'; });
-      /* MO_SUGGEST_ROTATE_V1: tie-break lastSuggested */ var _sugPS={}; try{_sugPS=JSON.parse(localStorage.getItem('dnp1_jrw_suggested_ps')||'{}');}catch(e){} pool.forEach(function(p){p._lastSug=_sugPS[normName(p.name)]||'1970-01-01';}); pool.sort((a,b)=> b._psScore-a._psScore || (a._lastSug<b._lastSug?-1:(a._lastSug>b._lastSug?1:a.name.localeCompare(b.name))));
+      /* MO_SUGGEST_ROTATE_V1 DEFENSIVE: try/catch completo, fallback ad alfabetico se qualcosa rompe */ var _sugPS={}; var _hasSug=false; try{ var _raw=localStorage.getItem('dnp1_jrw_suggested_ps')||'{}'; var _parsed=JSON.parse(_raw); if(_parsed && typeof _parsed==='object' && !Array.isArray(_parsed)){ _sugPS=_parsed; _hasSug=true; } }catch(e){ console.warn('MO_SUGGEST_ROTATE_V1: sugPS corrotto, uso fallback', e); localStorage.removeItem('dnp1_jrw_suggested_ps'); } try{ pool.forEach(function(p){ p._lastSug=(_hasSug && _sugPS[normName(p.name)])?_sugPS[normName(p.name)]:'1970-01-01'; }); }catch(e){ console.warn('MO_SUGGEST_ROTATE_V1: forEach fail', e); pool.forEach(function(p){p._lastSug='1970-01-01';}); } try{ pool.sort(function(a,b){ return b._psScore-a._psScore || (a._lastSug<b._lastSug?-1:(a._lastSug>b._lastSug?1:a.name.localeCompare(b.name))); }); }catch(e){ console.warn('MO_SUGGEST_ROTATE_V1: sort fail, uso fallback', e); pool.sort(function(a,b){return b._psScore-a._psScore || a.name.localeCompare(b.name);}); }
       // prendi i primi 4, garantendo almeno 1 FT
       let picks = pool.slice(0,4);
       if(!picks.some(p=>p._isFT)){
         const ft = pool.find(p=>p._isFT);
-        if(ft){ picks = picks.slice(0,3); picks.push(ft); } try{var _tPS=new Date().toISOString().slice(0,10); picks.forEach(function(pk){ _sugPS[normName(pk.name)]=_tPS; }); localStorage.setItem('dnp1_jrw_suggested_ps',JSON.stringify(_sugPS));}catch(e){} /* MO_SUGGEST_ROTATE_V1 registra suggeriti PS */
+        if(ft){ picks = picks.slice(0,3); picks.push(ft); } try{ if(_sugPS && typeof _sugPS==='object'){ var _tPS=new Date().toISOString().slice(0,10); picks.forEach(function(pk){ if(pk && pk.name) _sugPS[normName(pk.name)]=_tPS; }); localStorage.setItem('dnp1_jrw_suggested_ps',JSON.stringify(_sugPS)); } }catch(e){ console.warn('MO_SUGGEST_ROTATE_V1: save PS fail', e); } /* MO_SUGGEST_ROTATE_V1 registra suggeriti PS DEFENSIVE */
       }
       // etichetta motivo
       function reason(p){
@@ -1287,10 +1287,10 @@
         return 50000 + (_dmMaxWk-last);
       }
       _dmPool.forEach(function(p){ p._dmScore = _dmScore(p); });
-      /* MO_SUGGEST_ROTATE_V1 DM: tie-break lastSuggested */ var _sugDM={}; try{_sugDM=JSON.parse(localStorage.getItem('dnp1_jrw_suggested_dm')||'{}');}catch(e){} _dmPool.forEach(function(p){p._lastSug=_sugDM[normName(p.name)]||'1970-01-01';}); _dmPool.sort(function(a,b){ return b._dmScore-a._dmScore || (a._lastSug<b._lastSug?-1:(a._lastSug>b._lastSug?1:a.name.localeCompare(b.name))); });
+      /* MO_SUGGEST_ROTATE_V1 DM DEFENSIVE */ var _sugDM={}; var _hasSugDM=false; try{ var _rawDM=localStorage.getItem('dnp1_jrw_suggested_dm')||'{}'; var _parsedDM=JSON.parse(_rawDM); if(_parsedDM && typeof _parsedDM==='object' && !Array.isArray(_parsedDM)){ _sugDM=_parsedDM; _hasSugDM=true; } }catch(e){ console.warn('MO_SUGGEST_ROTATE_V1: sugDM corrotto', e); localStorage.removeItem('dnp1_jrw_suggested_dm'); } try{ _dmPool.forEach(function(p){ p._lastSug=(_hasSugDM && _sugDM[normName(p.name)])?_sugDM[normName(p.name)]:'1970-01-01'; }); }catch(e){ _dmPool.forEach(function(p){p._lastSug='1970-01-01';}); } try{ _dmPool.sort(function(a,b){ return b._dmScore-a._dmScore || (a._lastSug<b._lastSug?-1:(a._lastSug>b._lastSug?1:a.name.localeCompare(b.name))); }); }catch(e){ _dmPool.sort(function(a,b){return b._dmScore-a._dmScore || a.name.localeCompare(b.name);}); }
       var _dmPick = _dmPool[0];
       if(!_dmPick) return;
-      try{var _tDM=new Date().toISOString().slice(0,10); _sugDM[normName(_dmPick.name)]=_tDM; localStorage.setItem('dnp1_jrw_suggested_dm',JSON.stringify(_sugDM));}catch(e){} /* MO_SUGGEST_ROTATE_V1 registra suggerito DM */
+      try{ if(_sugDM && typeof _sugDM==='object' && _dmPick && _dmPick.name){ var _tDM=new Date().toISOString().slice(0,10); _sugDM[normName(_dmPick.name)]=_tDM; localStorage.setItem('dnp1_jrw_suggested_dm',JSON.stringify(_sugDM)); } }catch(e){ console.warn('MO_SUGGEST_ROTATE_V1: save DM fail', e); } /* MO_SUGGEST_ROTATE_V1 registra DM DEFENSIVE */
       function _dmReason(p){
         var rec = DM_MONTH[normName(p.name)];
         if(!rec) return 'mai fatto DM';
