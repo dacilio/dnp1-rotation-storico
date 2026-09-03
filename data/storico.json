@@ -97,9 +97,10 @@
         "W31",
         "W34",
         "W33",
-        "W35"
+        "W35",
+        "W36"
       ],
-      "last": "W35"
+      "last": "W36"
     },
     "conte,antonio": {
       "name": "Conte,Antonio",
@@ -138,9 +139,10 @@
       "name": "Matrone,Christian",
       "weeks": [
         "W32",
-        "W35"
+        "W35",
+        "W36"
       ],
-      "last": "W35"
+      "last": "W36"
     },
     "musella,arianna": {
       "name": "Musella,Arianna",
@@ -149,9 +151,10 @@
         "W31",
         "W30",
         "W34",
-        "W33"
+        "W33",
+        "W36"
       ],
-      "last": "W34"
+      "last": "W36"
     },
     "piscopo,angela": {
       "name": "Piscopo,Angela",
@@ -248,9 +251,10 @@
       "name": "Coppola,Alexander",
       "weeks": [
         "W31",
-        "W30"
+        "W30",
+        "W36"
       ],
-      "last": "W31"
+      "last": "W36"
     },
     "esposito,domenico": {
       "name": "Esposito,Domenico",
@@ -264,9 +268,10 @@
       "weeks": [
         "W31",
         "W32",
-        "W30"
+        "W30",
+        "W36"
       ],
-      "last": "W32"
+      "last": "W36"
     },
     "fusco,gennaro": {
       "name": "Fusco,Gennaro",
@@ -294,9 +299,10 @@
     "mocerino,gaetano": {
       "name": "Mocerino,Gaetano",
       "weeks": [
-        "W31"
+        "W31",
+        "W36"
       ],
-      "last": "W31"
+      "last": "W36"
     },
     "nocera,francesco": {
       "name": "Nocera,Francesco",
@@ -311,9 +317,10 @@
       "weeks": [
         "W31",
         "W30",
-        "W35"
+        "W35",
+        "W36"
       ],
-      "last": "W35"
+      "last": "W36"
     },
     "riccardo,antonio": {
       "name": "Riccardo,Antonio",
@@ -334,9 +341,10 @@
       "weeks": [
         "W31",
         "W34",
-        "W33"
+        "W33",
+        "W36"
       ],
-      "last": "W34"
+      "last": "W36"
     },
     "smarrazzo,rosa": {
       "name": "Smarrazzo,Rosa",
@@ -374,9 +382,10 @@
       "name": "Esposito,Giuseppe",
       "weeks": [
         "W32",
-        "W30"
+        "W30",
+        "W36"
       ],
-      "last": "W32"
+      "last": "W36"
     },
     "esposito,mirko": {
       "name": "Esposito,Mirko",
@@ -420,9 +429,10 @@
     "de luca,andrea": {
       "name": "De Luca,Andrea",
       "weeks": [
-        "W30"
+        "W30",
+        "W36"
       ],
-      "last": "W30"
+      "last": "W36"
     },
     "graziano,salvatore": {
       "name": "Graziano,Salvatore",
@@ -527,9 +537,10 @@
       "name": "Marra,Pasquale Lino",
       "weeks": [
         "W34",
-        "W33"
+        "W33",
+        "W36"
       ],
-      "last": "W34"
+      "last": "W36"
     },
     "notte,sergio": {
       "name": "Notte,Sergio",
@@ -545,9 +556,10 @@
         "W34",
         "W33",
         "W32",
-        "W35"
+        "W35",
+        "W36"
       ],
-      "last": "W35"
+      "last": "W36"
     },
     "russo,roberta": {
       "name": "Russo,Roberta",
@@ -625,9 +637,10 @@
     "starita,salvatore": {
       "name": "Starita,Salvatore",
       "weeks": [
-        "W35"
+        "W35",
+        "W36"
       ],
-      "last": "W35"
+      "last": "W36"
     },
     "barbato,luca": {
       "name": "Barbato,Luca",
@@ -639,9 +652,10 @@
     "staiano,francesco": {
       "name": "Staiano,Francesco",
       "weeks": [
-        "W32"
+        "W32",
+        "W36"
       ],
-      "last": "W32"
+      "last": "W36"
     },
     "castiello,domenico": {
       "name": "Castiello,Domenico",
@@ -698,6 +712,13 @@
         "W36"
       ],
       "last": "W36"
+    },
+    "sarnacchiaro,carmine": {
+      "name": "Sarnacchiaro,Carmine",
+      "weeks": [
+        "W36"
+      ],
+      "last": "W36"
     }
   },
   "notes": {
@@ -739,7 +760,7 @@
       "shiftSheet": "Timetable"
     }
   },
-  "updated": "2026-09-03T23:48:09.033Z",
+  "updated": "2026-09-03T23:48:10.956Z",
   "dmmonth": {
     "forestiero,raffaele2": {
       "name": "Forestiero,Raffaele2",
@@ -773,9 +794,10 @@
     "matrone,christian": {
       "name": "Matrone,Christian",
       "weeks": [
-        "W35"
+        "W35",
+        "W36"
       ],
-      "last": "W35"
+      "last": "W36"
     },
     "santaniello,gaetano": {
       "name": "Santaniello,Gaetano",
@@ -787,12 +809,20 @@
     "sicignano,pasquale": {
       "name": "Sicignano,Pasquale",
       "weeks": [
-        "W35"
+        "W35",
+        "W36"
       ],
-      "last": "W35"
+      "last": "W36"
     },
     "affinito,domenico": {
       "name": "Affinito,Domenico",
+      "weeks": [
+        "W36"
+      ],
+      "last": "W36"
+    },
+    "limongelli,mario": {
+      "name": "Limongelli,Mario",
       "weeks": [
         "W36"
       ],
