@@ -733,7 +733,8 @@
   },
   "notes": {
     "DNP1||buonafede,carla": "Esente per ragioni personali",
-    "DNP1||impero,biagio": "Esente per ragioni personali"
+    "DNP1||impero,biagio": "Esente per ragioni personali",
+    "DNP1||trombetti,antonio": "Esente per ragioni personali"
   },
   "profiles": {
     "DNP1": {
@@ -770,7 +771,7 @@
       "shiftSheet": "Timetable"
     }
   },
-  "updated": "2026-09-07T10:24:17.628Z",
+  "updated": "2026-09-07T10:24:33.560Z",
   "dmmonth": {
     "forestiero,raffaele2": {
       "name": "Forestiero,Raffaele2",
