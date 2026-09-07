@@ -61,16 +61,6 @@
       "data": "2026-08-29"
     },
     {
-      "settimana": "W36",
-      "ds": "DNP1",
-      "tot": 80,
-      "pctInd": 95,
-      "indKo": 4,
-      "pctFing": 81,
-      "fingKo": 15,
-      "data": "2026-09-03"
-    },
-    {
       "settimana": "W37",
       "ds": "DNP1",
       "tot": 27,
@@ -79,6 +69,16 @@
       "pctFing": 41,
       "fingKo": 16,
       "data": "2026-09-06"
+    },
+    {
+      "settimana": "W36",
+      "ds": "DNP1",
+      "tot": 83,
+      "pctInd": 96,
+      "indKo": 3,
+      "pctFing": 87,
+      "fingKo": 11,
+      "data": "2026-09-07"
     }
   ],
   "psmonth": {
@@ -770,7 +770,7 @@
       "shiftSheet": "Timetable"
     }
   },
-  "updated": "2026-09-06T07:54:18.697Z",
+  "updated": "2026-09-07T07:55:26.562Z",
   "dmmonth": {
     "forestiero,raffaele2": {
       "name": "Forestiero,Raffaele2",
