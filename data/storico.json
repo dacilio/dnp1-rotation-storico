@@ -86,9 +86,10 @@
       "name": "Altamura,Angela",
       "weeks": [
         "W32",
-        "W35"
+        "W35",
+        "W37"
       ],
-      "last": "W35"
+      "last": "W37"
     },
     "bonanni,italo": {
       "name": "Bonanni,Italo",
@@ -96,9 +97,10 @@
         "W32",
         "W34",
         "W33",
-        "W35"
+        "W35",
+        "W37"
       ],
-      "last": "W35"
+      "last": "W37"
     },
     "chianese,katia": {
       "name": "Chianese,Katia",
@@ -287,9 +289,10 @@
       "name": "Fusco,Gennaro",
       "weeks": [
         "W31",
-        "W30"
+        "W30",
+        "W37"
       ],
-      "last": "W31"
+      "last": "W37"
     },
     "gaudiero,massimo": {
       "name": "Gaudiero,Massimo",
@@ -360,9 +363,10 @@
       "name": "Smarrazzo,Rosa",
       "weeks": [
         "W31",
-        "W34"
+        "W34",
+        "W37"
       ],
-      "last": "W34"
+      "last": "W37"
     },
     "varriale,oriana": {
       "name": "Varriale,Oriana",
@@ -432,9 +436,10 @@
       "name": "D'Angelo,Giuseppe",
       "weeks": [
         "W30",
-        "W34"
+        "W34",
+        "W37"
       ],
-      "last": "W34"
+      "last": "W37"
     },
     "de luca,andrea": {
       "name": "De Luca,Andrea",
@@ -507,9 +512,10 @@
     "zantino,marco": {
       "name": "Zantino,Marco",
       "weeks": [
-        "W30"
+        "W30",
+        "W37"
       ],
-      "last": "W30"
+      "last": "W37"
     },
     "affinito,domenico": {
       "name": "Affinito,Domenico",
@@ -548,9 +554,10 @@
       "weeks": [
         "W34",
         "W33",
-        "W36"
+        "W36",
+        "W37"
       ],
-      "last": "W36"
+      "last": "W37"
     },
     "notte,sergio": {
       "name": "Notte,Sergio",
@@ -604,9 +611,10 @@
     "buonafede,carla": {
       "name": "Buonafede,Carla",
       "weeks": [
-        "W34"
+        "W34",
+        "W37"
       ],
-      "last": "W34"
+      "last": "W37"
     },
     "d'amato,francesco": {
       "name": "D'Amato,Francesco",
@@ -729,6 +737,27 @@
         "W36"
       ],
       "last": "W36"
+    },
+    "della ragione,dylan": {
+      "name": "Della Ragione,Dylan",
+      "weeks": [
+        "W37"
+      ],
+      "last": "W37"
+    },
+    "pelliccia,vincenzo": {
+      "name": "Pelliccia,Vincenzo",
+      "weeks": [
+        "W37"
+      ],
+      "last": "W37"
+    },
+    "smarrazzo,katia": {
+      "name": "Smarrazzo,Katia",
+      "weeks": [
+        "W37"
+      ],
+      "last": "W37"
     }
   },
   "notes": {
@@ -771,7 +800,7 @@
       "shiftSheet": "Timetable"
     }
   },
-  "updated": "2026-09-07T10:24:33.560Z",
+  "updated": "2026-09-07T12:06:44.825Z",
   "dmmonth": {
     "forestiero,raffaele2": {
       "name": "Forestiero,Raffaele2",
@@ -798,9 +827,10 @@
     "gaudiero,vincenzo": {
       "name": "Gaudiero,Vincenzo",
       "weeks": [
-        "W35"
+        "W35",
+        "W37"
       ],
-      "last": "W35"
+      "last": "W37"
     },
     "matrone,christian": {
       "name": "Matrone,Christian",
@@ -838,6 +868,13 @@
         "W36"
       ],
       "last": "W36"
+    },
+    "tramontano,vincenzo": {
+      "name": "Tramontano,Vincenzo",
+      "weeks": [
+        "W37"
+      ],
+      "last": "W37"
     }
   }
 }
