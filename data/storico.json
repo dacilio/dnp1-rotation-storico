@@ -173,9 +173,10 @@
       "weeks": [
         "W32",
         "W34",
-        "W35"
+        "W35",
+        "W37"
       ],
-      "last": "W35"
+      "last": "W37"
     },
     "santaniello,gaetano": {
       "name": "Santaniello,Gaetano",
@@ -184,9 +185,10 @@
         "W31",
         "W34",
         "W35",
-        "W36"
+        "W36",
+        "W37"
       ],
-      "last": "W36"
+      "last": "W37"
     },
     "santoro,leandro": {
       "name": "Santoro,Leandro",
@@ -313,9 +315,10 @@
       "name": "Mocerino,Gaetano",
       "weeks": [
         "W31",
-        "W36"
+        "W36",
+        "W37"
       ],
-      "last": "W36"
+      "last": "W37"
     },
     "nocera,francesco": {
       "name": "Nocera,Francesco",
@@ -758,6 +761,13 @@
         "W37"
       ],
       "last": "W37"
+    },
+    "cirillo,michele": {
+      "name": "Cirillo,Michele",
+      "weeks": [
+        "W37"
+      ],
+      "last": "W37"
     }
   },
   "notes": {
@@ -800,7 +810,7 @@
       "shiftSheet": "Timetable"
     }
   },
-  "updated": "2026-09-08T07:46:11.536Z",
+  "updated": "2026-09-08T07:47:20.559Z",
   "dmmonth": {
     "forestiero,raffaele2": {
       "name": "Forestiero,Raffaele2",
@@ -871,6 +881,20 @@
     },
     "tramontano,vincenzo": {
       "name": "Tramontano,Vincenzo",
+      "weeks": [
+        "W37"
+      ],
+      "last": "W37"
+    },
+    "notte,sergio": {
+      "name": "Notte,Sergio",
+      "weeks": [
+        "W37"
+      ],
+      "last": "W37"
+    },
+    "zantino,marco": {
+      "name": "Zantino,Marco",
       "weeks": [
         "W37"
       ],
