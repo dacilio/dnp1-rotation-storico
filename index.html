@@ -377,7 +377,7 @@
 </div>
 <script>
 (function(){
-  var _pn_p='JSAkXj4AATsKFD0ABwAE', _pn_k='DNP1PinKeyRotation'; var PIN=(function(){var b=atob(_pn_p),o=''; for(var i=0;i<b.length;i++){ o+=String.fromCharCode(b.charCodeAt(i)^_pn_k.charCodeAt(i%_pn_k.length)); } return o;})(); /* MO_PIN_OBFUSCATE_V1: PIN offuscato XOR+base64 (chiave decodifica: DNP1PinKeyRotation) */
+  var _pn_p='JSAkXj4AATsKFD0ABwAE', _pn_k='DNP1PinKeyRotation'; var PIN=(function(){var b=atob(_pn_p),o=''; for(var i=0;i<b.length;i++){ o+=String.fromCharCode(b.charCodeAt(i)^_pn_k.charCodeAt(i%_pn_k.length)); } return o;})(); /* MO_PIN_OBFUSCATE_V1: PIN offuscato XOR+base64 (chiave decodifica: DNP1PinKeyRotation) */ try{ window._pin=PIN; }catch(e){} /* MO_CRYPTO_V1: PIN esposto per derivare chiave AES */
   if(sessionStorage.getItem('dnp1_pin_ok')==='1'){
     var g=document.getElementById('pin-gate'); if(g) g.remove();
     return;
@@ -1737,6 +1737,44 @@
     try{AL=(JSON.parse(localStorage.getItem('dnp1_al'))||[]);}catch(e){}
 
     function tok(){ return HARDCODED_TOKEN || localStorage.getItem(TKEY) || ''; }
+
+    /* MO_CRYPTO_V1: infrastruttura Web Crypto API per cifratura AES-GCM 256bit dati GitHub */
+    var DATA_ENCRYPTED = false; /* Step 1: false = i dati su GitHub sono ancora in chiaro. Verrà messo true in Step 2 dopo migrazione. */
+    async function _deriveKey(pin){
+      var enc = new TextEncoder();
+      var keyMaterial = await crypto.subtle.importKey('raw', enc.encode(pin), 'PBKDF2', false, ['deriveKey']);
+      return await crypto.subtle.deriveKey(
+        {name:'PBKDF2', salt: enc.encode('dnp1-rotation-storico-v1-salt'), iterations: 100000, hash: 'SHA-256'},
+        keyMaterial,
+        {name:'AES-GCM', length:256},
+        false,
+        ['encrypt','decrypt']
+      );
+    }
+    async function _encryptData(obj, pin){
+      var key = await _deriveKey(pin);
+      var iv = crypto.getRandomValues(new Uint8Array(12));
+      var encoded = new TextEncoder().encode(JSON.stringify(obj));
+      var cipher = await crypto.subtle.encrypt({name:'AES-GCM', iv:iv}, key, encoded);
+      var combined = new Uint8Array(iv.length + cipher.byteLength);
+      combined.set(iv);
+      combined.set(new Uint8Array(cipher), iv.length);
+      var bin=''; for(var i=0;i<combined.length;i++){bin+=String.fromCharCode(combined[i]);}
+      return {v:1, d:btoa(bin)}; /* wrapper JSON: v=version, d=base64 di iv+ciphertext */
+    }
+    async function _decryptData(wrapper, pin){
+      if(!wrapper || typeof wrapper!=='object' || wrapper.v!==1 || !wrapper.d) throw new Error('MO_CRYPTO_V1: formato non valido');
+      var key = await _deriveKey(pin);
+      var bin = atob(wrapper.d);
+      var combined = new Uint8Array(bin.length);
+      for(var i=0;i<bin.length;i++){combined[i]=bin.charCodeAt(i);}
+      var iv = combined.slice(0, 12);
+      var cipher = combined.slice(12);
+      var decoded = await crypto.subtle.decrypt({name:'AES-GCM', iv:iv}, key, cipher);
+      return JSON.parse(new TextDecoder().decode(decoded));
+    }
+    /* espongo su window per test da console e per lo script one-time di migrazione (Step 2) */
+    try{ window._crypto={encrypt:_encryptData, decrypt:_decryptData, deriveKey:_deriveKey}; window._DATA_ENCRYPTED_FLAG=function(){return DATA_ENCRYPTED;}; }catch(e){}
 
     async function apiGet(path){
       var t=tok(); if(!t)return null;
