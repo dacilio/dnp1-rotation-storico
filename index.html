@@ -1813,7 +1813,7 @@
     function tok(){ return HARDCODED_TOKEN || localStorage.getItem(TKEY) || ''; }
 
     /* ==================== MO_CRYPTO_FULL: Web Crypto AES-GCM 256bit ==================== */
-    var DATA_ENCRYPTED = false; /* STEP 1: infra pronta, dati ancora in chiaro. Flip a true dopo migrazione via window._migrateToEncrypted() */
+    var DATA_ENCRYPTED = true; /* STAGE B: attivo. Auto-migrazione al load se dati ancora in chiaro (auto-detect via wrapper) */
     async function _deriveKey(pin){
       var enc = new TextEncoder();
       var keyMaterial = await crypto.subtle.importKey('raw', enc.encode(pin), 'PBKDF2', false, ['deriveKey']);
@@ -1872,6 +1872,45 @@
       console.info('[MIGRATE] Fine. Risultati:', results);
       return results;
     };
+    /* MO_CRYPTO_FULL: auto-migrazione one-shot al primo load post-deploy */
+    window.addEventListener('load', function(){
+      setTimeout(async function(){
+        try {
+          if(localStorage.getItem('dnp1_crypto_migrated_v1')==='1'){ return; } /* già fatto */
+          if(!window._pin){ console.info('[AUTO-MIGRATE] skip: no PIN yet'); return; }
+          if(!DATA_ENCRYPTED){ console.info('[AUTO-MIGRATE] skip: flag off'); return; }
+          console.info('[AUTO-MIGRATE] Verifica se dati sono già cifrati...');
+          /* Fetch raw dei 2 file per capire se sono in chiaro o già cifrati (bypassa _unwrapGetPayload usando tok e fetch diretto) */
+          var t = (typeof tok==='function') ? tok() : null;
+          if(!t){ console.info('[AUTO-MIGRATE] skip: no token'); return; }
+          var needsMigration = false;
+          for(var _pf of ['data/persone.json','data/storico.json']){
+            try {
+              var r = await fetch('https://api.github.com/repos/dacilio/dnp1-rotation-storico/contents/'+_pf, {headers:{'Authorization':'token '+t}});
+              if(r.status===404) continue;
+              if(!r.ok) throw new Error('fetch '+r.status);
+              var jj = await r.json();
+              var raw = JSON.parse(atob(jj.content.replace(/\n/g,'')));
+              if(!(raw && raw.v===1 && raw.d)){ needsMigration=true; console.info('[AUTO-MIGRATE] '+_pf+' è in chiaro, richiede migrazione'); break; }
+            } catch(e){ console.warn('[AUTO-MIGRATE] check '+_pf+' fail', e); }
+          }
+          if(!needsMigration){
+            console.info('[AUTO-MIGRATE] Tutti i file già cifrati, marco flag done');
+            localStorage.setItem('dnp1_crypto_migrated_v1','1');
+            return;
+          }
+          console.info('[AUTO-MIGRATE] Avvio migrazione automatica...');
+          var res = await window._migrateToEncrypted();
+          var allOk = res && Object.values(res).every(function(x){return x && (x.ok||x.already);});
+          if(allOk){
+            localStorage.setItem('dnp1_crypto_migrated_v1','1');
+            console.info('[AUTO-MIGRATE] ✓ COMPLETATA con successo');
+          } else {
+            console.error('[AUTO-MIGRATE] ✗ Migrazione con errori, flag NON settato, riprova al prossimo load', res);
+          }
+        } catch(e){ console.error('[AUTO-MIGRATE] fatal', e); }
+      }, 3000); /* aspetta 3s per essere sicuri che PIN + tok siano pronti */
+    });
     /* ==================== FINE MO_CRYPTO_FULL ==================== */
 
     async function apiGet(path){
