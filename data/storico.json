@@ -110,9 +110,10 @@
         "W34",
         "W33",
         "W35",
-        "W36"
+        "W36",
+        "W37"
       ],
-      "last": "W36"
+      "last": "W37"
     },
     "conte,antonio": {
       "name": "Conte,Antonio",
@@ -586,9 +587,10 @@
       "name": "Russo,Roberta",
       "weeks": [
         "W34",
-        "W32"
+        "W32",
+        "W37"
       ],
-      "last": "W34"
+      "last": "W37"
     },
     "castricato,giuseppe": {
       "name": "Castricato,Giuseppe",
@@ -771,6 +773,13 @@
         "W37"
       ],
       "last": "W37"
+    },
+    "giuliano,agostino": {
+      "name": "Giuliano,Agostino",
+      "weeks": [
+        "W37"
+      ],
+      "last": "W37"
     }
   },
   "notes": {
@@ -813,7 +822,7 @@
       "shiftSheet": "Timetable"
     }
   },
-  "updated": "2026-09-09T10:29:31.633Z",
+  "updated": "2026-09-09T10:29:36.861Z",
   "dmmonth": {
     "forestiero,raffaele2": {
       "name": "Forestiero,Raffaele2",
