@@ -334,9 +334,10 @@
         "W31",
         "W30",
         "W35",
-        "W36"
+        "W36",
+        "W37"
       ],
-      "last": "W36"
+      "last": "W37"
     },
     "riccardo,antonio": {
       "name": "Riccardo,Antonio",
@@ -681,9 +682,10 @@
     "castiello,domenico": {
       "name": "Castiello,Domenico",
       "weeks": [
-        "W35"
+        "W35",
+        "W37"
       ],
-      "last": "W35"
+      "last": "W37"
     },
     "sicignano,pasquale": {
       "name": "Sicignano,Pasquale",
@@ -709,9 +711,10 @@
     "limongelli,mario": {
       "name": "Limongelli,Mario",
       "weeks": [
-        "W35"
+        "W35",
+        "W37"
       ],
-      "last": "W35"
+      "last": "W37"
     },
     "orefice,anna": {
       "name": "Orefice,Anna",
@@ -810,7 +813,7 @@
       "shiftSheet": "Timetable"
     }
   },
-  "updated": "2026-09-09T08:14:10.630Z",
+  "updated": "2026-09-09T08:14:23.949Z",
   "dmmonth": {
     "forestiero,raffaele2": {
       "name": "Forestiero,Raffaele2",
@@ -861,9 +864,10 @@
       "name": "Sicignano,Pasquale",
       "weeks": [
         "W35",
-        "W36"
+        "W36",
+        "W37"
       ],
-      "last": "W36"
+      "last": "W37"
     },
     "affinito,domenico": {
       "name": "Affinito,Domenico",
