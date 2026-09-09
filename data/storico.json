@@ -393,9 +393,10 @@
       "name": "Volpe,Salvatore",
       "weeks": [
         "W31",
-        "W34"
+        "W34",
+        "W37"
       ],
-      "last": "W34"
+      "last": "W37"
     },
     "esposito,giuseppe": {
       "name": "Esposito,Giuseppe",
@@ -542,9 +543,10 @@
       "weeks": [
         "W34",
         "W33",
-        "W36"
+        "W36",
+        "W37"
       ],
-      "last": "W36"
+      "last": "W37"
     },
     "imbriani,christian": {
       "name": "Imbriani,Christian",
@@ -662,9 +664,10 @@
       "name": "Starita,Salvatore",
       "weeks": [
         "W35",
-        "W36"
+        "W36",
+        "W37"
       ],
-      "last": "W36"
+      "last": "W37"
     },
     "barbato,luca": {
       "name": "Barbato,Luca",
@@ -822,7 +825,7 @@
       "shiftSheet": "Timetable"
     }
   },
-  "updated": "2026-09-09T10:49:11.722Z",
+  "updated": "2026-09-09T10:49:13.922Z",
   "dmmonth": {
     "forestiero,raffaele2": {
       "name": "Forestiero,Raffaele2",
@@ -908,6 +911,13 @@
     },
     "zantino,marco": {
       "name": "Zantino,Marco",
+      "weeks": [
+        "W37"
+      ],
+      "last": "W37"
+    },
+    "amatucci,luigi": {
+      "name": "Amatucci,Luigi",
       "weeks": [
         "W37"
       ],
