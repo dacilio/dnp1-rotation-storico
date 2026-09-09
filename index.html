@@ -377,7 +377,7 @@
 </div>
 <script>
 (function(){
-  var _pn_p='JSAkXj4AATsKFD0ABwAE', _pn_k='DNP1PinKeyRotation'; var PIN=(function(){var b=atob(_pn_p),o=''; for(var i=0;i<b.length;i++){ o+=String.fromCharCode(b.charCodeAt(i)^_pn_k.charCodeAt(i%_pn_k.length)); } return o;})(); /* MO_PIN_OBFUSCATE_V1: PIN offuscato XOR+base64 (chiave decodifica: DNP1PinKeyRotation) */
+  var _pn_p='JSAkXj4AATsKFD0ABwAE', _pn_k='DNP1PinKeyRotation'; var PIN=(function(){var b=atob(_pn_p),o=''; for(var i=0;i<b.length;i++){ o+=String.fromCharCode(b.charCodeAt(i)^_pn_k.charCodeAt(i%_pn_k.length)); } return o;})(); /* MO_PIN_OBFUSCATE_V1: PIN offuscato XOR+base64 (chiave decodifica: DNP1PinKeyRotation) */ try{ window._pin=PIN; }catch(e){} /* MO_CRYPTO_FULL: PIN esposto per Web Crypto AES-GCM */
   if(sessionStorage.getItem('dnp1_pin_ok')==='1'){
     var g=document.getElementById('pin-gate'); if(g) g.remove();
     return;
@@ -1812,6 +1812,68 @@
 
     function tok(){ return HARDCODED_TOKEN || localStorage.getItem(TKEY) || ''; }
 
+    /* ==================== MO_CRYPTO_FULL: Web Crypto AES-GCM 256bit ==================== */
+    var DATA_ENCRYPTED = false; /* STEP 1: infra pronta, dati ancora in chiaro. Flip a true dopo migrazione via window._migrateToEncrypted() */
+    async function _deriveKey(pin){
+      var enc = new TextEncoder();
+      var keyMaterial = await crypto.subtle.importKey('raw', enc.encode(pin), 'PBKDF2', false, ['deriveKey']);
+      return await crypto.subtle.deriveKey({name:'PBKDF2', salt: enc.encode('dnp1-rotation-storico-v1-salt'), iterations: 100000, hash: 'SHA-256'}, keyMaterial, {name:'AES-GCM', length:256}, false, ['encrypt','decrypt']);
+    }
+    async function _encryptData(obj, pin){
+      var key = await _deriveKey(pin);
+      var iv = crypto.getRandomValues(new Uint8Array(12));
+      var encoded = new TextEncoder().encode(JSON.stringify(obj));
+      var cipher = await crypto.subtle.encrypt({name:'AES-GCM', iv:iv}, key, encoded);
+      var combined = new Uint8Array(iv.length + cipher.byteLength);
+      combined.set(iv); combined.set(new Uint8Array(cipher), iv.length);
+      var bin=''; for(var i=0;i<combined.length;i++){bin+=String.fromCharCode(combined[i]);}
+      return {v:1, d:btoa(bin)};
+    }
+    async function _decryptData(wrapper, pin){
+      if(!wrapper || typeof wrapper!=='object' || wrapper.v!==1 || !wrapper.d) throw new Error('MO_CRYPTO_FULL: formato non valido');
+      var key = await _deriveKey(pin);
+      var bin = atob(wrapper.d);
+      var combined = new Uint8Array(bin.length);
+      for(var i=0;i<bin.length;i++){combined[i]=bin.charCodeAt(i);}
+      var iv = combined.slice(0,12); var cipher = combined.slice(12);
+      var decoded = await crypto.subtle.decrypt({name:'AES-GCM', iv:iv}, key, cipher);
+      return JSON.parse(new TextDecoder().decode(decoded));
+    }
+    function _isEncryptable(path){ return path==='data/persone.json' || path==='data/storico.json'; }
+    async function _preparePutPayload(path, data){ if(_isEncryptable(path) && DATA_ENCRYPTED && window._pin){ try{ return await _encryptData(data, window._pin); }catch(e){ console.warn('MO_CRYPTO_FULL encrypt fail '+path, e); throw e; } } return data; }
+    async function _unwrapGetPayload(path, parsed){ if(_isEncryptable(path) && parsed && parsed.v===1 && typeof parsed.d==='string'){ try{ return await _decryptData(parsed, window._pin); }catch(e){ console.warn('MO_CRYPTO_FULL decrypt fail '+path, e); throw e; } } return parsed; }
+    /* espongo su window per test/debug e migrazione */
+    try{ window._crypto={encrypt:_encryptData, decrypt:_decryptData, deriveKey:_deriveKey, isEncryptable:_isEncryptable}; window._DATA_ENCRYPTED_FLAG=function(){return DATA_ENCRYPTED;}; }catch(e){}
+    /* MO_CRYPTO_FULL: funzione one-time di migrazione — cifra persone.json e storico.json su GitHub */
+    window._migrateToEncrypted = async function(){
+      if(!window._pin){ console.error('PIN non disponibile'); return {ok:false, reason:'no-pin'}; }
+      console.info('[MIGRATE] Inizio migrazione cifratura...');
+      var results = {};
+      for(var _idx=0; _idx<2; _idx++){
+        var path = _idx===0 ? 'data/persone.json' : 'data/storico.json';
+        try{
+          console.info('[MIGRATE] Scarico '+path+' in chiaro...');
+          var raw = await apiGet(path); /* con DATA_ENCRYPTED=false ritorna in chiaro */
+          if(!raw){ results[path]={ok:false, reason:'empty'}; console.warn('[MIGRATE] '+path+' vuoto, skip'); continue; }
+          if(raw && raw.v===1 && raw.d){ results[path]={ok:true, already:true}; console.info('[MIGRATE] '+path+' già cifrato, skip'); continue; }
+          console.info('[MIGRATE] Cifro '+path+' ('+JSON.stringify(raw).length+' bytes)...');
+          var cipher = await _encryptData(raw, window._pin);
+          console.info('[MIGRATE] Verifica round-trip decifratura...');
+          var back = await _decryptData(cipher, window._pin);
+          if(JSON.stringify(back)!==JSON.stringify(raw)) throw new Error('round-trip mismatch!');
+          console.info('[MIGRATE] Push versione cifrata su GitHub...');
+          /* uso apiPut MA forzo bypass della cifratura automatica perché ho già cifrato manualmente */
+          var _origFlag = DATA_ENCRYPTED; DATA_ENCRYPTED = false;
+          try{ await apiPut(path, cipher); } finally { DATA_ENCRYPTED = _origFlag; }
+          results[path]={ok:true, cipherSize:JSON.stringify(cipher).length};
+          console.info('[MIGRATE] ✓ '+path+' migrato');
+        } catch(e){ results[path]={ok:false, error:String(e)}; console.error('[MIGRATE] ✗ '+path+' FAILED', e); }
+      }
+      console.info('[MIGRATE] Fine. Risultati:', results);
+      return results;
+    };
+    /* ==================== FINE MO_CRYPTO_FULL ==================== */
+
     async function apiGet(path){
       var t=tok(); if(!t)return null;
       var r=await fetch(API+path,{headers:{'Authorization':'token '+t,'Accept':'application/vnd.github.v3+json'}});
@@ -1819,11 +1881,11 @@
       if(r.status===401){showSetup();throw new Error('token non valido');}
       if(!r.ok)throw new Error('GET '+r.status);
       var j=await r.json(); _sha[path]=j.sha;
-      return JSON.parse(atob(j.content.replace(/\n/g,'')));
+      var _parsed = JSON.parse(atob(j.content.replace(/\n/g,''))); return await _unwrapGetPayload(path, _parsed); /* MO_CRYPTO_FULL: auto-decifra */
     }
     async function apiPut(path,data){
       var t=tok(); if(!t)return;
-      var body={message:'sync '+new Date().toISOString().slice(0,16),content:btoa(unescape(encodeURIComponent(JSON.stringify(data,null,2))))};
+      var _payload = await _preparePutPayload(path, data); /* MO_CRYPTO_FULL: cifra se path sensibile */ var body={message:'sync '+new Date().toISOString().slice(0,16),content:btoa(unescape(encodeURIComponent(JSON.stringify(_payload,null,2))))};
       if(_sha[path])body.sha=_sha[path];
       var r=await fetch(API+path,{method:'PUT',headers:{'Authorization':'token '+t,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},body:JSON.stringify(body)});
       if(!r.ok)throw new Error('PUT '+r.status);
