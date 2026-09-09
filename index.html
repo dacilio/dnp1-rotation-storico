@@ -1232,12 +1232,52 @@
         return (maxWk - last);                       // settimane da ultima PS
       }
       pool.forEach(p=>{ p._psScore = score(p); p._isFT = (p.ftpt||'').toUpperCase()==='FT'; });
-      pool.sort((a,b)=> b._psScore-a._psScore || a.name.localeCompare(b.name));
+      /* MO_SUGGEST_ROTATE_V2 (2026-09-09) - REIMPLEMENT con protezioni robuste: cleanup 30gg, cap 500 entries, try/catch sempre-safe. Se qualcosa va storto la feature si disattiva silente. */
+      var _sugPS = null;
+      try {
+        var _sugRaw = localStorage.getItem('dnp1_jrw_suggested_ps');
+        if(_sugRaw){
+          var _parsed = JSON.parse(_sugRaw);
+          if(_parsed && typeof _parsed==='object' && !Array.isArray(_parsed)){
+            /* cleanup: rimuovi entries più vecchie di 30 giorni */
+            var _cutoff = new Date(); _cutoff.setDate(_cutoff.getDate()-30);
+            var _cutoffStr = _cutoff.toISOString().slice(0,10);
+            var _clean = {};
+            var _keys = Object.keys(_parsed);
+            /* cap: se > 500 entries qualcosa è andato storto, resetta */
+            if(_keys.length > 500){
+              console.warn('MO_SUGGEST_ROTATE_V2: PS localStorage > 500 entries, reset preventivo');
+              localStorage.removeItem('dnp1_jrw_suggested_ps');
+            } else {
+              _keys.forEach(function(k){
+                var v = _parsed[k];
+                if(typeof v==='string' && v.length===10 && v >= _cutoffStr) _clean[k]=v;
+              });
+              _sugPS = _clean;
+              /* salva versione cleanup solo se sono state rimosse entries */
+              if(Object.keys(_clean).length < _keys.length){
+                localStorage.setItem('dnp1_jrw_suggested_ps', JSON.stringify(_clean));
+                console.info('MO_SUGGEST_ROTATE_V2: PS cleanup, tenute '+Object.keys(_clean).length+' di '+_keys.length);
+              }
+            }
+          }
+        }
+        if(!_sugPS) _sugPS = {};
+      } catch(e){ console.warn('MO_SUGGEST_ROTATE_V2: PS localStorage corrotto, uso fallback', e); _sugPS=null; try{localStorage.removeItem('dnp1_jrw_suggested_ps');}catch(e2){} }
+      /* applica tie-break SOLO se _sugPS è valido, altrimenti sort originale */
+      if(_sugPS){
+        try{
+          pool.forEach(function(p){ p._lastSug = _sugPS[normName(p.name)] || '1970-01-01'; });
+          pool.sort(function(a,b){ return b._psScore-a._psScore || (a._lastSug<b._lastSug?-1:(a._lastSug>b._lastSug?1:a.name.localeCompare(b.name))); });
+        } catch(e){ console.warn('MO_SUGGEST_ROTATE_V2: PS sort tie-break fail, uso alfabetico', e); pool.sort(function(a,b){return b._psScore-a._psScore || a.name.localeCompare(b.name);}); }
+      } else {
+        pool.sort(function(a,b){return b._psScore-a._psScore || a.name.localeCompare(b.name);});
+      }
       // prendi i primi 4, garantendo almeno 1 FT
       let picks = pool.slice(0,4);
       if(!picks.some(p=>p._isFT)){
         const ft = pool.find(p=>p._isFT);
-        if(ft){ picks = picks.slice(0,3); picks.push(ft); }
+        if(ft){ picks = picks.slice(0,3); picks.push(ft); } /* MO_SUGGEST_ROTATE_V2: registra i 4 picks di oggi con protezione */ try{ if(_sugPS && typeof _sugPS==='object'){ var _tPS=new Date().toISOString().slice(0,10); picks.forEach(function(pk){ if(pk && pk.name && typeof pk.name==='string') _sugPS[normName(pk.name)]=_tPS; }); localStorage.setItem('dnp1_jrw_suggested_ps',JSON.stringify(_sugPS)); } }catch(e){ console.warn('MO_SUGGEST_ROTATE_V2: save PS fail', e); }
       }
       // etichetta motivo
       function reason(p){
@@ -1287,9 +1327,44 @@
         return 50000 + (_dmMaxWk-last);
       }
       _dmPool.forEach(function(p){ p._dmScore = _dmScore(p); });
-      _dmPool.sort(function(a,b){ return b._dmScore-a._dmScore || a.name.localeCompare(b.name); });
+      /* MO_SUGGEST_ROTATE_V2 DM: sort con tie-break lastSuggested protetto */
+      var _sugDM = null;
+      try {
+        var _sugDMRaw = localStorage.getItem('dnp1_jrw_suggested_dm');
+        if(_sugDMRaw){
+          var _parsedDM = JSON.parse(_sugDMRaw);
+          if(_parsedDM && typeof _parsedDM==='object' && !Array.isArray(_parsedDM)){
+            var _cutoffDM = new Date(); _cutoffDM.setDate(_cutoffDM.getDate()-30);
+            var _cutoffStrDM = _cutoffDM.toISOString().slice(0,10);
+            var _cleanDM = {};
+            var _keysDM = Object.keys(_parsedDM);
+            if(_keysDM.length > 500){
+              console.warn('MO_SUGGEST_ROTATE_V2: DM localStorage > 500 entries, reset preventivo');
+              localStorage.removeItem('dnp1_jrw_suggested_dm');
+            } else {
+              _keysDM.forEach(function(k){ var v=_parsedDM[k]; if(typeof v==='string' && v.length===10 && v >= _cutoffStrDM) _cleanDM[k]=v; });
+              _sugDM = _cleanDM;
+              if(Object.keys(_cleanDM).length < _keysDM.length){
+                localStorage.setItem('dnp1_jrw_suggested_dm', JSON.stringify(_cleanDM));
+                console.info('MO_SUGGEST_ROTATE_V2: DM cleanup, tenute '+Object.keys(_cleanDM).length+' di '+_keysDM.length);
+              }
+            }
+          }
+        }
+        if(!_sugDM) _sugDM = {};
+      } catch(e){ console.warn('MO_SUGGEST_ROTATE_V2: DM localStorage corrotto', e); _sugDM=null; try{localStorage.removeItem('dnp1_jrw_suggested_dm');}catch(e2){} }
+      if(_sugDM){
+        try{
+          _dmPool.forEach(function(p){ p._lastSug=_sugDM[normName(p.name)]||'1970-01-01'; });
+          _dmPool.sort(function(a,b){ return b._dmScore-a._dmScore || (a._lastSug<b._lastSug?-1:(a._lastSug>b._lastSug?1:a.name.localeCompare(b.name))); });
+        } catch(e){ console.warn('MO_SUGGEST_ROTATE_V2: DM sort fail', e); _dmPool.sort(function(a,b){return b._dmScore-a._dmScore || a.name.localeCompare(b.name);}); }
+      } else {
+        _dmPool.sort(function(a,b){return b._dmScore-a._dmScore || a.name.localeCompare(b.name);});
+      }
       var _dmPick = _dmPool[0];
       if(!_dmPick) return;
+      /* MO_SUGGEST_ROTATE_V2: registra suggerito DM di oggi con protezione */
+      try{ if(_sugDM && typeof _sugDM==='object' && _dmPick && _dmPick.name){ var _tDM=new Date().toISOString().slice(0,10); _sugDM[normName(_dmPick.name)]=_tDM; localStorage.setItem('dnp1_jrw_suggested_dm',JSON.stringify(_sugDM)); } }catch(e){ console.warn('MO_SUGGEST_ROTATE_V2: save DM fail', e); }
       function _dmReason(p){
         var rec = DM_MONTH[normName(p.name)];
         if(!rec) return 'mai fatto DM';
