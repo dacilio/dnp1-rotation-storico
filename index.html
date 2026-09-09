@@ -1776,6 +1776,11 @@
     /* espongo su window per test da console e per lo script one-time di migrazione (Step 2) */
     try{ window._crypto={encrypt:_encryptData, decrypt:_decryptData, deriveKey:_deriveKey}; window._DATA_ENCRYPTED_FLAG=function(){return DATA_ENCRYPTED;}; }catch(e){}
 
+    /* MO_CRYPTO_V2: helper cifratura selettiva - solo persone.json e storico.json */
+    function _isEncryptable(path){ return path==='data/persone.json' || path==='data/storico.json'; }
+    async function _preparePutPayload(path, data){ if(_isEncryptable(path) && DATA_ENCRYPTED && window._pin){ try{ return await _encryptData(data, window._pin); } catch(e){ console.warn('MO_CRYPTO_V2 encrypt fail '+path, e); throw e; } } return data; }
+    async function _unwrapGetPayload(path, parsed){ if(_isEncryptable(path) && parsed && parsed.v===1 && typeof parsed.d==='string'){ try{ return await _decryptData(parsed, window._pin); } catch(e){ console.warn('MO_CRYPTO_V2 decrypt fail '+path, e); throw e; } } return parsed; }
+
     async function apiGet(path){
       var t=tok(); if(!t)return null;
       var r=await fetch(API+path,{headers:{'Authorization':'token '+t,'Accept':'application/vnd.github.v3+json'}});
@@ -1783,11 +1788,11 @@
       if(r.status===401){showSetup();throw new Error('token non valido');}
       if(!r.ok)throw new Error('GET '+r.status);
       var j=await r.json(); _sha[path]=j.sha;
-      return JSON.parse(atob(j.content.replace(/\n/g,'')));
+      var _parsed = JSON.parse(atob(j.content.replace(/\n/g,''))); return await _unwrapGetPayload(path, _parsed); /* MO_CRYPTO_V2: auto-decifra se wrapper cifrato */
     }
     async function apiPut(path,data){
       var t=tok(); if(!t)return;
-      var body={message:'sync '+new Date().toISOString().slice(0,16),content:btoa(unescape(encodeURIComponent(JSON.stringify(data,null,2))))};
+      var _payload = await _preparePutPayload(path, data); /* MO_CRYPTO_V2: cifra se DATA_ENCRYPTED e path cifrabile */ var body={message:'sync '+new Date().toISOString().slice(0,16),content:btoa(unescape(encodeURIComponent(JSON.stringify(_payload,null,2))))};
       if(_sha[path])body.sha=_sha[path];
       var r=await fetch(API+path,{method:'PUT',headers:{'Authorization':'token '+t,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},body:JSON.stringify(body)});
       if(!r.ok)throw new Error('PUT '+r.status);
