@@ -3727,7 +3727,7 @@
         else if(_FINGER_LIST.indexOf(t) >= 0){ _finS.push(sec); }
         else { _othS.push(sec); }
       });
-      _othS.forEach(function(s){ _finS.push(s); });
+      /* MO_FINGER_STRICT_V1: NON aggiungere _othS ai finger. Solo AMBASSADOR/PICKER/STOWER/DIVERTER sono considerati Finger. Rimuovo dal DOM le sezioni "altri" (nomi persona, INDUCT stringa, OVERSIZE, ecc.) per non confondere il calcolo. */ _othS.forEach(function(s){ try{ if(s && s.parentNode) s.parentNode.removeChild(s); }catch(e){} });
       // Forza aspetto Induct/Finger: rimuove semaforo, applica verde/grigio, con !important su tutto
       var _forceStyle = function(){
         _indS.forEach(function(sec){
