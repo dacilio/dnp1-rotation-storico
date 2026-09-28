@@ -493,7 +493,7 @@
       <button id="mode-missing" class="active" onclick="setMode('missing')">Rotazione Induct</button>
       <button id="mode-stuck" onclick="setMode('stuck')">Rotazione Finger</button>
       <button id="mode-psrota" onclick="setMode('psrota')">&#127919; Rotazione Problem Solver</button>
-      <button id="mode-dmrota" onclick="setMode('dmrota')">&#128667; Rotazione Dock Marshall</button>
+      <button id="mode-dmrota" onclick="setMode('dmrota')">&#128667; Rotazione Dock Marshall</button>       <button id="mode-divertrota" onclick="setMode('divertrota')">&#128256; Rotazione Diverter</button>
     </div>
     <div class="toggle toggle-recap">
       <button id="mode-recap" onclick="setMode('recap')">📊 Recap settimana</button>
@@ -2035,7 +2035,7 @@
             try{document.getElementById('preparinghint').style.display='none';}catch(e){}
             try{document.getElementById('kpis').classList.remove('show');}catch(e){}
             try{document.getElementById('banner').classList.remove('show');}catch(e){}
-            renderSto();try{document.getElementById('controls').classList.remove('show');}catch(e){} /* MO_HIDECTRLBAR_V1 */ return;} if(m==='psrota'){var pb=document.getElementById('mode-psrota'); if(pb) pb.classList.add('active');try{document.getElementById('dayeval').style.display='none';}catch(e){}try{document.getElementById('preparinghint').style.display='none';}catch(e){}try{document.getElementById('kpis').classList.remove('show');}catch(e){}try{document.getElementById('banner').classList.remove('show');}catch(e){}try{document.getElementById('controls').classList.remove('show');}catch(e){} /* MO_HIDECTRLBAR_V1 */ window._mode='psrota';if(typeof window._renderPsRota==='function') window._renderPsRota();return;} if(m==='dmrota'){var db=document.getElementById('mode-dmrota'); if(db) db.classList.add('active');try{document.getElementById('dayeval').style.display='none';}catch(e){}try{document.getElementById('preparinghint').style.display='none';}catch(e){}try{document.getElementById('kpis').classList.remove('show');}catch(e){}try{document.getElementById('banner').classList.remove('show');}catch(e){}try{document.getElementById('controls').classList.remove('show');}catch(e){}window._mode='dmrota';if(typeof window._renderDmRota==='function') window._renderDmRota();return;} if(false){
+            renderSto();try{document.getElementById('controls').classList.remove('show');}catch(e){} /* MO_HIDECTRLBAR_V1 */ return;} if(m==='psrota'){var pb=document.getElementById('mode-psrota'); if(pb) pb.classList.add('active');try{document.getElementById('dayeval').style.display='none';}catch(e){}try{document.getElementById('preparinghint').style.display='none';}catch(e){}try{document.getElementById('kpis').classList.remove('show');}catch(e){}try{document.getElementById('banner').classList.remove('show');}catch(e){}try{document.getElementById('controls').classList.remove('show');}catch(e){} /* MO_HIDECTRLBAR_V1 */ window._mode='psrota';if(typeof window._renderPsRota==='function') window._renderPsRota();return;} if(m==='dmrota'){var db=document.getElementById('mode-dmrota'); if(db) db.classList.add('active');try{document.getElementById('dayeval').style.display='none';}catch(e){}try{document.getElementById('preparinghint').style.display='none';}catch(e){}try{document.getElementById('kpis').classList.remove('show');}catch(e){}try{document.getElementById('banner').classList.remove('show');}catch(e){}try{document.getElementById('controls').classList.remove('show');}catch(e){}window._mode='dmrota';if(typeof window._renderDmRota==='function') window._renderDmRota();return;} if(m==='divertrota'){var vb=document.getElementById('mode-divertrota'); if(vb) vb.classList.add('active');try{document.getElementById('dayeval').style.display='none';}catch(e){}try{document.getElementById('preparinghint').style.display='none';}catch(e){}try{document.getElementById('modebar-turno').classList.remove('show');}catch(e){}try{document.getElementById('kpis').classList.remove('show');}catch(e){}try{document.getElementById('banner').classList.remove('show');}catch(e){}try{document.getElementById('controls').classList.remove('show');}catch(e){}window._mode='divertrota';if(typeof window._renderDivertRota==='function') window._renderDivertRota();return;} /* MO_DIVERT_ROTA_V1 */ if(false){
           }
           window._mode=m; try{var _cb=document.getElementById('controls'); if(_cb){ if((m==='missing'||m==='stuck') && PEOPLE && PEOPLE.length){ _cb.classList.add('show'); } else { _cb.classList.remove('show'); } }}catch(e){} /* MO_HIDECTRLBAR_V2: controls visibile SOLO in Induct/Finger */ oSM(m);
         };
@@ -2868,6 +2868,112 @@
     window._renderDmRota = renderDmRota;
     /* MO_KPI_EXPOSE_V1: espongo anche injectDMKPI e renderDmSemaforo per debug/fallback */
     try { window.injectDMKPI = injectDMKPI; window.renderDmSemaforo = renderDmSemaforo; } catch(e){}
+
+    /* ============ MO_DIVERT_ROTA_V1: Rotazione Diverter mensile ============ */
+    var DIVERT_TARGET = 3; /* soglia mensile per verde */
+    function _divertWkInMonth(wkStr, anno, mese){
+      var n = parseInt((wkStr||'').replace(/\D/g,''))||0; if(!n) return false;
+      var jan1 = new Date(anno,0,1);
+      var d = new Date(jan1.getTime()+((n-1)*7*86400000));
+      var dow = d.getDay()||7; d.setDate(d.getDate()+(1-dow));
+      var thu = new Date(d); thu.setDate(thu.getDate()+3);
+      return thu.getFullYear()===anno && (thu.getMonth()+1)===mese;
+    }
+    function _isDivertRole(r){
+      if(!r) return false;
+      try { return normalizeRole(String(r))==='DIVERTER'; } catch(e){}
+      /* fallback pattern */
+      var s = String(r).toUpperCase();
+      if(s.indexOf('DIVERTER')>=0) return true;
+      if(/\d*\s*(ALTO|BASSO)/.test(s)) return true;
+      return false;
+    }
+    function _countDivertPerPersona(){
+      var oggi = new Date(); var anno=oggi.getFullYear(); var mese=oggi.getMonth()+1;
+      var list=[];
+      try {
+        Object.entries(SP||{}).forEach(function(entry){
+          var k=entry[0]; var p=entry[1];
+          if(!p || !p.settimane) return;
+          var cnt=0; var wksInM=0;
+          Object.entries(p.settimane).forEach(function(we){
+            var w=we[0]; var days=we[1];
+            if(!_divertWkInMonth(w,anno,mese)) return;
+            wksInM++;
+            Object.entries(days||{}).forEach(function(dr){
+              if(dr[0]==='_excl') return;
+              if(_isDivertRole(dr[1])) cnt++;
+            });
+          });
+          if(wksInM===0) return; /* persona con nessuna settimana nel mese corrente: skip */
+          list.push({key:k, name:p.name||k, ftpt:(p.ftpt||'').toString().toUpperCase(), count:cnt});
+        });
+      } catch(e){ console.warn('MO_DIVERT_ROTA_V1 count fail', e); }
+      return list;
+    }
+    function renderDivertRota(){
+      var results = document.getElementById('results'); if(!results) return;
+      results.innerHTML='';
+      var oggi=new Date(); var mesi=['Gennaio','Febbraio','Marzo','Aprile','Maggio','Giugno','Luglio','Agosto','Settembre','Ottobre','Novembre','Dicembre'];
+      var meseLabel = mesi[oggi.getMonth()]+' '+oggi.getFullYear();
+      /* Header */
+      var hp=document.createElement('div'); hp.id='divertrota-header';
+      hp.style.cssText='margin:8px 0 12px 0;padding:14px 18px;border-radius:12px;background:linear-gradient(135deg,#eff6ff,#dbeafe);border-left:5px solid #3b82f6;display:flex;align-items:center;gap:12px';
+      hp.innerHTML='<div style="font-size:26px">&#128256;</div><div>'
+        +'<div style="font-size:15px;font-weight:800;color:#1e40af;letter-spacing:.02em;text-transform:uppercase">Rotazione Diverter &middot; '+meseLabel+'</div>'
+        +'<div style="font-size:12px;color:#2563eb;font-weight:600;margin-top:2px">Target: '+DIVERT_TARGET+' volte/mese &middot; Rosso 0 &middot; Giallo 1-'+(DIVERT_TARGET-1)+' &middot; Verde '+DIVERT_TARGET+'+</div></div>';
+      results.appendChild(hp);
+      /* Calcolo */
+      var list = _countDivertPerPersona();
+      var totPers=list.length;
+      var atTarget=list.filter(function(x){return x.count>=DIVERT_TARGET;}).length;
+      var yellow=list.filter(function(x){return x.count>=1 && x.count<DIVERT_TARGET;}).length;
+      var red=list.filter(function(x){return x.count===0;}).length;
+      var pct=totPers?Math.round(atTarget/totPers*100):0;
+      var pctColor=pct>=80?'#16a34a':(pct>=50?'#d97706':'#dc2626');
+      /* KPI block */
+      var kpi=document.createElement('div');
+      kpi.style.cssText='background:#fff;padding:14px 18px;border-radius:10px;margin-bottom:12px;box-shadow:0 1px 3px rgba(0,0,0,.08);display:flex;gap:24px;flex-wrap:wrap;align-items:center';
+      kpi.innerHTML=
+         '<div><div style="font-size:11px;color:#64748b;font-weight:700;text-transform:uppercase">Al target ('+DIVERT_TARGET+'+/mese)</div><div style="font-size:26px;font-weight:800;color:'+pctColor+'">'+pct+'%</div><div style="font-size:11px;color:#94a3b8">'+atTarget+' su '+totPers+' persone</div></div>'
+        +'<div><div style="font-size:11px;color:#64748b;font-weight:700;text-transform:uppercase">&#128308; Rosso (0 volte)</div><div style="font-size:26px;font-weight:800;color:#dc2626">'+red+'</div></div>'
+        +'<div><div style="font-size:11px;color:#64748b;font-weight:700;text-transform:uppercase">&#128993; Giallo (1-'+(DIVERT_TARGET-1)+')</div><div style="font-size:26px;font-weight:800;color:#d97706">'+yellow+'</div></div>'
+        +'<div><div style="font-size:11px;color:#64748b;font-weight:700;text-transform:uppercase">&#128994; Verde ('+DIVERT_TARGET+'+)</div><div style="font-size:26px;font-weight:800;color:#16a34a">'+atTarget+'</div></div>';
+      results.appendChild(kpi);
+      /* Sort: FT prima di PT, poi count ascending (chi ne ha meno prima), poi alfabetico */
+      list.sort(function(a,b){
+        var ftA=a.ftpt==='FT'?0:1; var ftB=b.ftpt==='FT'?0:1;
+        if(ftA!==ftB) return ftA-ftB;
+        if(a.count!==b.count) return a.count-b.count;
+        return (a.name||'').localeCompare(b.name||'');
+      });
+      /* Semaforo persone */
+      var wrap=document.createElement('div'); wrap.id='divert-sema-wrap';
+      wrap.style.cssText='display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:8px';
+      list.forEach(function(p){
+        var color, bg;
+        if(p.count===0){ color='#dc2626'; bg='#fee2e2'; }
+        else if(p.count<DIVERT_TARGET){ color='#d97706'; bg='#fef3c7'; }
+        else { color='#16a34a'; bg='#dcfce7'; }
+        var ftTag = p.ftpt==='FT' ? '<span style="background:#dbeafe;color:#1e40af;padding:1px 6px;border-radius:3px;font-size:10px;font-weight:700;margin-left:6px">FT</span>' : '<span style="background:#f3e8ff;color:#6b21a8;padding:1px 6px;border-radius:3px;font-size:10px;font-weight:700;margin-left:6px">PT</span>';
+        var card=document.createElement('div');
+        card.style.cssText='background:'+bg+';border-left:4px solid '+color+';padding:8px 12px;border-radius:6px';
+        card.innerHTML='<div style="font-weight:700;font-size:13px;color:#1e293b">'+p.name+ftTag+'</div>'
+          +'<div style="font-size:11px;color:'+color+';font-weight:700;margin-top:3px">'+p.count+' volte questo mese</div>';
+        wrap.appendChild(card);
+      });
+      if(list.length===0){
+        var empty=document.createElement('div');
+        empty.style.cssText='padding:24px;text-align:center;color:#94a3b8;font-size:13px;background:#fff;border-radius:8px';
+        empty.textContent='Nessun dato di rotazione nel mese corrente. Carica Manning + Genera controllo per popolare lo storico.';
+        results.appendChild(empty);
+      } else {
+        results.appendChild(wrap);
+      }
+    }
+    window._renderDivertRota = renderDivertRota;
+    try { window._countDivertPerPersona = _countDivertPerPersona; } catch(e){}
+    /* ============ FINE MO_DIVERT_ROTA_V1 ============ */
   })();
 
   // MO_EXPORT_V1 - Point 6: Export CSV + Stampa/PDF per Andamento mensile
@@ -3689,9 +3795,9 @@
           .sort(function(a,b){ return b[1]-a[1] || a[0].localeCompare(b[0]); });
         
         if(targetGrid){
-          var newHtml = sorted.map(function(e){
+          /* MO_DIVERT_MONTH_BADGE_V1: badge M:N nel Per Postazione per sezione DIVERTER */ var _divMonthMap={}; if(normName==='DIVERTER'){ try{ var _oggi=new Date(); var _anno=_oggi.getFullYear(); var _mese=_oggi.getMonth()+1; var _wkInM=function(w){ var n=parseInt(String(w).replace(/\D/g,''))||0; if(!n)return false; var j=new Date(_anno,0,1); var d=new Date(j.getTime()+((n-1)*7*86400000)); var dow=d.getDay()||7; d.setDate(d.getDate()+(1-dow)); var t=new Date(d); t.setDate(t.getDate()+3); return t.getFullYear()===_anno && (t.getMonth()+1)===_mese; }; var _isDiv=function(r){ if(!r)return false; try{ return normalizeRole(String(r))==='DIVERTER'; }catch(e){ var s=String(r).toUpperCase(); return s.indexOf('DIVERTER')>=0 || /\d*\s*(ALTO|BASSO)/.test(s); } }; Object.values(SP||{}).forEach(function(p){ if(!p||!p.settimane||!p.name) return; var cnt=0; Object.entries(p.settimane).forEach(function(we){ if(!_wkInM(we[0])) return; Object.entries(we[1]||{}).forEach(function(dr){ if(dr[0]==='_excl') return; if(_isDiv(dr[1])) cnt++; }); }); if(cnt>0) _divMonthMap[p.name]=cnt; }); } catch(e){ console.warn('MO_DIVERT_MONTH_BADGE_V1 fail', e); } } var newHtml = sorted.map(function(e){
             var vs = e[1]===1 ? 'volta' : 'volte';
-            return '<div class="card n" style="padding:8px 12px"><div class="name" style="font-size:13px">'+e[0]+'</div><div class="meta">'+e[1]+' '+vs+'</div></div>';
+            var monthBadge=''; if(normName==='DIVERTER'){ var mCnt=_divMonthMap[e[0]]||0; var _bc=mCnt>=3?'#16a34a':(mCnt>=1?'#d97706':'#dc2626'); var _bg=mCnt>=3?'#dcfce7':(mCnt>=1?'#fef3c7':'#fee2e2'); monthBadge=' <span title="Volte DIVERTER questo mese" style="display:inline-block;margin-left:6px;background:'+_bg+';color:'+_bc+';padding:1px 7px;border-radius:4px;font-size:11px;font-weight:700">M: '+mCnt+'</span>'; } return '<div class="card n" style="padding:8px 12px"><div class="name" style="font-size:13px">'+e[0]+'</div><div class="meta">'+e[1]+' '+vs+monthBadge+'</div></div>';
           }).join('');
           targetGrid.innerHTML = newHtml;
         }
