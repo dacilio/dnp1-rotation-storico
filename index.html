@@ -1179,7 +1179,7 @@
     // Sezione informativa: ruotati grazie all'assenza (solo modalità 'missing')
     if(MODE==='missing' && absRotated.length){
       absRotated.sort((a,b)=> b._abs-a._abs || a.name.localeCompare(b.name));
-      html += `<div class="section s-green open">${secHead('green','🛌','Ruotati grazie all\'assenza pianificata/non pianificata','Obiettivo raggiunto contando off/ferie/sick — non con Induct reale',absRotated.length)}<div class="section-body">`;
+      html += `<div class="section s-green">${secHead('green','🛌','Ruotati grazie all\'assenza pianificata/non pianificata','Obiettivo raggiunto contando off/ferie/sick — non con Induct reale',absRotated.length)}<div class="section-body">`;
       html += `<div class="grid">${absRotated.map(p=>{
         const abTxt = p._abs===1 ? '1 assenza' : p._abs+' assenze';
         return `<div class="card g">
@@ -1194,7 +1194,7 @@
     // Sezione: sotto obiettivo ma NON in turno domani (non azionabili subito)
     if(notTomorrow.length){
       const label = preparingDay ? (DAYS_IT[preparingDay]||preparingDay) : 'domani';
-      html += `<div class="section s-gray open">${secHead('gray','📅','Da pianificare — ma non in turno ('+label+')','Non schedulati il giorno che stai preparando: non puoi assegnarli ora',notTomorrow.length)}<div class="section-body">`;
+      html += `<div class="section s-gray">${secHead('gray','📅','Da pianificare — ma non in turno ('+label+')','Non schedulati il giorno che stai preparando: non puoi assegnarli ora',notTomorrow.length)}<div class="section-body">`;
       html += `<div class="grid">${notTomorrow.map(p=>cardHtml(p, MODE==='missing'?'n':'n')).join('')}</div>`;
       html += `</div></div>`;
     }
