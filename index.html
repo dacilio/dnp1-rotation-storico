@@ -2093,7 +2093,7 @@
               +'<div class="persona-head" onclick="this.parentElement.classList.toggle(\'open\')">'
               +'<div class="persona-name">'+p.name+' <span class="tag '+(isFT?'ft':'pt')+'">'+(p.ftpt||'?')+'</span></div>'
               +'<div class="persona-stats"><span>'+wks.length+' sett.</span><span style="color:#1d4ed8">Induct: '+nI+'</span><span style="color:#065f46">Finger: '+nF+'</span>'+(nPS?'<span style="color:#6d28d9">PS: '+nPS+'</span>':'')+'</div>'
-              +'</div><div class="persona-body">';
+              +'</div><div class="persona-body">' + /* MO_EXPORT_PERSONA_V1: bar export mensile per persona */ '<div style="display:flex;gap:8px;align-items:center;padding:8px 10px;background:#f8fafc;border:1px solid var(--border-light);border-radius:8px;margin-bottom:10px;flex-wrap:wrap"><span style="font-size:12px;font-weight:700;color:#475569">&#128198; Esporta mese:</span><select id="expmo_'+p.name.replace(/\W/g,'_')+'" style="padding:5px 8px;border-radius:6px;border:1px solid #cbd5e1;font-size:12px;background:#fff;font-family:inherit">' + (function(){var _t=new Date(); var _mm=['Gennaio','Febbraio','Marzo','Aprile','Maggio','Giugno','Luglio','Agosto','Settembre','Ottobre','Novembre','Dicembre']; var _opt=''; for(var _i=0; _i<12; _i++){ var _d=new Date(_t.getFullYear(), _t.getMonth()-_i, 1); var _val=_d.getFullYear()+'-'+String(_d.getMonth()+1).padStart(2,'0'); var _label=_mm[_d.getMonth()]+' '+_d.getFullYear(); _opt+='<option value="'+_val+'"'+(_i===0?' selected':'')+'>'+_label+'</option>'; } return _opt; })() + '</select><button onclick="window._exportPersonaMonth(\''+p.name.replace(/\x27/g,'\\x27')+'\', document.getElementById(\'expmo_'+p.name.replace(/\W/g,'_')+'\').value)" style="background:#1F4E79;color:#fff;border:0;border-radius:6px;padding:6px 14px;font-size:12px;font-weight:700;cursor:pointer">&#128190; Scarica Excel</button></div>';
             wks.forEach(function(w){
               out+='<div class="wk-row"><div class="wk-label">'+w+'</div><div class="wk-days">';
               days.forEach(function(d){
@@ -2977,6 +2977,106 @@
     window._renderDivertRota = renderDivertRota;
     try { window._countDivertPerPersona = _countDivertPerPersona; } catch(e){}
     /* ============ FINE MO_DIVERT_ROTA_V1 ============ */
+
+    /* ============ MO_EXPORT_PERSONA_V1: export XLSX per persona/mese, 5 macro ruoli ============ */
+    function _wkBelongsToMonthGen(wkStr, anno, mese){
+      var n = parseInt(String(wkStr||'').replace(/\D/g,''))||0; if(!n) return false;
+      var jan1 = new Date(anno,0,1);
+      var d = new Date(jan1.getTime()+((n-1)*7*86400000));
+      var dow = d.getDay()||7; d.setDate(d.getDate()+(1-dow));
+      var thu = new Date(d); thu.setDate(thu.getDate()+3);
+      return thu.getFullYear()===anno && (thu.getMonth()+1)===mese;
+    }
+    function _classifyRole(r){
+      if(!r) return null;
+      var s = String(r).toUpperCase();
+      if(s.indexOf('ABS_')===0) return null; /* assenze non contano */
+      try {
+        if(typeof isProblemSolve==='function' && isProblemSolve(r)) return 'PS';
+      } catch(e){}
+      try {
+        if(typeof isDockMarshall==='function' && isDockMarshall(r)) return 'DM';
+      } catch(e){}
+      /* Diverter check prima di Finger generico */
+      try {
+        var norm = (typeof normalizeRole==='function') ? normalizeRole(String(r)) : s;
+        if(norm==='DIVERTER') return 'DIVERTER';
+      } catch(e){}
+      if(/\d*\s*(ALTO|BASSO)/.test(s)) return 'DIVERTER';
+      try {
+        if(typeof isInduct==='function' && isInduct(r)) return 'INDUCT';
+      } catch(e){}
+      try {
+        if(typeof isFinger==='function' && isFinger(r)) return 'FINGER';
+      } catch(e){}
+      return 'FINGER'; /* fallback */
+    }
+    window._exportPersonaMonth = function(personName, meseVal){
+      try {
+        if(typeof XLSX==='undefined'){ alert('Libreria XLSX non caricata. Ricarica la pagina.'); return; }
+        var parts = String(meseVal||'').split('-');
+        if(parts.length!==2){ alert('Mese non valido'); return; }
+        var anno = parseInt(parts[0],10);
+        var mese = parseInt(parts[1],10);
+        if(!anno || !mese){ alert('Mese non valido'); return; }
+        var mesiIT = ['Gennaio','Febbraio','Marzo','Aprile','Maggio','Giugno','Luglio','Agosto','Settembre','Ottobre','Novembre','Dicembre'];
+        var meseLbl = mesiIT[mese-1]+' '+anno;
+        /* Cerco persona in SP */
+        var key = String(personName||'').toLowerCase().replace(/\s*,\s*/g,',').replace(/\s+/g,' ').trim();
+        var p = SP[key];
+        if(!p){
+          /* fallback: cerca per name match */
+          var found = null;
+          Object.values(SP||{}).forEach(function(pp){ if(pp && pp.name===personName) found=pp; });
+          p = found;
+        }
+        if(!p){ alert('Persona non trovata: '+personName); return; }
+        /* Conteggio 5 macro ruoli */
+        var cnt = {INDUCT:0, FINGER:0, PS:0, DM:0, DIVERTER:0};
+        Object.entries(p.settimane||{}).forEach(function(we){
+          var w = we[0]; var days = we[1] || {};
+          if(!_wkBelongsToMonthGen(w, anno, mese)) return;
+          Object.entries(days).forEach(function(dr){
+            if(dr[0]==='_excl') return;
+            var cls = _classifyRole(dr[1]);
+            if(cls && cnt.hasOwnProperty(cls)) cnt[cls]++;
+          });
+        });
+        var totRotazioni = cnt.INDUCT + cnt.FINGER + cnt.PS + cnt.DM + cnt.DIVERTER;
+        /* Costruisco worksheet */
+        var wb = XLSX.utils.book_new();
+        var data = [
+          ['DNP1 Rotation Planner - Estrazione mensile per persona'],
+          [''],
+          ['Nome:', p.name || personName],
+          ['Contratto:', (p.ftpt||'').toUpperCase()],
+          ['Mese:', meseLbl],
+          ['Data estrazione:', new Date().toLocaleString('it-IT')],
+          [''],
+          ['Ruolo', 'Volte nel mese'],
+          ['INDUCT', cnt.INDUCT],
+          ['FINGER', cnt.FINGER],
+          ['PROBLEM SOLVER', cnt.PS],
+          ['DOCK MARSHALL', cnt.DM],
+          ['DIVERTER', cnt.DIVERTER],
+          [''],
+          ['TOTALE rotazioni', totRotazioni]
+        ];
+        var ws = XLSX.utils.aoa_to_sheet(data);
+        /* Colonne larghe */
+        ws['!cols'] = [{wch:22}, {wch:18}];
+        XLSX.utils.book_append_sheet(wb, ws, 'Rotazioni mese');
+        /* Filename sicuro */
+        var safeName = (p.name || personName).replace(/[^\w\-]+/g,'_').replace(/^_|_$/g,'');
+        var fname = 'Rotazioni_'+safeName+'_'+meseVal+'.xlsx';
+        XLSX.writeFile(wb, fname);
+        console.info('MO_EXPORT_PERSONA_V1: exported '+fname, cnt);
+      } catch(e){
+        console.error('MO_EXPORT_PERSONA_V1 fail', e);
+        alert('Errore durante l\'export: '+e.message);
+      }
+    };
+    /* ============ FINE MO_EXPORT_PERSONA_V1 ============ */
   })();
 
   // MO_EXPORT_V1 - Point 6: Export CSV + Stampa/PDF per Andamento mensile
