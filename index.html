@@ -1386,9 +1386,9 @@
       </div></div>`;
     })();
 
-    /* ============ MO_DIVERT_SUGGEST_V1: suggeritore Diverter giornaliero (SOLO Rotazione Induct) ============ */
+    /* ============ MO_DIVERT_SUGGEST_V1: suggeritore Diverter giornaliero (SOLO Rotazione Finger — spostato da Induct 2026-09-29) ============ */
     (function(){
-      if(MODE!=='missing') return;
+      if(MODE!=='stuck') return;
       if(!PEOPLE || !PEOPLE.length) return;
       var DIV_MAX = 2; /* target mensile: chi ha già fatto 2 volte è al limite; 3+ = escluso */
       var DIV_PICKS = 3; /* candidati da suggerire */
