@@ -455,6 +455,9 @@
     #gh-bar:hover #gh-upd{display:inline !important;margin-left:6px}
     #gh-bar:hover #gh-txt{max-width:200px}
     body{padding-top:0 !important}
+    /* MO_GHBAR_OVERLAP_FIX_V1: su schermi stretti il badge GitHub (fixed, in alto a destra) finisce sopra
+       il bottone "Impostazioni DNP1" perche' .header-top non va a capo. Riservo spazio sopra il header. */
+    @media(max-width:640px){ .header-top{ margin-top:40px; } }
     #upload-fab{position:fixed;top:14px;left:14px;z-index:9998;width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#6366f1,#3b82f6);color:#fff;border:none;cursor:pointer;display:none;align-items:center;justify-content:center;font-size:18px;box-shadow:0 3px 10px rgba(0,0,0,.25);transition:transform .15s,box-shadow .15s}
     #upload-fab.show{display:flex}
     #upload-fab:hover{transform:scale(1.08);box-shadow:0 4px 14px rgba(99,102,241,.55)}
@@ -728,6 +731,29 @@
     if(PEOPLE.length) render();  // riapplica le nuove regole se ci sono dati
   }
 
+  /* MO_NAME_FIX_V1: corregge nomi "sporchi" noti nei file Manning/Turni (es. suffisso numerico accidentale tipo "Raffaele2") */
+  var _NAME_FIX_MAP = { 'forestiero,raffaele2': 'Forestiero,Raffaele' };
+  function sanitizePersonName(s){
+    var raw = String(s||'').trim();
+    var key = raw.toLowerCase().replace(/\s*,\s*/g,',').replace(/\s+/g,' ');
+    if(_NAME_FIX_MAP[key]) return _NAME_FIX_MAP[key];
+    return raw;
+  }
+  /* MO_ROLE_ICON_V1: icona dedicata per ruolo nella tab "Per Postazione" (prima era sempre 📋 per tutti) */
+  function _postIcon(role){
+    var r = String(role||'').toUpperCase();
+    if(r.indexOf('WATERSPIDER')>=0) return '🕷️';
+    if(r.indexOf('UNLOAD')>=0) return '📦';
+    if(r.indexOf('RECEIV')>=0) return '📥';
+    if(r.indexOf('PUSH')>=0) return '🛒';
+    if(r.indexOf('DOCK MARSHALL')>=0) return '🚦';
+    if(r.indexOf('PROBLEM')>=0) return '🧩';
+    if(r.indexOf('AMBASSADOR')>=0) return '🙋';
+    if(r.indexOf('DIVERT')>=0) return '🔀';
+    if(r.indexOf('PICK')>=0) return '🧺';
+    if(r.indexOf('STOW')>=0) return '🗄️';
+    return '📋';
+  }
   function normName(s){
     return String(s||'').toLowerCase().replace(/\s*,\s*/g,',').replace(/\s+/g,' ').trim();
   }
@@ -844,7 +870,7 @@
     for(let i=3;i<rows.length;i++){
       const r = rows[i];
       if(!r || !r[0] || String(r[0]).trim()==='') continue;
-      const nm = normName(r[0]);
+      const nm = normName(sanitizePersonName(r[0])); /* MO_NAME_FIX_V1 */
       const abs = {}, turn = {};
       for(let d=0;d<7;d++){
         const v = r[3+d];
@@ -952,7 +978,7 @@
     for(let i=1;i<rows.length;i++){
       const r = rows[i];
       if(!r || !r[1] || String(r[1]).trim()==='') continue;
-      const name = String(r[1]).trim();
+      const name = sanitizePersonName(String(r[1]).trim()); /* MO_NAME_FIX_V1 */
       const ftpt = r[0] ? String(r[0]).trim() : '';
       const week = {};
       let worked = 0;
@@ -2194,7 +2220,7 @@
         else roles.forEach(function(role){
           var sorted=Object.entries(rm[role]).sort(function(a,b){return b[1].tot-a[1].tot;});
           var cls='s-gray';try{if(isInduct(role))cls='s-green';}catch(e){}try{if(isProblemSolve(role))cls='s-orange';}catch(e){}
-          html+='<div class="section '+cls+'"><div class="section-head" onclick="this.parentElement.classList.toggle(\'open\')"><div class="sh-icon">📋</div><div class="sh-text"><span class="sh-title">'+role+'</span><span class="sh-sub">'+sorted.length+' pers.</span></div><span class="sec-chev">▾</span></div><div class="section-body"><div class="grid">';
+          html+='<div class="section '+cls+'"><div class="section-head" onclick="this.parentElement.classList.toggle(\'open\')"><div class="sh-icon">'+_postIcon(role)+'</div><div class="sh-text"><span class="sh-title">'+role+'</span><span class="sh-sub">'+sorted.length+' pers.</span></div><span class="sec-chev">▾</span></div><div class="section-body"><div class="grid">';
           sorted.forEach(function(e){
             var name=e[0], info=e[1];
             var monthKeys=Object.keys(info.byMonth).sort().reverse();
