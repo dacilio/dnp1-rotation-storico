@@ -3776,7 +3776,7 @@
         else if(_FINGER_LIST.indexOf(t) >= 0){ _finS.push(sec); }
         else { _othS.push(sec); }
       });
-      _othS.forEach(function(s){ _finS.push(s); });
+      _othS.forEach(function(s){ s.style.display='none'; }); // MO_FINGER_WHITELIST_V1: solo AMBASSADOR/DIVERTER/PICKER/STOWER in Finger, il resto nascosto
       // Forza aspetto Induct/Finger: rimuove semaforo, applica verde/grigio, con !important su tutto
       var _forceStyle = function(){
         _indS.forEach(function(sec){
