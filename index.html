@@ -2109,6 +2109,7 @@
             var wks=Object.keys(p.settimane||{}).sort(function(a,b){return(parseInt(b.replace(/\D/g,''))||0)-(parseInt(a.replace(/\D/g,''))||0);});
             var nI=0,nF=0,nPS=0;
             wks.forEach(function(w){Object.values(p.settimane[w]||{}).forEach(function(r){
+              if(String(r||'').toUpperCase().indexOf('ABS_')===0) return; /* MO_ABS_FIX_V1: assenze non contano come Finger */
               try{if(isProblemSolve(r)){nPS++;return;}}catch(e){}
               try{if(isInduct(r)){nI++;return;}}catch(e){}
               nF++;
@@ -2124,9 +2125,11 @@
               days.forEach(function(d){
                 var r=p.settimane[w][d]; if(!r)return;
                 var cls='absent';
-                try{if(isProblemSolve(r))cls='ps';}catch(e){}
-                try{if(cls==='absent' && isInduct(r))cls='induct';}catch(e){}
-                try{if(cls==='absent' && isFinger(r))cls='finger';}catch(e){}
+                try{if(String(r||'').toUpperCase().indexOf('ABS_')!==0){ /* MO_ABS_FIX_V1 */
+                  if(isProblemSolve(r))cls='ps';
+                  else if(isInduct(r))cls='induct';
+                  else if(isFinger(r))cls='finger';
+                } }catch(e){}
                 out+='<span class="day-chip '+cls+'">'+d+': '+r+'</span>';
               });
               out+='</div></div>';
@@ -2156,9 +2159,11 @@
           pw.sort(function(a,b){return a.name.localeCompare(b.name);}).forEach(function(p){
             var chips=days.filter(function(d){return(p.settimane[wk]||{})[d];}).map(function(d){
               var r=p.settimane[wk][d],cls='absent';
-              try{if(isProblemSolve(r))cls='ps';}catch(e){}
-              try{if(cls==='absent' && isInduct(r))cls='induct';}catch(e){}
-              try{if(cls==='absent' && isFinger(r))cls='finger';}catch(e){}
+              try{if(String(r||'').toUpperCase().indexOf('ABS_')!==0){ /* MO_ABS_FIX_V1 */
+                if(isProblemSolve(r))cls='ps';
+                else if(isInduct(r))cls='induct';
+                else if(isFinger(r))cls='finger';
+              } }catch(e){}
               return'<span class="day-chip '+cls+'" style="font-size:10px">'+d+': '+r+'</span>';
             }).join('');
             html+='<div class="card n" style="padding:10px 12px"><div class="name" style="font-size:13px">'+p.name+' <span class="tag '+(p.ftpt==='FT'?'ft':'pt')+'">'+(p.ftpt||'?')+'</span></div><div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:5px">'+chips+'</div></div>';
