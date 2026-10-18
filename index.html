@@ -3826,7 +3826,7 @@
         var t = sec.querySelector('.sh-title');
         if(!t) return;
         var raw = (t.textContent||'').trim();
-        if(!raw || /^ABS_/i.test(raw) || /^\d+$/.test(raw)){ sec.style.display='none'; return; } /* MO_POSTAZIONI_HIDEABS_V1 */
+        if(!raw || /^ABS_/i.test(raw) || /^\d+$/.test(raw)){ sec.remove(); return; } /* MO_POSTAZIONI_HIDEABS_V2: rimosso dal DOM, non solo nascosto */
         var norm = normalizeRole(raw);
         if(!groups[norm]){ groups[norm] = []; order.push(norm); }
         groups[norm].push(sec);
@@ -3898,7 +3898,7 @@
         else if(_FINGER_LIST.indexOf(t) >= 0){ _finS.push(sec); }
         else { _othS.push(sec); }
       });
-      _othS.forEach(function(s){ s.style.display='none'; }); // MO_FINGER_WHITELIST_V1: solo AMBASSADOR/DIVERTER/PICKER/STOWER in Finger, il resto nascosto
+      _othS.forEach(function(s){ s.remove(); }); // MO_FINGER_WHITELIST_V2: rimuove dal DOM (non solo nascosto) tutto cio' che non e' nella whitelist Induct/Finger
       // Forza aspetto Induct/Finger: rimuove semaforo, applica verde/grigio, con !important su tutto
       var _forceStyle = function(){
         _indS.forEach(function(sec){
