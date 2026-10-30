@@ -924,9 +924,16 @@
     $('dstatus-w').innerHTML = '<span class="loading">⏳ Lettura in corso…</span>';
     const reader = new FileReader();
     reader.onerror = () => { $('dstatus-w').innerHTML=''; showErr('Impossibile leggere il file Manning. Riprova.'); };
+    /* MO_FASTREAD_V1: se dopo 40s non ha finito, avvisa invece di restare in "Lettura in corso" */
+    setTimeout(()=>{ if(!PENDING_W || PENDING_W.name!==file.name){ const s=$('dstatus-w'); if(s && /Lettura in corso/.test(s.innerHTML)){ s.innerHTML=''; showErr('La lettura del file Manning non finisce. Probabile file solo-cloud (OneDrive/SharePoint) o molto pesante: copialo in Download e riprova.'); } } }, 40000);
     reader.onload = e => {
       try{
-        const wb = XLSX.read(new Uint8Array(e.target.result), {type:'array'});
+        /* MO_FASTREAD_V1: legge prima solo i nomi dei fogli, poi parsa solo quello Manning (file pesanti) */
+        const _buf = new Uint8Array(e.target.result);
+        const _names = XLSX.read(_buf, {type:'array', bookSheets:true}).SheetNames;
+        const _wm = (CFG().manningSheet||'Conteggio Task weekly').toLowerCase();
+        const _pick = _names.find(n => n.toLowerCase().trim()===_wm) || _names.find(n => n.toLowerCase().includes(_wm)) || _names.find(n => n.toLowerCase().includes('weekly'));
+        const wb = XLSX.read(_buf, _pick ? {type:'array', sheets:_pick, cellStyles:false, cellHTML:false} : {type:'array'});
         const wantM = (CFG().manningSheet||'Conteggio Task weekly').toLowerCase();
         const sheetName = wb.SheetNames.find(n => n.toLowerCase().trim()===wantM)
                        || wb.SheetNames.find(n => n.toLowerCase().includes(wantM))
