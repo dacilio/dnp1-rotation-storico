@@ -1623,7 +1623,7 @@
   }   // storico: caricato dai file settimanali (persistito nel browser)
 
   /* MO_MCO_V1: settimane di periodo MCO (W47-W52): mostrate nello storico ma escluse da medie, WoW, media mobile e best/worst */
-  var MCO_WEEKS = {from:47, to:52};
+  var MCO_WEEKS = {from:46, to:52};
   window._isMcoWeek = function(s){ var n=parseInt(String(s||'').replace(/\D/g,''),10); return !!n && n>=MCO_WEEKS.from && n<=MCO_WEEKS.to; };
   function renderMonth(){
     // KPI riassuntivi del mese (media compliance)
