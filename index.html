@@ -1622,15 +1622,20 @@
     PS_MONTH = {}; savePS(); renderMonth();
   }   // storico: caricato dai file settimanali (persistito nel browser)
 
+  /* MO_MCO_V1: settimane di periodo MCO (W47-W52): mostrate nello storico ma escluse da medie, WoW, media mobile e best/worst */
+  var MCO_WEEKS = {from:47, to:52};
+  window._isMcoWeek = function(s){ var n=parseInt(String(s||'').replace(/\D/g,''),10); return !!n && n>=MCO_WEEKS.from && n<=MCO_WEEKS.to; };
   function renderMonth(){
     // KPI riassuntivi del mese (media compliance)
     const rows = MONTH_ROWS.slice().sort((a,b)=> (parseInt((a.settimana||'').replace(/\D/g,''))||0) - (parseInt((b.settimana||'').replace(/\D/g,''))||0));
+    const rowsEff = rows.filter(r=>!window._isMcoWeek(r.settimana)); /* MO_MCO_V1 */
+    const nMco = rows.length - rowsEff.length;
     const avg = (arr)=> arr.length? Math.round(arr.reduce((s,x)=>s+x,0)/arr.length):0;
-    const avgInd = avg(rows.map(r=>r.pctInd));
-    const avgFing = avg(rows.map(r=>r.pctFing));
+    const avgInd = avg(rowsEff.map(r=>r.pctInd));
+    const avgFing = avg(rowsEff.map(r=>r.pctFing));
 
     $('kpis').innerHTML = `
-      <div class="kpi ok"><div class="khead"><div class="kico">📈</div><div class="n">${avgInd}%</div></div><div class="l">Media Compliance Induct (${rows.length} sett.)</div></div>
+      <div class="kpi ok"><div class="khead"><div class="kico">📈</div><div class="n">${avgInd}%</div></div><div class="l">Media Compliance Induct (${rowsEff.length} sett.${nMco?' · escluse '+nMco+' MCO':''})</div></div>
       <div class="kpi warn"><div class="khead"><div class="kico">🔁</div><div class="n">${avgFing}%</div></div><div class="l">Media Compliance Finger</div></div>
       <div class="kpi neutral"><div class="khead"><div class="kico">🗓️</div><div class="n">${rows.length}</div></div><div class="l">Settimane caricate</div></div>
       <div class="kpi bad"><div class="khead"><div class="kico">👥</div><div class="n">${rows.length?rows[rows.length-1].tot:0}</div></div><div class="l">Associates (ultima sett.)</div></div>`;
@@ -1643,6 +1648,10 @@
 
     // grafico trend (se ci sono dati)
     if(rows.length){
+      if(nMco){ /* MO_MCO_V1: avviso */
+        html += `<div style="background:#f5f3ff;border:1.5px solid #c4b5fd;border-left:5px solid #7c3aed;border-radius:10px;padding:10px 14px;margin-bottom:12px;font-size:13px;color:#4c1d95">
+          <b>🟣 Periodo MCO (W${MCO_WEEKS.from}–W${MCO_WEEKS.to})</b> — ${nMco} settiman${nMco===1?'a':'e'} di questo storico ricad${nMco===1?'e':'ono'} nel periodo MCO: la job rotation non e' obbligatoria, quindi i valori sono mostrati (in viola) ma <b>esclusi</b> da medie, variazione Week-over-Week, media mobile e miglior/peggior settimana. Un calo in queste settimane non indica un peggioramento della rotation.</div>`;
+      }
       html += `<div class="section s-red open"><div class="section-head"><div class="sh-icon">📈</div>
         <div class="sh-text"><span class="sh-title">Andamento compliance</span><span class="sh-sub">Trend settimana per settimana</span></div></div>
         <div class="section-body"><div id="month-chart" style="height:320px"></div></div></div>`;
@@ -1669,11 +1678,15 @@
         const arr = up ? '\u25b2' : '\u25bc';
         return `<td style="color:${col};font-weight:700">${arr} ${up?'+':''}${d}pp</td>`;
       }
+      let lastEff = null; /* MO_MCO_V1 */
       rows.forEach((r,idx)=>{
-        const prev = idx>0 ? rows[idx-1] : null;
-        html += `<tr><td>${r.settimana}</td><td>${r.ds}</td><td>${r.tot}</td>`+
-                `<td>${r.pctInd}%</td>${wowCell(r.pctInd, prev?prev.pctInd:null, r.tot, prev?prev.tot:null)}`+
-                `<td>${r.pctFing}%</td>${wowCell(r.pctFing, prev?prev.pctFing:null, r.tot, prev?prev.tot:null)}</tr>`;
+        const mco = window._isMcoWeek(r.settimana);
+        const prev = mco ? null : lastEff;
+        const badge = mco ? ' <span class="mco-badge" style="background:#7c3aed;color:#fff;padding:1px 7px;border-radius:5px;font-size:10px;font-weight:800;margin-left:5px;letter-spacing:.03em">MCO</span>' : '';
+        html += `<tr${mco?' data-mco="1" style="background:#f5f3ff;opacity:.8"':''}><td><b>${r.settimana}</b>${badge}</td><td>${r.ds}</td><td>${r.tot}</td>`+
+                `<td>${r.pctInd}%</td>${mco?'<td style="color:#94a3b8">\u2014</td>':wowCell(r.pctInd, prev?prev.pctInd:null, r.tot, prev?prev.tot:null)}`+
+                `<td>${r.pctFing}%</td>${mco?'<td style="color:#94a3b8">\u2014</td>':wowCell(r.pctFing, prev?prev.pctFing:null, r.tot, prev?prev.tot:null)}</tr>`;
+        if(!mco) lastEff = r;
       });
       html += `</tbody></table></div></div>`;
     }
@@ -1692,20 +1705,20 @@
       Highcharts.chart('month-chart', {
         chart:{backgroundColor:'transparent'},
         title:{text:null}, credits:{enabled:false},
-        xAxis:{categories: rows.map(r=>r.settimana)},
+        xAxis:{categories: rows.map(r=>r.settimana), plotBands: rows.map((r,i)=>window._isMcoWeek(r.settimana)?{from:i-0.5,to:i+0.5,color:'rgba(124,58,237,.10)',label:{text:'MCO',style:{color:'#7c3aed',fontWeight:'700',fontSize:'10px'},y:14}}:null).filter(Boolean)}, /* MO_MCO_V1 */
         yAxis:{title:{text:'% Compliance'}, max:100, min:0},
         series:[
-          {name:'Induct', data: rows.map(r=>r.pctInd), color:'#10b981'},
-          {name:'Finger', data: rows.map(r=>r.pctFing), color:'#f59e0b'}
+          {name:'Induct', data: rows.map(r=>window._isMcoWeek(r.settimana)?{y:r.pctInd,color:'#7c3aed',marker:{symbol:'diamond'}}:r.pctInd), color:'#10b981'},
+          {name:'Finger', data: rows.map(r=>window._isMcoWeek(r.settimana)?{y:r.pctFing,color:'#7c3aed',marker:{symbol:'diamond'}}:r.pctFing), color:'#f59e0b'}
         ]
       });
       // grafico WoW: variazione in pp vs settimana precedente (dalla 2a settimana)
-      if(rows.length>=2 && document.getElementById('wow-chart')){
+      if(rowsEff.length>=2 && document.getElementById('wow-chart')){
         var wowCats=[], wowInd=[], wowFing=[];
-        for(var i=1;i<rows.length;i++){
-          wowCats.push(rows[i-1].settimana+'\u2192'+rows[i].settimana);
-          wowInd.push(rows[i].pctInd - rows[i-1].pctInd);
-          wowFing.push(rows[i].pctFing - rows[i-1].pctFing);
+        for(var i=1;i<rowsEff.length;i++){ /* MO_MCO_V1: WoW solo tra settimane non-MCO */
+          wowCats.push(rowsEff[i-1].settimana+'\u2192'+rowsEff[i].settimana);
+          wowInd.push(rowsEff[i].pctInd - rowsEff[i-1].pctInd);
+          wowFing.push(rowsEff[i].pctFing - rowsEff[i-1].pctFing);
         }
         Highcharts.chart('wow-chart', {
           chart:{type:'column', backgroundColor:'transparent'},
@@ -2472,7 +2485,9 @@
       var res=document.getElementById('results'); if(!res) return;
       var old=document.getElementById('mo-analytics'); if(old) old.remove();
       if(!MONTH_ROWS || MONTH_ROWS.length<2) return;
-      var rows=MONTH_ROWS.slice().sort(function(a,b){return (parseInt(a.settimana.replace(/\D/g,''))||0)-(parseInt(b.settimana.replace(/\D/g,''))||0);});
+      var rowsAll=MONTH_ROWS.slice().sort(function(a,b){return (parseInt(a.settimana.replace(/\D/g,''))||0)-(parseInt(b.settimana.replace(/\D/g,''))||0);});
+      var rows=rowsAll.filter(function(r){ return !(window._isMcoWeek && window._isMcoWeek(r.settimana)); }); /* MO_MCO_V1: analytics senza settimane MCO */
+      if(rows.length<2) return;
       var wrap=document.createElement('div'); wrap.id='mo-analytics';
 
       // Best/Worst
@@ -2546,8 +2561,10 @@
         var ch=null;
         Highcharts.charts.forEach(function(x){ if(x && x.renderTo && x.renderTo.id==='month-chart') ch=x; });
         if(ch){
-          var maI=rows.map(function(r,i){ return i<2?null:Math.round((rows[i].pctInd+rows[i-1].pctInd+rows[i-2].pctInd)/3); });
-          var maF=rows.map(function(r,i){ return i<2?null:Math.round((rows[i].pctFing+rows[i-1].pctFing+rows[i-2].pctFing)/3); });
+          /* MO_MCO_V1: media mobile allineata alle categorie del grafico (tutte le settimane), null se una delle 3 e' MCO */
+          var _mc=function(r){return window._isMcoWeek && window._isMcoWeek(r.settimana);};
+          var maI=rowsAll.map(function(r,i){ if(i<2||_mc(rowsAll[i])||_mc(rowsAll[i-1])||_mc(rowsAll[i-2])) return null; return Math.round((rowsAll[i].pctInd+rowsAll[i-1].pctInd+rowsAll[i-2].pctInd)/3); });
+          var maF=rowsAll.map(function(r,i){ if(i<2||_mc(rowsAll[i])||_mc(rowsAll[i-1])||_mc(rowsAll[i-2])) return null; return Math.round((rowsAll[i].pctFing+rowsAll[i-1].pctFing+rowsAll[i-2].pctFing)/3); });
           // rimuovi eventuali medie mobili gia' presenti
           for(var i=ch.series.length-1;i>=0;i--){ if(/media 3s/.test(ch.series[i].name)) ch.series[i].remove(false); }
           ch.addSeries({name:'Induct (media 3s)',data:maI,color:'#065f46',dashStyle:'ShortDash',marker:{enabled:false},lineWidth:2},false);
