@@ -1004,7 +1004,8 @@
       const r = rows[i];
       if(!r || !r[_nameCol] || String(r[_nameCol]).trim()==='') continue;
       const name = sanitizePersonName(String(r[_nameCol]).trim()); /* MO_NAME_FIX_V1 */
-      const ftpt = (_ftCol>=0 && r[_ftCol]) ? String(r[_ftCol]).trim().toUpperCase() : ''; /* MO_CONTEGGIO_V2: col pt/ft nel nuovo layout */
+      let ftpt = (_ftCol>=0 && r[_ftCol]) ? String(r[_ftCol]).trim().toUpperCase() : ''; /* MO_CONTEGGIO_V2: col pt/ft nel nuovo layout */
+      if(!ftpt && _v2){ try{ const _sp=(window.SP||{})[name.toLowerCase().trim()]; if(_sp && _sp.ftpt) ftpt=String(_sp.ftpt).toUpperCase(); }catch(e){} } /* MO_FTPT_ONLY_V1: FT/PT dallo storico */
       const week = {};
       let worked = 0;
       for(let d=0;d<7;d++){
@@ -1044,6 +1045,9 @@
         }
       });
       PEOPLE = PEOPLE.filter(p => p.worked>0);
+      /* MO_FTPT_ONLY_V1: lo storico riguarda solo il personale FT/PT. Chi compare nei fogli giorno senza tipo contratto
+         (ne' nel Conteggio Task ne' nello storico) non viene tracciato. */
+      PEOPLE = PEOPLE.filter(p => { const t=(p.ftpt||'').toUpperCase(); return t==='FT' || t==='PT'; });
       PEOPLE.sort((a,b) => a.name.localeCompare(b.name));
     }
     if(PEOPLE.length===0){
