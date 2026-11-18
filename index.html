@@ -932,14 +932,20 @@
         const _buf = new Uint8Array(e.target.result);
         const _names = XLSX.read(_buf, {type:'array', bookSheets:true}).SheetNames;
         const _wm = (CFG().manningSheet||'Conteggio Task weekly').toLowerCase();
-        const _pick = _names.find(n => n.toLowerCase().trim()===_wm) || _names.find(n => n.toLowerCase().includes(_wm)) || _names.find(n => n.toLowerCase().includes('weekly'));
-        const wb = XLSX.read(_buf, _pick ? {type:'array', sheets:_pick, cellStyles:false, cellHTML:false} : {type:'array'});
+        const _pick = _names.find(n => n.toLowerCase().trim()===_wm) || _names.find(n => n.toLowerCase().includes(_wm)) || _names.find(n => n.toLowerCase().includes('weekly')) || _names.find(n => n.toLowerCase().includes('conteggio')); /* MO_CONTEGGIO_V2: accetta anche il nuovo foglio "Conteggio Task" */
+        /* MO_DAYSHEETS_V1: nel nuovo Manning i ruoli veri (DIVERTER A-D, ALTEZZA, PUSHER...) stanno nei fogli giorno Sun..Sat
+           (tabella "Ruolo | SA"); il foglio "Conteggio Task" ha formule disallineate e da Lun segna STOWER a tutti. Leggo anche i giorni. */
+        const _daySheetNames = _names.filter(n => DAYS.some(d => d.toLowerCase()===n.toLowerCase().trim()));
+        const _toRead = (_pick ? [_pick] : []).concat(_daySheetNames);
+        const wb = XLSX.read(_buf, _toRead.length ? {type:'array', sheets:_toRead, cellStyles:false, cellHTML:false, cellFormula:false} : {type:'array'});
         const wantM = (CFG().manningSheet||'Conteggio Task weekly').toLowerCase();
         const sheetName = wb.SheetNames.find(n => n.toLowerCase().trim()===wantM)
                        || wb.SheetNames.find(n => n.toLowerCase().includes(wantM))
-                       || wb.SheetNames.find(n => n.toLowerCase().includes('weekly'));
-        if(!sheetName){ $('dstatus-w').innerHTML=''; showErr('Nel file Manning non trovo il foglio "'+(CFG().manningSheet||'Conteggio Task weekly')+'". Fogli presenti: '+wb.SheetNames.join(', ')); return; }
-        PENDING_W = { sheet: wb.Sheets[sheetName], name: file.name };
+                       || wb.SheetNames.find(n => n.toLowerCase().includes('weekly'))
+                       || wb.SheetNames.find(n => n.toLowerCase().includes('conteggio')); /* MO_CONTEGGIO_V2 */
+        const _daySheets = {}; _daySheetNames.forEach(n => { const d = DAYS.find(x => x.toLowerCase()===n.toLowerCase().trim()); if(d && wb.Sheets[n]) _daySheets[d] = wb.Sheets[n]; }); /* MO_DAYSHEETS_V1 */
+        if(!sheetName && !Object.keys(_daySheets).length){ $('dstatus-w').innerHTML=''; showErr('Nel file Manning non trovo il foglio "'+(CFG().manningSheet||'Conteggio Task weekly')+'" ne i fogli giorno Sun..Sat. Fogli presenti: '+wb.SheetNames.join(', ')); return; }
+        PENDING_W = { sheet: sheetName ? wb.Sheets[sheetName] : null, daySheets: _daySheets, name: file.name };
         $('dstatus-w').innerHTML = '<span class="ok-status">✓ '+file.name+' — pronto</span>';
         $('filemeta').innerHTML = '✓ <b>'+file.name+'</b>';
         refreshGenBtn();
@@ -952,12 +958,14 @@
     if(!PENDING_W){ return; }
     clearErr();
     try{
-      if(parseSheet(PENDING_W.sheet)!==true) return;   // validazione Manning fallita -> stop
+      if(parseSheet(PENDING_W.sheet, PENDING_W.daySheets)!==true) return;   // validazione Manning fallita -> stop
       if(PENDING_SHIFT){
         if(parseShift(PENDING_SHIFT.sheet)!==true) return;  // validazione turni fallita -> stop
         const count = Object.values(ABSENCES).reduce((a,d)=>a+Object.values(d).filter(v=>ABSENT_WORDS.includes(v)).length,0);
         $('dstatus-shift').innerHTML = '✓ '+PENDING_SHIFT.name+' — '+count+' assenze rilevate';
-      }
+      } else { DETECTED_WEEK=''; }
+      /* MO_WEEK_FROM_FILENAME_V1: senza file turni, la settimana si ricava dal nome del Manning (es. W47_C1_FULLSTAFF.xlsm) */
+      if(!DETECTED_WEEK){ const _fm=String(PENDING_W.name||'').match(/(?:^|[^A-Za-z0-9])W\s*_?(\d{1,2})(?!\d)/i); if(_fm){ DETECTED_WEEK='W'+parseInt(_fm[1],10); } }
       $('uploadpanel').style.display='none'; try{document.getElementById('upload-fab').classList.add('show');}catch(e){} /* MO_UPLOAD_ICON_V1 */
       $('modebar').classList.add('show');
       $('controls').classList.add('show');
@@ -965,17 +973,27 @@
     }catch(err){ showErr('Errore nella generazione: '+err.message); }
   }
 
-  function parseSheet(sheet){
-    const rows = XLSX.utils.sheet_to_json(sheet, {header:1, defval:null});
+  function parseSheet(sheet, daySheets){
+    const _hasDays = !!(daySheets && Object.keys(daySheets).length); /* MO_DAYSHEETS_V1 */
+    const rows = sheet ? XLSX.utils.sheet_to_json(sheet, {header:1, defval:null}) : [['SA','Sun','Mon','Tue','Wed','Thu','Fri','Sat']];
     // --- VALIDAZIONE struttura foglio Manning ---
     if(!rows.length){ showErr('Il foglio Manning è vuoto.'); return false; }
     const H = (rows[0]||[]).map(x => String(x==null?'':x).trim().toUpperCase());
-    // ci aspettiamo: col A = FT/PT, col B = SA (nome), col C..I = Sun..Sat
+    /* MO_CONTEGGIO_V2: nuovo layout "Conteggio Task" = SA | Sun..Sat | ... | pt/ft (senza colonna FT/PT iniziale).
+       Layout storico "Conteggio Task weekly" = FT/PT | SA | Sun..Sat. Rilevo dall'header e leggo entrambi. */
+    const _v2 = (H[0]==='SA' && H[1]==='SUN');
+    const _nameCol = _v2 ? 0 : 1, _dayOff = _v2 ? 1 : 2;
+    const _ftCol = _v2 ? H.findIndex(h => h==='PT/FT' || h==='FT/PT') : 0;
     const problems = [];
-    if(!H[0] || (H[0].indexOf('FT')<0 && H[0].indexOf('PT')<0)) problems.push('colonna A "FT/PT"');
-    if(!H[1]) problems.push('colonna B (nome persona, "SA")');
-    // header giorni: accetta Sun..Sat o vuoto (alcuni file mettono le date). Controllo che ci siano 7 colonne dati.
-    if((rows[0]||[]).length < 9) problems.push('le 7 colonne dei giorni (Sun-Sat, col C-I)');
+    if(_v2){
+      if((rows[0]||[]).length < 8) problems.push('le 7 colonne dei giorni (Sun-Sat, col B-H)');
+    } else {
+      // ci aspettiamo: col A = FT/PT, col B = SA (nome), col C..I = Sun..Sat
+      if(!H[0] || (H[0].indexOf('FT')<0 && H[0].indexOf('PT')<0)) problems.push('colonna A "FT/PT"');
+      if(!H[1]) problems.push('colonna B (nome persona, "SA")');
+      // header giorni: accetta Sun..Sat o vuoto (alcuni file mettono le date). Controllo che ci siano 7 colonne dati.
+      if((rows[0]||[]).length < 9) problems.push('le 7 colonne dei giorni (Sun-Sat, col C-I)');
+    }
     if(problems.length){
       showErr('Il foglio Manning non ha la struttura attesa. Mancano/errate: '+problems.join(', ')+
               '. Controlla che il foglio "'+(CFG().manningSheet||'Conteggio Task weekly')+'" abbia intestazioni FT/PT | SA | Sun...Sat.');
@@ -984,18 +1002,49 @@
     PEOPLE = [];
     for(let i=1;i<rows.length;i++){
       const r = rows[i];
-      if(!r || !r[1] || String(r[1]).trim()==='') continue;
-      const name = sanitizePersonName(String(r[1]).trim()); /* MO_NAME_FIX_V1 */
-      const ftpt = r[0] ? String(r[0]).trim() : '';
+      if(!r || !r[_nameCol] || String(r[_nameCol]).trim()==='') continue;
+      const name = sanitizePersonName(String(r[_nameCol]).trim()); /* MO_NAME_FIX_V1 */
+      const ftpt = (_ftCol>=0 && r[_ftCol]) ? String(r[_ftCol]).trim().toUpperCase() : ''; /* MO_CONTEGGIO_V2: col pt/ft nel nuovo layout */
       const week = {};
       let worked = 0;
       for(let d=0;d<7;d++){
-        const v = r[2+d];
-        if(v!==null && v!==undefined && String(v).trim()!==''){ week[DAYS[d]] = String(v).trim(); worked++; }
+        const v = r[_dayOff+d];
+        if(v!==null && v!==undefined && String(v).trim()!=='' && String(v).trim()!=='0'){ week[DAYS[d]] = String(v).trim(); worked++; } /* MO_DAYSHEETS_V1: '0' = nessun ruolo */
       }
       if(worked===0) continue;
       if(isExcluded(name)) continue;
       PEOPLE.push({name, ftpt, week, worked});
+    }
+    /* MO_DAYSHEETS_V1: i fogli giorno (tabella "Ruolo | SA" + liste STOWER/PICKER) sovrascrivono il Conteggio Task,
+       che nel nuovo formato e' derivato da formule e spesso sbagliato. Solo con il nuovo layout (_v2) o senza Conteggio. */
+    if(_hasDays && (_v2 || !sheet)){
+      const _byKey = {}; PEOPLE.forEach(p => { _byKey[p.name.toLowerCase().replace(/\s*,\s*/g,',').replace(/\s+/g,' ')] = p; });
+      const _isName = v => typeof v==='string' && /[A-Za-z]/.test(v) && v.trim()!=='' ;
+      const _isPerson = v => _isName(v) && v.indexOf(',')>=0; /* i nomi sono "Cognome,Nome": esclude etichette tipo STOWER AM / PICKER nelle liste */
+      const _assign = (rawName, day, role, force) => {
+        const nm = sanitizePersonName(String(rawName).trim()); if(!nm || isExcluded(nm)) return;
+        const k = nm.toLowerCase().replace(/\s*,\s*/g,',').replace(/\s+/g,' ');
+        let p = _byKey[k]; if(!p){ let _ft=''; try{ const _sp=(window.SP||{})[nm.toLowerCase().trim()]; if(_sp && _sp.ftpt) _ft=String(_sp.ftpt).toUpperCase(); }catch(e){} p = {name:nm, ftpt:_ft, week:{}, worked:0}; _byKey[k]=p; PEOPLE.push(p); } /* FT/PT dallo storico se il Conteggio non lo ha */
+        if(force || !p.week[day]){ if(!p.week[day]) p.worked++; p.week[day] = String(role).trim(); }
+      };
+      DAYS.forEach(day => {
+        const ds = daySheets[day]; if(!ds) return;
+        const dr = XLSX.utils.sheet_to_json(ds, {header:1, defval:null});
+        let hdr=-1, rc=-1;
+        for(let i=0;i<15 && hdr<0;i++){ const r=dr[i]||[]; const j=r.findIndex(v => typeof v==='string' && v.trim().toLowerCase()==='ruolo'); if(j>=0 && String(r[j+1]||'').trim().toUpperCase()==='SA'){ hdr=i; rc=j; } }
+        if(hdr<0) return;
+        /* colonne-lista a destra della tabella Ruolo|SA: intestazione che inizia con STOWER o PICKER -> ogni nome sotto prende quel ruolo (se non ne ha gia' uno) */
+        const listCols = [];
+        (dr[hdr]||[]).forEach((h,j) => { if(j>rc+1 && typeof h==='string'){ const u=h.trim().toUpperCase(); if(u.indexOf('STOWER')===0) listCols.push([j,'STOWER']); else if(u.indexOf('PICKER')===0) listCols.push([j,'PICKER']); } });
+        for(let i=hdr+1;i<dr.length;i++){
+          const r = dr[i]; if(!r) continue;
+          const role = r[rc], nm = r[rc+1];
+          if(_isName(role) && _isPerson(nm)) _assign(nm, day, role, true);
+          listCols.forEach(([j,rl]) => { if(_isPerson(r[j])) _assign(r[j], day, rl, false); });
+        }
+      });
+      PEOPLE = PEOPLE.filter(p => p.worked>0);
+      PEOPLE.sort((a,b) => a.name.localeCompare(b.name));
     }
     if(PEOPLE.length===0){
       showErr('Il foglio Manning non contiene persone con ruoli compilati. Verifica che i giorni (Sun-Sat) siano popolati.');
@@ -2068,7 +2117,7 @@
               PEOPLE.forEach(function(p){
                 var k=p.name.toLowerCase().trim();
                 if(!SP[k])SP[k]={name:p.name,ftpt:p.ftpt,settimane:{}};
-                SP[k].ftpt=p.ftpt;SP[k].name=p.name;/* MO_MANNING_MERGE_V1: NON azzero la settimana, faccio merge non distruttivo per non perdere giorni presenti in caricamenti precedenti (bug Fusco W38 solo Mon) */ if(!SP[k].settimane[wk])SP[k].settimane[wk]={};delete SP[k].settimane[wk]._excl;if(typeof EXCLUDED_SHIFT!=='undefined'&&EXCLUDED_SHIFT&&EXCLUDED_SHIFT.has(p.name.toLowerCase().replace(/\s*,\s*/g,',').replace(/\s+/g,' ').trim())){SP[k].settimane[wk]._excl=1;}
+                if(p.ftpt)SP[k].ftpt=p.ftpt;/* MO_DAYSHEETS_V1: non azzerare FT/PT storico se il nuovo Manning non lo riporta */SP[k].name=p.name;/* MO_MANNING_MERGE_V1: NON azzero la settimana, faccio merge non distruttivo per non perdere giorni presenti in caricamenti precedenti (bug Fusco W38 solo Mon) */ if(!SP[k].settimane[wk])SP[k].settimane[wk]={};delete SP[k].settimane[wk]._excl;if(typeof EXCLUDED_SHIFT!=='undefined'&&EXCLUDED_SHIFT&&EXCLUDED_SHIFT.has(p.name.toLowerCase().replace(/\s*,\s*/g,',').replace(/\s+/g,' ').trim())){SP[k].settimane[wk]._excl=1;}
                 var _moNN=function(s){return String(s||'').toLowerCase().replace(/\s*,\s*/g,',').replace(/\s+/g,' ').trim();};var _moABS=(typeof ABSENCES==='object'&&ABSENCES)?(ABSENCES[_moNN(p.name)]||{}):{};days.forEach(function(d){if(p.week&&p.week[d]){SP[k].settimane[wk][d]=p.week[d];}else if(_moABS[d]){SP[k].settimane[wk][d]='ABS_'+String(_moABS[d]).toUpperCase();}});
               });
               localStorage.setItem('dnp1_sp',JSON.stringify(SP)); window.SP=SP; /* MO_RECAPMATCH_V1: calcola compliance settimana come renderRecap e salvala in MONTH_ROWS */ try{ var _mrGoal={FT:2,PT:1}; try{ if(typeof CFG==='function'){_mrGoal.FT=CFG().goalFT;_mrGoal.PT=CFG().goalPT;} }catch(e){} var _mrTot=0,_mrIndOk=0,_mrFingOk=0; var _mrNN=function(s){return String(s||'').toLowerCase().replace(/\s*,\s*/g,',').replace(/\s+/g,' ').trim();}; var _mrABSWORDS=(typeof ABSENT_WORDS!=='undefined')?ABSENT_WORDS:['off','ferie','sick']; PEOPLE.forEach(function(pp){ if(typeof EXCLUDED_SHIFT!=='undefined' && EXCLUDED_SHIFT && EXCLUDED_SHIFT.has(_mrNN(pp.name))) return; var _wd=days.filter(function(d){return pp.week && pp.week[d];}); if(_wd.length===0) return; _mrTot++; var _tp=(pp.ftpt||'').toUpperCase()==='FT'?'FT':'PT'; var _giust=false; try{ _giust = (typeof getNote==='function' && !!getNote(pp.name)); }catch(e){} var _dInd=_wd.filter(function(d){try{return isInduct(pp.week[d]);}catch(e){return false;}}).length; var _abs=0; if(typeof ABSENCES!=='undefined' && ABSENCES && ABSENCES[_mrNN(pp.name)]){ var _ab=ABSENCES[_mrNN(pp.name)]; _abs=days.filter(function(d){return _ab[d] && _mrABSWORDS.indexOf(_ab[d])>=0;}).length; } if((_dInd+_abs)>=_mrGoal[_tp] || _giust) _mrIndOk++; var _dFing=_wd.filter(function(d){try{return isFinger(pp.week[d]);}catch(e){return false;}}).length; if(_dFing>=1 || _abs>=1 || _giust) _mrFingOk++; }); var _pct=function(n){return _mrTot?Math.round(n/_mrTot*100):0;}; var _ds=(typeof ACTIVE!=='undefined'?ACTIVE:'DNP1'); var _rec={settimana:wk, ds:_ds, tot:_mrTot, pctInd:_pct(_mrIndOk), indKo:_mrTot-_mrIndOk, pctFing:_pct(_mrFingOk), fingKo:_mrTot-_mrFingOk, data:new Date().toISOString().slice(0,10)}; if(typeof MONTH_ROWS!=='undefined'){ var _key=_rec.settimana+'|'+_rec.ds; MONTH_ROWS=MONTH_ROWS.filter(function(x){return (x.settimana+'|'+x.ds)!==_key;}); MONTH_ROWS.push(_rec); if(typeof saveHist==='function') saveHist(); } console.log('MO_RECAPMATCH_V1 saved:',_rec); }catch(err){ console.warn('MO_RECAPMATCH_V1 error:',err); }
