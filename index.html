@@ -1005,7 +1005,7 @@
       if(!r || !r[_nameCol] || String(r[_nameCol]).trim()==='') continue;
       const name = sanitizePersonName(String(r[_nameCol]).trim()); /* MO_NAME_FIX_V1 */
       let ftpt = (_ftCol>=0 && r[_ftCol]) ? String(r[_ftCol]).trim().toUpperCase() : ''; /* MO_CONTEGGIO_V2: col pt/ft nel nuovo layout */
-      if(!ftpt && _v2){ try{ const _sp=(window.SP||{})[name.toLowerCase().trim()]; if(_sp && _sp.ftpt) ftpt=String(_sp.ftpt).toUpperCase(); }catch(e){} } /* MO_FTPT_ONLY_V1: FT/PT dallo storico */
+      if(_v2){ ftpt=''; try{ const _sp=(window.SP||{})[name.toLowerCase().trim()]; if(_sp && _sp.ftpt) ftpt=String(_sp.ftpt).toUpperCase(); }catch(e){} } /* MO_FTPT_ONLY_V2: nel nuovo formato il tipo FT/PT viene SOLO dallo storico persone (la colonna pt/ft del Conteggio Task e' una formula verso il file vecchio e non e' affidabile) */
       const week = {};
       let worked = 0;
       for(let d=0;d<7;d++){
@@ -1018,6 +1018,10 @@
     }
     /* MO_DAYSHEETS_V1: i fogli giorno (tabella "Ruolo | SA" + liste STOWER/PICKER) sovrascrivono il Conteggio Task,
        che nel nuovo formato e' derivato da formule e spesso sbagliato. Solo con il nuovo layout (_v2) o senza Conteggio. */
+    if(_v2 || !sheet){ /* MO_FTPT_ONLY_V2: senza storico persone caricato non posso sapere chi e' FT/PT */
+      let _nSp=0; try{ _nSp=Object.values(window.SP||{}).filter(x=>x && x.ftpt).length; }catch(e){}
+      if(!_nSp){ showErr('Storico persone (FT/PT) non ancora caricato: attendi qualche secondo la sincronizzazione e premi di nuovo "Genera controllo".'); return false; }
+    }
     if(_hasDays && (_v2 || !sheet)){
       const _byKey = {}; PEOPLE.forEach(p => { _byKey[p.name.toLowerCase().replace(/\s*,\s*/g,',').replace(/\s+/g,' ')] = p; });
       const _isName = v => typeof v==='string' && /[A-Za-z]/.test(v) && v.trim()!=='' ;
@@ -1025,7 +1029,7 @@
       const _assign = (rawName, day, role, force) => {
         const nm = sanitizePersonName(String(rawName).trim()); if(!nm || isExcluded(nm)) return;
         const k = nm.toLowerCase().replace(/\s*,\s*/g,',').replace(/\s+/g,' ');
-        let p = _byKey[k]; if(!p){ let _ft=''; try{ const _sp=(window.SP||{})[nm.toLowerCase().trim()]; if(_sp && _sp.ftpt) _ft=String(_sp.ftpt).toUpperCase(); }catch(e){} p = {name:nm, ftpt:_ft, week:{}, worked:0}; _byKey[k]=p; PEOPLE.push(p); } /* FT/PT dallo storico se il Conteggio non lo ha */
+        let p = _byKey[k]; if(!p){ let _ft=''; try{ const _sp=(window.SP||{})[nm.toLowerCase().trim()]; if(_sp && _sp.ftpt) _ft=String(_sp.ftpt).toUpperCase(); }catch(e){} if(!_ft) return; /* MO_FTPT_ONLY_V2: non e' nei FT/PT dello storico -> non tracciato */ p = {name:nm, ftpt:_ft, week:{}, worked:0}; _byKey[k]=p; PEOPLE.push(p); }
         if(force || !p.week[day]){ if(!p.week[day]) p.worked++; p.week[day] = String(role).trim(); }
       };
       DAYS.forEach(day => {
