@@ -420,14 +420,14 @@
     📥 <b>Rotazione Induct</b> — chi lavora sempre sui Finger e non ha mai fatto Induct → va messo in Induct.<br>
     🔁 <b>Rotazione Finger</b> — chi sta sempre in Induct e non tocca mai i Finger → va spostato sui Finger (rotation inversa).<br><br>
     Seleziona <b>l'ultimo giorno già compilato</b>: l'app confronta le volte che ciascuno ha fatto Induct con l'obiettivo settimanale e i giorni ancora disponibili.
-    Sono considerati <b>Induct</b>: Waterspider, Unloader, Receiver, Pusher, Dock Marshall, Problem Solver. Tutto il resto (Stower, Picker, Basso/Alto...) è <b>Finger</b>.
+    Sono considerati <b>Induct</b>: <span class="hd-induct">Waterspider, Unloader, Receiver, Pusher, Dock Marshall, Problem Solver</span> (vedi ⚙️ Impostazioni). Tutto il resto (Stower, Picker, Basso/Alto...) è <b>Finger</b>.
     <br><br>
     <b>📌 Obiettivo Induct settimanale (la differenza chiave):</b>
     <div class="thr">
-      <div class="box ft"><div class="t">👤 FULL-TIME (FT) — 5 giorni</div>Deve fare Induct <b>almeno 2 volte</b> a settimana</div>
-      <div class="box pt"><div class="t">👤 PART-TIME (PT) — 4 giorni</div>Deve fare Induct <b>almeno 1 volta</b> a settimana</div>
+      <div class="box ft"><div class="t">👤 FULL-TIME (FT) — 5 giorni</div>Deve fare Induct <b>almeno <span class="hd-ft">2</span> volte</b> a settimana</div>
+      <div class="box pt"><div class="t">👤 PART-TIME (PT) — 4 giorni</div>Deve fare Induct <b>almeno <span class="hd-pt">1</span> volte</b> a settimana</div>
     </div>
-    Il FT ha un obiettivo più alto (2 invece di 1) perché lavora un giorno in più: l'app quindi lo considera "a posto" solo dopo <b>2</b> turni in Induct, mentre al PT ne basta <b>1</b>.
+    Il FT ha un obiettivo più alto (<span class="hd-ft">2</span> invece di <span class="hd-pt">1</span>) perché lavora un giorno in più: l'app quindi lo considera "a posto" solo dopo <b><span class="hd-ft">2</span></b> turni in Induct, mentre al PT ne bastano <b><span class="hd-pt">1</span></b>.
     🚨 <b>CRITICO</b> = i giorni rimasti non bastano a raggiungere l'obiettivo → va messo in Induct <b>domani</b>.<br>
     🗓️ <b>DA PIANIFICARE</b> = ancora sotto obiettivo ma con giorni sufficienti davanti → mettilo presto.<br>
     Chi ha già raggiunto l'obiettivo non compare in lista.
@@ -438,8 +438,8 @@
     </div>
     </div>
     <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:6px">
-      <div class="rule-pill">📋 Regola Induct — <b>FT: almeno 2×</b> a settimana</div>
-      <div class="rule-pill"><b>PT: almeno 1×</b> a settimana</div>
+      <div class="rule-pill">📋 Regola Induct — <b>FT: almeno <span class="hd-ft">2</span>×</b> a settimana</div>
+      <div class="rule-pill"><b>PT: almeno <span class="hd-pt">1</span>×</b> a settimana</div>
     </div>
   </header>
 
@@ -671,7 +671,11 @@
   }
 
   // ---- UI Impostazioni ----
-  function updateProfBadge(){ const b=document.getElementById('prof-badge'); if(b) b.textContent = ACTIVE; }
+  function updateProfBadge(){ const b=document.getElementById('prof-badge'); if(b) b.textContent = ACTIVE; refreshHelpText(); }
+  /* MO_HELP_DYNAMIC_V1: i testi di aiuto (ruoli induct, obiettivi FT/PT) seguono il profilo del sito, non piu' fissi su DNP1 */
+  function refreshHelpText(){ try{ const c=CFG(); const cap=s=>String(s).toLowerCase().replace(/(^|\s)\S/g,m=>m.toUpperCase());
+    document.querySelectorAll('.hd-induct').forEach(e=>{ e.textContent=(c.inductRoles||[]).length?(c.inductRoles.map(cap).join(', ')):'nessun ruolo impostato'; });
+    document.querySelectorAll('.hd-ft').forEach(e=>{ e.textContent=c.goalFT; }); document.querySelectorAll('.hd-pt').forEach(e=>{ e.textContent=c.goalPT; }); }catch(e){} }
   function fillProfileSelect(){
     const sel=document.getElementById('cfg-profile'); sel.innerHTML='';
     Object.keys(PROFILES).forEach(k=>{ const o=document.createElement('option'); o.value=k; o.textContent=k; sel.appendChild(o); });
@@ -702,10 +706,11 @@
     fillProfileSelect(); fillForm(); updateProfBadge();
   }
   function deleteProfile(){
-    if(ACTIVE==='DNP1'){ alert('Il profilo DNP1 non può essere eliminato.'); return; }
+    var _siteP=(window.CANOPY&&window.CANOPY.site)||'DNP1'; /* MULTISITE_V1 */
+    if(ACTIVE===_siteP){ alert('Il profilo '+_siteP+' e\' quello del sito e non può essere eliminato.'); return; }
     if(!confirm('Eliminare il profilo "'+ACTIVE+'"?')) return;
-    delete PROFILES[ACTIVE]; ACTIVE=Object.keys(PROFILES)[0]||'DNP1';
-    if(!PROFILES[ACTIVE]) PROFILES={'DNP1':DEFAULT_DNP1};
+    delete PROFILES[ACTIVE]; ACTIVE=Object.keys(PROFILES)[0]||_siteP;
+    if(!PROFILES[ACTIVE]) PROFILES={[_siteP]:Object.assign({},DEFAULT_DNP1,{name:_siteP,excludedPeople:_siteP==='DNP1'?DEFAULT_DNP1.excludedPeople:[],excludeBands:_siteP==='DNP1'?DEFAULT_DNP1.excludeBands:[]})};
     saveProfiles(PROFILES); lsSet(LS_ACTIVE,ACTIVE);
     fillProfileSelect(); fillForm(); updateProfBadge();
   }
