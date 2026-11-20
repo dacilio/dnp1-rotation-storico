@@ -572,6 +572,10 @@
           <div class="fld"><label>Nome foglio <b>Manning</b></label><input type="text" id="cfg-msheet"></div>
           <div class="fld"><label>Nome foglio <b>Turni</b></label><input type="text" id="cfg-ssheet"></div>
         </div>
+        <div class="fld-grid"><!-- MO_MCO_CFG_V1: periodo MCO per sito -->
+          <div class="fld"><label>Periodo <b>MCO</b> da settimana (W)</label><input type="number" id="cfg-mcofrom" min="0" max="53" placeholder="es. 46"></div>
+          <div class="fld"><label>Periodo <b>MCO</b> a settimana (W) — vuoto = nessun periodo MCO</label><input type="number" id="cfg-mcoto" min="0" max="53" placeholder="es. 52"></div>
+        </div>
       </div>
       <div class="modal-foot">
         <button class="btn-cancel" onclick="closeSettings()">Annulla</button>
@@ -691,6 +695,8 @@
     document.getElementById('cfg-people').value=(c.excludedPeople||[]).join('\n');
     document.getElementById('cfg-msheet').value=c.manningSheet||'Conteggio Task weekly';
     document.getElementById('cfg-ssheet').value=c.shiftSheet||'Timetable';
+    document.getElementById('cfg-mcofrom').value=(c.mcoFrom!=null)?c.mcoFrom:MCO_WEEKS.from; /* MO_MCO_CFG_V1 */
+    document.getElementById('cfg-mcoto').value=(c.mcoTo!=null)?c.mcoTo:MCO_WEEKS.to;
   }
   function openSettings(){ fillProfileSelect(); fillForm(); document.getElementById('settings-modal').classList.add('show'); }
   function closeSettings(){ document.getElementById('settings-modal').classList.remove('show'); }
@@ -725,7 +731,9 @@
       excludeBands: lines('cfg-bands'),
       excludedPeople: lines('cfg-people'),
       manningSheet: document.getElementById('cfg-msheet').value.trim()||'Conteggio Task weekly',
-      shiftSheet: document.getElementById('cfg-ssheet').value.trim()||'Timetable'
+      shiftSheet: document.getElementById('cfg-ssheet').value.trim()||'Timetable',
+      mcoFrom: parseInt(document.getElementById('cfg-mcofrom').value,10)||0, /* MO_MCO_CFG_V1 */
+      mcoTo: parseInt(document.getElementById('cfg-mcoto').value,10)||0
     };
     // se il nome è cambiato, rinomina la chiave
     if(nm!==ACTIVE){ delete PROFILES[ACTIVE]; ACTIVE=nm; }
@@ -1687,8 +1695,9 @@
   }   // storico: caricato dai file settimanali (persistito nel browser)
 
   /* MO_MCO_V1: settimane di periodo MCO (W47-W52): mostrate nello storico ma escluse da medie, WoW, media mobile e best/worst */
-  var MCO_WEEKS = {from:46, to:52};
-  window._isMcoWeek = function(s){ var n=parseInt(String(s||'').replace(/\D/g,''),10); return !!n && n>=MCO_WEEKS.from && n<=MCO_WEEKS.to; };
+  var MCO_WEEKS = {from:46, to:52}; /* default; MO_MCO_CFG_V1: ogni sito puo' cambiarlo in Impostazioni (0/vuoto = nessun periodo MCO) */
+  function mcoRange(){ var c=CFG()||{}; var f=(c.mcoFrom!=null)?c.mcoFrom:MCO_WEEKS.from, t=(c.mcoTo!=null)?c.mcoTo:MCO_WEEKS.to; return {from:+f||0, to:+t||0}; }
+  window._isMcoWeek = function(s){ var r=mcoRange(); if(!r.from||!r.to) return false; var n=parseInt(String(s||'').replace(/\D/g,''),10); return !!n && n>=r.from && n<=r.to; };
   function renderMonth(){
     // KPI riassuntivi del mese (media compliance)
     const rows = MONTH_ROWS.slice().sort((a,b)=> (parseInt((a.settimana||'').replace(/\D/g,''))||0) - (parseInt((b.settimana||'').replace(/\D/g,''))||0));
@@ -1714,7 +1723,7 @@
     if(rows.length){
       if(nMco){ /* MO_MCO_V1: avviso */
         html += `<div style="background:#f5f3ff;border:1.5px solid #c4b5fd;border-left:5px solid #7c3aed;border-radius:10px;padding:10px 14px;margin-bottom:12px;font-size:13px;color:#4c1d95">
-          <b>🟣 Periodo MCO (W${MCO_WEEKS.from}–W${MCO_WEEKS.to})</b> — ${nMco} settiman${nMco===1?'a':'e'} di questo storico ricad${nMco===1?'e':'ono'} nel periodo MCO: la job rotation non e' obbligatoria, quindi i valori sono mostrati (in viola) ma <b>esclusi</b> da medie, variazione Week-over-Week, media mobile e miglior/peggior settimana. Un calo in queste settimane non indica un peggioramento della rotation.</div>`;
+          <b>🟣 Periodo MCO (W${mcoRange().from}–W${mcoRange().to})</b> — ${nMco} settiman${nMco===1?'a':'e'} di questo storico ricad${nMco===1?'e':'ono'} nel periodo MCO: la job rotation non e' obbligatoria, quindi i valori sono mostrati (in viola) ma <b>esclusi</b> da medie, variazione Week-over-Week, media mobile e miglior/peggior settimana. Un calo in queste settimane non indica un peggioramento della rotation.</div>`;
       }
       html += `<div class="section s-red open"><div class="section-head"><div class="sh-icon">📈</div>
         <div class="sh-text"><span class="sh-title">Andamento compliance</span><span class="sh-sub">Trend settimana per settimana</span></div></div>
